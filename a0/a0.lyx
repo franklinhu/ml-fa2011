@@ -327,10 +327,37 @@ We get
 TODO
 \end_layout
 
+\begin_deeper
 \begin_layout Enumerate
 TODO
 \end_layout
 
+\begin_layout Enumerate
+Let 
+\begin_inset Formula $A=\left(\begin{array}{cc}
+1 & -1\\
+1 & -1
+\end{array}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $B=\left(\begin{array}{cc}
+2 & 3\\
+2 & 3
+\end{array}\right)$
+\end_inset
+
+ then 
+\begin_inset Formula $AB=\left(\begin{array}{cc}
+0 & 0\\
+0 & 0
+\end{array}\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
 TODO
 \end_layout
