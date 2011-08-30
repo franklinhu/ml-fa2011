@@ -1,0 +1,343 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{amsmath} 
+\let\frac\dfrac
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Franklin Hu 
+\end_layout
+
+\begin_layout Standard
+SID: 20157715
+\end_layout
+
+\begin_layout Standard
+CS194-10
+\end_layout
+
+\begin_layout Standard
+2011-09-02
+\end_layout
+
+\begin_layout Enumerate
+See sampler.py
+\end_layout
+
+\begin_layout Enumerate
+Let 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$X_0 
+\backslash
+sim Pois(
+\backslash
+lambda_0)$
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$X_1 
+\backslash
+sim Pois(
+\backslash
+lambda_1)$
+\end_layout
+
+\end_inset
+
+.
+ Thus:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{center}
+\end_layout
+
+\begin_layout Plain Layout
+
+$P(X_0 = k_0) = 
+\backslash
+frac{
+\backslash
+lambda_0^{k_0}e^{-
+\backslash
+lambda_0}}{k_0!}$ and $P(X_1 = k_1) = 
+\backslash
+frac{
+\backslash
+lambda_1^{k_1}e^{-
+\backslash
+lambda_1}}{k_1!}$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{center}
+\end_layout
+
+\end_inset
+
+For some 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$Y = X_0 + X_1$
+\end_layout
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+P(Y=y)= & P(X_{0}+X_{1}=y)\\
+= & f_{Y}(y)\\
+= & \sum\limits_{i=0}^{y}f_{x_{0}}(i)f_{x_{1}}(y-i)\\
+= & \sum\limits_{i=0}^{y}\frac{\lambda_{0}^{i}e^{-\lambda_{0}}}{i!}\frac{\lambda_{1}^{y-i}e^{-\lambda_{1}}}{(y-i)!}\\
+= & \sum\limits_{i=0}^{y}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}e^{-\lambda_{0}-\lambda_{1}}}{i!(y-i)!}\\
+= & \sum\limits_{i=0}^{y}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}}{i!(y-i)!}e^{-(\lambda_{0}+\lambda_{1})}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+TODO
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $A=\left(\begin{array}{cc}
+13 & 5\\
+2 & 4
+\end{array}\right)$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+To find the eigenvales and eigenvector, set the determinate of matrix with
+ lambdas subtracted equal to zero.
+\begin_inset Formula 
+\begin{align*}
+0= & det\left(\begin{array}{cc}
+13-\lambda & 5\\
+2 & 4-\lambda
+\end{array}\right)\\
+= & (13-\lambda)(4-\lambda)-5\cdot2\\
+= & 52-17\lambda+\lambda^{2}-10\\
+= & \lambda^{2}-17\lambda+42\\
+\text{=} & (\lambda-14)(\lambda-3)
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+For 
+\begin_inset Formula $\lambda=14$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\left(\begin{array}{cc}
+13 & 5\\
+2 & 4
+\end{array}\right)\left(\begin{array}{c}
+x\\
+y
+\end{array}\right)= & 14\left(\begin{array}{c}
+x\\
+y
+\end{array}\right)\\
+\left(\begin{array}{c}
+13x+5y\\
+2x+4y
+\end{array}\right)= & \left(\begin{array}{c}
+14x\\
+14y
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+We get 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$x=5y$
+\end_layout
+
+\end_inset
+
+ so the eigenvector is 
+\begin_inset Formula $\left(\begin{array}{c}
+5\\
+1
+\end{array}\right)$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+For 
+\begin_inset Formula $\lambda=3$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\left(\begin{array}{cc}
+13 & 5\\
+2 & 4
+\end{array}\right)\left(\begin{array}{c}
+x\\
+y
+\end{array}\right)= & 3\left(\begin{array}{c}
+x\\
+y
+\end{array}\right)\\
+\left(\begin{array}{c}
+13x+5y\\
+2x+4y
+\end{array}\right)= & \left(\begin{array}{c}
+3x\\
+3y
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+We get 
+\begin_inset Formula $y=-2x$
+\end_inset
+
+ so the eigenvector is 
+\begin_inset Formula $\left(\begin{array}{c}
+1\\
+-2
+\end{array}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+TODO
+\end_layout
+
+\begin_layout Enumerate
+TODO
+\end_layout
+
+\begin_layout Enumerate
+TODO
+\end_layout
+
+\begin_layout Enumerate
+TODO
+\end_layout
+
+\end_body
+\end_document
