@@ -162,14 +162,7 @@ end{center}
 \end_inset
 
 For some 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-$Y = X_0 + X_1$
-\end_layout
-
+\begin_inset Formula $Y=X_{0}+X_{1}$
 \end_inset
 
 :
@@ -177,15 +170,29 @@ $Y = X_0 + X_1$
 \begin{align*}
 P(Y=y)= & P(X_{0}+X_{1}=y)\\
 = & f_{Y}(y)\\
-= & \sum\limits_{i=0}^{y}f_{x_{0}}(i)f_{x_{1}}(y-i)\\
-= & \sum\limits_{i=0}^{y}\frac{\lambda_{0}^{i}e^{-\lambda_{0}}}{i!}\frac{\lambda_{1}^{y-i}e^{-\lambda_{1}}}{(y-i)!}\\
-= & \sum\limits_{i=0}^{y}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}e^{-\lambda_{0}-\lambda_{1}}}{i!(y-i)!}\\
-= & \sum\limits_{i=0}^{y}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}}{i!(y-i)!}e^{-(\lambda_{0}+\lambda_{1})}
+= & \sum\limits _{i=0}^{y}f_{x_{0}}(i)f_{x_{1}}(y-i)\\
+= & \sum\limits _{i=0}^{y}\frac{\lambda_{0}^{i}e^{-\lambda_{0}}}{i!}\frac{\lambda_{1}^{y-i}e^{-\lambda_{1}}}{(y-i)!}\\
+= & \sum\limits _{i=0}^{y}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}e^{-\lambda_{0}-\lambda_{1}}}{i!(y-i)!}\\
+= & \sum\limits _{i=0}^{y}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}}{i!(y-i)!}e^{-(\lambda_{0}+\lambda_{1})}\\
+= & e^{-(\lambda_{0}+\lambda_{1})}\sum\limits_{i=0}^{y}\frac{y!}{i!(y-i)!}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}}{y!}\\
+= & e^{-(\lambda_{0}+\lambda_{1})}\sum\limits_{i=0}^{y}\left(\begin{array}{c}
+y\\
+i
+\end{array}\right)\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}}{y!}\\
+= & e^{-(\lambda_{0}+\lambda_{1})}\frac{(\lambda_{0}+\lambda_{1})^{y}}{y!}
 \end{align*}
 
 \end_inset
 
 
+\begin_inset Newline newline
+\end_inset
+
+Therefore 
+\begin_inset Formula $Y\sim Pois(\lambda_{0}+\lambda_{1})$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Enumerate
@@ -256,14 +263,7 @@ y
 \end_inset
 
 We get 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-$x=5y$
-\end_layout
-
+\begin_inset Formula $x=5y$
 \end_inset
 
  so the eigenvector is 
