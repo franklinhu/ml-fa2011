@@ -174,8 +174,8 @@ P(Y=y)= & P(X_{0}+X_{1}=y)\\
 = & \sum\limits _{i=0}^{y}\frac{\lambda_{0}^{i}e^{-\lambda_{0}}}{i!}\frac{\lambda_{1}^{y-i}e^{-\lambda_{1}}}{(y-i)!}\\
 = & \sum\limits _{i=0}^{y}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}e^{-\lambda_{0}-\lambda_{1}}}{i!(y-i)!}\\
 = & \sum\limits _{i=0}^{y}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}}{i!(y-i)!}e^{-(\lambda_{0}+\lambda_{1})}\\
-= & e^{-(\lambda_{0}+\lambda_{1})}\sum\limits_{i=0}^{y}\frac{y!}{i!(y-i)!}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}}{y!}\\
-= & e^{-(\lambda_{0}+\lambda_{1})}\sum\limits_{i=0}^{y}\left(\begin{array}{c}
+= & e^{-(\lambda_{0}+\lambda_{1})}\sum\limits _{i=0}^{y}\frac{y!}{i!(y-i)!}\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}}{y!}\\
+= & e^{-(\lambda_{0}+\lambda_{1})}\sum\limits _{i=0}^{y}\left(\begin{array}{c}
 y\\
 i
 \end{array}\right)\frac{\lambda_{0}^{i}\lambda_{1}^{y-i}}{y!}\\
@@ -196,7 +196,17 @@ Therefore
 \end_layout
 
 \begin_layout Enumerate
-TODO
+Due to the law of total probability,
+\begin_inset Formula 
+\begin{align*}
+p(X_{1}=x_{1})= & \int p(X_{1}=x_{1}|X_{0}=x_{0})p(X_{0}=x_{0})dx_{0}\\
+\alpha e^{\frac{(x_{1}-\mu_{1})^{2}}{2\sigma_{1}^{2}}}= & \int\alpha_{1}e^{-\frac{(x_{1}-x_{0})^{2}}{2\sigma^{2}}}\alpha_{0}e^{-\frac{(x_{0}-\mu_{0})^{2}}{2\sigma_{0}^{2}}}dx_{0}\\
+\alpha e^{\frac{(x_{1}-\mu_{1})^{2}}{2\sigma_{1}^{2}}}= & \alpha_{0}\alpha_{1}\int e^{-(\frac{(x_{1}-x_{0})^{2}}{2\sigma^{2}}+\frac{(x_{0}-\mu_{0})^{2}}{2\sigma_{0}^{2}})}dx_{0}
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Enumerate
@@ -366,5 +376,89 @@ TODO
 TODO
 \end_layout
 
+\begin_deeper
+\begin_layout Enumerate
+Given 
+\begin_inset Formula $f(x)=x^{3}$
+\end_inset
+
+:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\[
+f^{\prime}(x)=3x^{2}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+f^{\prime\prime}(x)=6x
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+For 
+\begin_inset Formula $x\geq0$
+\end_inset
+
+, the second derivative is non-negative, so the univariate function is convex
+ on the set.
+\end_layout
+
+\begin_layout Enumerate
+TODO
+\end_layout
+
+\begin_layout Enumerate
+If 
+\begin_inset Formula $f$
+\end_inset
+
+ and 
+\begin_inset Formula $g$
+\end_inset
+
+ are univariate convex functions on a set, then 
+\begin_inset Formula $f^{\prime\prime}$
+\end_inset
+
+ and 
+\begin_inset Formula $g^{\prime\prime}$
+\end_inset
+
+ are non-negative on that set.
+ In addition:
+\begin_inset Formula 
+\[
+\frac{d^{2}}{dx}(f+g)=\frac{d^{2}}{dx}f+\frac{d^{2}}{dx}g
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Since the sum of non-negative values is non-negative, 
+\begin_inset Formula $f^{\prime\prime}+g^{\prime\prime}$
+\end_inset
+
+ is non-negative thus 
+\begin_inset Formula $f+g$
+\end_inset
+
+ is convex.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
