@@ -35,8 +35,27 @@ class MultiVariateNormal(ProbabilityModel):
     # parameterized by Mu (numpy.array of size D x 1) expectation vector 
     # and symmetric positive definite covariance Sigma (numpy.array of size D x D)
     def __init__(self,Mu,Sigma):
-        pass
+        self.D = len(Mu)
+        self.Mu = Mu
+        self.Sigma = Sigma
+        self.univariate = UnivariateNormal(0, 1) 
     
+    def cholesky(self, A):
+        L = numpy.zeros((self.D, self.D))
+        for i in xrange(self.D):
+            for j in xrange(self.D):
+                if i == j:
+                    L[j][j] = math.sqrt(A[j][j] - sum([elem^2 \
+                            for elem in L[j][:self.D-1]]))
+                else:
+                    L[i][j] = (A[i][j] - sum([L[i][k]*L[j][k] \
+                            for k in xrange(1, j-1))) / L[j][j]
+        return L
+
+    def sample(self):
+        A = self.cholesky(self.Sigma)
+        Z = [self.univariate.sample() for i in xrange(self.D)]
+        return self.Mu + dot(A, Z)
 
 # The sample space of this probability model is the finite discrete set {0..k-1}, and 
 # the probability measure is defined by the atomic probabilities 
