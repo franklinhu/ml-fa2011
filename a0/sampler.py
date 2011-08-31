@@ -1,3 +1,6 @@
+import numpy
+import scipy.special
+
 class ProbabilityModel:
 
     # Returns a single sample (independent of values returned on previous calls).
@@ -14,7 +17,13 @@ class UnivariateNormal(ProbabilityModel):
     # Initializes a univariate normal probability model object
     # parameterized by mu and (a positive) sigma
     def __init__(self,mu,sigma):
-        pass
+        self.mu = mu
+        self.sigma = sigma
+
+    def sample(self):
+        p = numpy.random.uniform()
+        return scipy.special.erfinv(2*p - 1)
+
     
 # The sample space of this probability model is the set of D dimensional real
 # column vectors (modeled as numpy.array of size D x 1), and the probability 
