@@ -38,7 +38,17 @@ class Categorical(ProbabilityModel):
     # probability model object with distribution parameterized by the atomic probabilities vector
     # ap (numpy.array of size k).
     def __init__(self,ap):
-        pass
+        self.ap = ap
+
+    def sample(self):
+        sum = 0
+        index = -1
+        rand = numpy.random.uniform()
+        while rand > sum:
+            index += 1
+            sum += self.ap[index]
+
+        return index
 
 
 # The sample space of this probability model is the union of the sample spaces of 
@@ -51,4 +61,5 @@ class MixtureModel(ProbabilityModel):
     # atomic probabilities vector ap (numpy.array of size k) and by the tuple of 
     # probability models pm
     def __init__(self,ap,pm):
-        pass
+        self.ap = ap
+        self.pm = pm
