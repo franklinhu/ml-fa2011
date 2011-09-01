@@ -369,7 +369,33 @@ Let
 
 \end_deeper
 \begin_layout Enumerate
-TODO
+\begin_inset Formula 
+\begin{align*}
+A= & I-2uu^{T}\\
+A= & I-2u(u^{T}u)u^{T}\\
+A= & I-2(uu^{T})^{2}\\
+\Longrightarrow & uu^{T}=(uu^{T})^{2}\\
+\Longrightarrow & uu^{T}=I\\
+\Longrightarrow & A=I-2I=-I
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+With this, we prove:
+\begin_inset Formula 
+\begin{align*}
+A^{T}A= & (-I)^{T}-I\\
+= & -I\cdot-I\\
+= & I
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Enumerate
