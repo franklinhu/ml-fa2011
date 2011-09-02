@@ -47,7 +47,7 @@
 \shortcut idx
 \color #008000
 \end_index
-\leftmargin 1in
+\leftmargin 0.5in
 \topmargin 1in
 \rightmargin 1in
 \bottommargin 1in
@@ -88,6 +88,33 @@ CS194-10
 See sampler.py
 \end_layout
 
+\begin_deeper
+\begin_layout Enumerate
+For the UnivariateNormal sampler, I generated a random number from the uniform
+ distribution [0,1] and treated it as the area under a Normal distribution
+ from negative infinity up to some point X.
+ To find that point X, I used the inverse Gaussian error function.
+\end_layout
+
+\begin_layout Enumerate
+For the MultivariateNormal sampler, I followed the steps on the linked wikipedia
+ page (Drawing values from the distribution) using the Cholesky decomposition
+ to find the suitable matrix and generating independent normal values using
+ the UnivariateNormal sampler from (a).
+\end_layout
+
+\begin_layout Enumerate
+For the Categorical sampler, since an array of probabilities is given during
+ initialization, I simply generated a number [0,1] and found the correct
+ partial sum iterating through the array.
+\end_layout
+
+\begin_layout Enumerate
+For the MixtureModel sampler, I used a Categorical sampler to pick the right
+ probability model to use, then sampled using that probability model.
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
 Let 
 \begin_inset ERT
@@ -199,9 +226,81 @@ Therefore
 Due to the law of total probability,
 \begin_inset Formula 
 \begin{align*}
-p(X_{1}=x_{1})= & \int p(X_{1}=x_{1}|X_{0}=x_{0})p(X_{0}=x_{0})dx_{0}\\
-\alpha e^{\frac{(x_{1}-\mu_{1})^{2}}{2\sigma_{1}^{2}}}= & \int\alpha_{1}e^{-\frac{(x_{1}-x_{0})^{2}}{2\sigma^{2}}}\alpha_{0}e^{-\frac{(x_{0}-\mu_{0})^{2}}{2\sigma_{0}^{2}}}dx_{0}\\
-\alpha e^{\frac{(x_{1}-\mu_{1})^{2}}{2\sigma_{1}^{2}}}= & \alpha_{0}\alpha_{1}\int e^{-(\frac{(x_{1}-x_{0})^{2}}{2\sigma^{2}}+\frac{(x_{0}-\mu_{0})^{2}}{2\sigma_{0}^{2}})}dx_{0}
+p(X_{1}=x_{1})= & \int_{-\infty}^{\infty}p(X_{1}=x_{1}|X_{0}=x_{0})p(X_{0}=x_{0})dx_{0}\\
+\alpha e^{-\frac{(x_{1}-\mu_{1})^{2}}{2\sigma_{1}^{2}}}= & \int_{-\infty}^{\infty}\alpha_{1}e^{-\frac{(x_{1}-x_{0})^{2}}{2\sigma^{2}}}\alpha_{0}e^{-\frac{(x_{0}-\mu_{0})^{2}}{2\sigma_{0}^{2}}}dx_{0}\\
+= & \alpha_{0}\alpha_{1}\int_{-\infty}^{\infty}e^{-(\frac{(x_{1}-x_{0})^{2}}{2\sigma^{2}}+\frac{(x_{0}-\mu_{0})^{2}}{2\sigma_{0}^{2}})}dx_{0}\\
+= & \alpha_{0}\alpha_{1}\int_{-\infty}^{\infty}e^{-(\frac{x_{1}^{2}-2x_{0}x_{1}+x_{0}^{2}}{2\sigma^{2}}+\frac{x_{0}^{2}-2x_{0}\mu_{0}+\mu_{0}^{2}}{2\sigma_{0}^{2}})}dx_{0}\\
+= & \alpha_{0}\alpha_{1}\int_{-\infty}^{\infty}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}(\sigma_{0}^{2}x_{1}^{2}-2\sigma_{0}^{2}x_{0}x_{1}+\sigma_{0}^{2}x_{0}^{2}+\sigma^{2}x_{0}^{2}-2\sigma^{2}x_{0}\mu_{0}+\sigma^{2}\mu_{0}^{2})}dx_{0}\\
+= & \alpha_{0}\alpha_{1}\int_{-\infty}^{\infty}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}((\sigma_{0}^{2}+\sigma^{2})x_{0}^{2}-2(\sigma_{0}^{2}x_{1}+\sigma^{2}\mu_{0})x_{0}+\sigma_{0}^{2}x_{1}^{2}+\sigma^{2}\mu_{0}^{2})}dx_{0}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+By completing the square, we can rewrite any quadratic of the form 
+\begin_inset Formula $ax_{0}^{2}+bx_{0}+c$
+\end_inset
+
+ to a squared term 
+\begin_inset Formula $a(x_{0}-\frac{-b}{2a})^{2}$
+\end_inset
+
+ and a residual term 
+\begin_inset Formula $c-\frac{b^{2}}{4a}$
+\end_inset
+
+.
+ In this case, let:
+\begin_inset Formula 
+\begin{align*}
+a= & \sigma_{0}^{2}+\sigma^{2}\\
+b= & -2(\sigma_{0}^{2}x_{1}+\sigma^{2}\mu_{0})\\
+c= & \sigma_{0}^{2}x_{1}^{2}+\sigma^{2}\mu_{0}^{2}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\alpha e^{-\frac{(x_{1}-\mu_{1})^{2}}{2\sigma_{1}^{2}}}= & \alpha_{0}\alpha_{1}\int_{-\infty}^{\infty}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}((\sigma_{0}^{2}+\sigma^{2})x_{0}^{2}-2(\sigma_{0}^{2}x_{1}+\sigma^{2}\mu_{0})x_{0}+\sigma_{0}^{2}x_{1}^{2}+\sigma^{2}\mu_{0}^{2})}dx_{0}\\
+= & \alpha_{0}\alpha_{1}\int_{-\infty}^{\infty}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}[(\sigma_{0}^{2}+\sigma^{2})(x_{0}^{2}-\frac{2(\sigma_{0}^{2}x_{1}+\sigma^{2}\mu_{0})}{2(\sigma_{0}^{2}+\sigma^{2})})^{2}+(\sigma_{0}^{2}x_{1}^{2}+\sigma^{2}\mu_{0}^{2}-\frac{4(\sigma_{0}^{2}x_{1}+\sigma^{2}\mu_{0})^{2}}{4(\sigma_{0}^{2}+\sigma^{2})})]}dx_{0}\\
+= & \alpha_{0}\alpha_{1}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}[\frac{(\sigma_{0}^{2}x_{1}^{2}+\sigma^{2}\mu_{0}^{2})\cdot(\sigma_{0}^{2}+\sigma^{2})-(\sigma_{0}^{2}x_{1}+\sigma^{2}\mu_{0})^{2}}{\sigma_{0}^{2}+\sigma^{2}}]}\int_{-\infty}^{\infty}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}[(\sigma_{0}^{2}+\sigma^{2})(x_{0}^{2}-\frac{2(\sigma_{0}^{2}x_{1}+\sigma^{2}\mu_{0})}{2(\sigma_{0}^{2}+\sigma^{2})})^{2}]}dx_{0}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+The integral portion is a normal distribution over its entire domain, so
+ it evaluates to 1.
+\begin_inset Formula 
+\begin{align*}
+\alpha e^{-\frac{(x_{1}-\mu_{1})^{2}}{2\sigma_{1}^{2}}}= & \alpha_{0}\alpha_{1}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}[\frac{(\sigma_{0}^{2}x_{1}^{2}+\sigma^{2}\mu_{0}^{2})\cdot(\sigma_{0}^{2}+\sigma^{2})-(\sigma_{0}^{2}x_{1}+\sigma^{2}\mu_{0})^{2}}{\sigma_{0}^{2}+\sigma^{2}}]}\\
+= & \alpha_{0}\alpha_{1}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}\frac{\sigma_{0}^{4}x_{1}^{2}+\sigma^{2}\sigma_{0}^{2}x_{1}^{2}+\sigma^{2}\sigma_{0}^{2}\mu_{0}^{2}+\sigma^{4}\mu_{0}^{2}-(\sigma_{0}^{4}x_{1}^{2}+2\sigma^{2}\sigma_{0}^{2}x_{1}\mu_{0}+\sigma^{4}\mu_{0}^{2})}{\sigma_{0}^{2}+\sigma^{2}}}\\
+= & \alpha_{0}\alpha_{1}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}\frac{\sigma^{2}\sigma_{0}^{2}x_{1}^{2}+\sigma^{2}\sigma_{0}^{2}\mu_{0}^{2}-2\sigma^{2}\sigma_{0}^{2}x_{1}\mu_{0}}{\sigma_{0}^{2}+\sigma^{2}}}\\
+= & \alpha_{0}\alpha_{1}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}\frac{\sigma^{2}\sigma_{0}^{2}(x_{1}^{2}+\mu_{0}^{2}-2x_{1}\mu_{0})}{\sigma_{0}^{2}+\sigma^{2}}}\\
+= & \alpha_{0}\alpha_{1}e^{-\frac{1}{2\sigma^{2}\sigma_{0}^{2}}\frac{\sigma^{2}\sigma_{0}^{2}(x_{1}-\mu_{0})^{2}}{\sigma_{0}^{2}+\sigma^{2}}}\\
+= & \alpha_{0}\alpha_{1}e^{-\frac{(x_{1}-\mu_{0})^{2}}{2(\sigma_{0}^{2}+\sigma^{2})}}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Therefore, we find that:
+\begin_inset Formula 
+\begin{align*}
+\alpha= & \alpha_{0}\alpha_{1}\\
+\mu_{1}= & \mu_{0}\\
+\sigma_{1}= & \sqrt{\sigma_{0}^{2}+\sigma^{2}}
 \end{align*}
 
 \end_inset
@@ -334,12 +433,79 @@ We get
 \end_layout
 
 \begin_layout Enumerate
-TODO
+Let A and B be 
+\begin_inset Formula $2\times2$
+\end_inset
+
+ matrices
 \end_layout
 
 \begin_deeper
 \begin_layout Enumerate
-TODO
+Let 
+\begin_inset Formula $A=\left(\begin{array}{cc}
+1 & 2\\
+3 & 4
+\end{array}\right),B=\left(\begin{array}{cc}
+2 & 3\\
+4 & 5
+\end{array}\right)$
+\end_inset
+
+.
+\begin_inset Formula 
+\begin{align*}
+(A+B)^{2}\stackrel{?}{=} & A^{2}+2AB+B^{2}\\
+\left(\begin{array}{cc}
+3 & 5\\
+7 & 9
+\end{array}\right)\left(\begin{array}{cc}
+3 & 5\\
+7 & 9
+\end{array}\right)\stackrel{?}{=} & \left(\begin{array}{cc}
+1 & 2\\
+3 & 4
+\end{array}\right)\left(\begin{array}{cc}
+1 & 2\\
+3 & 4
+\end{array}\right)+2\left(\begin{array}{cc}
+1 & 2\\
+3 & 4
+\end{array}\right)\left(\begin{array}{cc}
+2 & 3\\
+4 & 5
+\end{array}\right)+\left(\begin{array}{cc}
+2 & 3\\
+4 & 5
+\end{array}\right)\left(\begin{array}{cc}
+2 & 3\\
+4 & 5
+\end{array}\right)\\
+\left(\begin{array}{cc}
+11 & 15\\
+21 & 29
+\end{array}\right)\stackrel{?}{=} & \left(\begin{array}{cc}
+7 & 10\\
+15 & 22
+\end{array}\right)+2\left(\begin{array}{cc}
+10 & 13\\
+22 & 29
+\end{array}\right)+\left(\begin{array}{cc}
+16 & 21\\
+28 & 37
+\end{array}\right)\\
+\left(\begin{array}{cc}
+11 & 15\\
+21 & 29
+\end{array}\right)\neq & \left(\begin{array}{cc}
+43 & 57\\
+87 & 117
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Enumerate
@@ -441,7 +607,73 @@ For
 \end_layout
 
 \begin_layout Enumerate
-TODO
+Since the function f is bivariate, assume 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+ to be vectors.
+\begin_inset Formula 
+\begin{align*}
+f(\lambda x+(1-\lambda)y\leq & \lambda f(x)+(1-\lambda)f(y)\\
+f(\lambda\left(\begin{array}{c}
+x_{1}\\
+x_{2}
+\end{array}\right)+(1-\lambda)\left(\begin{array}{c}
+y_{1}\\
+y_{2}
+\end{array}\right))\leq & \lambda f(\left(\begin{array}{c}
+x_{1}\\
+x_{2}
+\end{array}\right))+(1-\lambda)f(\left(\begin{array}{c}
+y_{1}\\
+y_{2}
+\end{array}\right))\\
+f(\left(\begin{array}{c}
+\lambda x_{1}+(1-\lambda)y_{1}\\
+\lambda x_{2}+(1-\lambda)y_{2}
+\end{array}\right)\leq & \lambda f(\left(\begin{array}{c}
+x_{1}\\
+x_{2}
+\end{array}\right))+(1-\lambda)f(\left(\begin{array}{c}
+y_{1}\\
+y_{2}
+\end{array}\right))\\
+max\left\{ \begin{array}{c}
+\lambda x_{1}+(1-\lambda)y_{1}\\
+\lambda x_{2}+(1-\lambda)y_{2}
+\end{array}\right\} \leq & \lambda max\left\{ \begin{array}{c}
+x_{1}\\
+x_{2}
+\end{array}\right\} +(1-\lambda)max\left\{ \begin{array}{c}
+y_{1}\\
+y_{2}
+\end{array}\right\} 
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+This inequality is always true since the right hand side will always produce
+ the maximum values from the vectors x and y and take a weighted sum of
+ them.
+ The lefthand side equal to the right hand side when the maxs are both the
+ first or both the second element of the vector; it will be less than the
+ right hand side when the maxs are mismatched (consider the case when 
+\begin_inset Formula $x_{1}>x_{2}$
+\end_inset
+
+ and
+\begin_inset Formula $y_{2}>y_{1}$
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Enumerate
@@ -485,6 +717,160 @@ Since the sum of non-negative values is non-negative,
  is convex.
 \end_layout
 
+\begin_layout Enumerate
+If f and g are both convex and non-negative on a set, then 
+\begin_inset Formula $f^{\prime\prime}\geq0$
+\end_inset
+
+ and 
+\begin_inset Formula $g^{\prime\prime}\geq0$
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+(fg)^{\prime}= & fg^{\prime}+f^{\prime}g\\
+(fg)^{\prime\prime}= & fg^{\prime\prime}+f^{\prime}g^{\prime}+f^{\prime}g^{\prime}+f^{\prime\prime}g\\
+= & fg^{\prime\prime}+2f^{\prime}g^{\prime}+f^{\prime\prime}g
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $fg^{\prime\prime}$
+\end_inset
+
+ and 
+\begin_inset Formula $f^{\prime\prime}g$
+\end_inset
+
+ are both non-negative due to convexity and non-negativity on the set.
+ Because the two functions have their minimum on the set at the same point,
+ then their derivatives must have the same sign, so 
+\begin_inset Formula $f^{\prime}g^{\prime}$
+\end_inset
+
+ is also positive.
+\end_layout
+
 \end_deeper
+\begin_layout Enumerate
+Given: 
+\begin_inset Formula 
+\[
+H(p)=H(p_{1},p_{2},...,p_{K})=-\sum_{i=1}^{K}p_{i}log(p_{i})
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Since 
+\begin_inset Formula $p$
+\end_inset
+
+ is a vector of probabilities, we can specify our constraint function as:
+\begin_inset Formula 
+\[
+g(p)=g(p_{1,}p_{2},...,p_{K})=\sum_{i=1}^{K}p_{i}=1
+\]
+
+\end_inset
+
+Let 
+\begin_inset Formula $L(p)=H(p)+\lambda(g(p)-c)$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+L(p)= & -\sum_{i=1}^{K}p_{i}log(p_{i})+\lambda(\sum_{i=1}^{K}p_{i}-1)
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+If we take the partial derivative with respect to each 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial L}{\partial p_{i}}= & p_{i}\frac{1}{p_{i}}+log(p_{i})+\lambda & =0\\
+= & 1+log(p_{i})+\lambda & =0\\
+\frac{\partial L}{\partial\lambda}= & \sum_{i=1}^{K}p_{i}-1 & =0
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+If we solve for 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+, we find that they must all have the same value:
+\begin_inset Formula 
+\begin{align*}
+1+log(p_{i})+\lambda= & 0\\
+p_{i}= & e^{-1-\lambda}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Substituting this into the second equation:
+\begin_inset Formula 
+\begin{align*}
+\sum_{i=1}^{K}p_{i}-1= & 0\\
+K\cdot p_{i}= & 1\\
+p_{i}= & \frac{1}{K}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+The resulting value is the maximum.
+ Entropy is always non-negative so 0 is the minimum value.
+ With any non-negative 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ value, each 
+\begin_inset Formula $p_{i}log(p_{i})$
+\end_inset
+
+ will be negative since 
+\begin_inset Formula $p_{i}\leq1$
+\end_inset
+
+.
+ Thus we find that the categorical distribution with the highest entropy
+ is one in which each category has the same (uniform) probability.
+ 
+\end_layout
+
 \end_body
 \end_document
