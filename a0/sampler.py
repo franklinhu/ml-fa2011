@@ -49,7 +49,7 @@ class MultiVariateNormal(ProbabilityModel):
                             for elem in L[j][:self.D-1]]))
                 else:
                     L[i][j] = (A[i][j] - sum([L[i][k]*L[j][k] \
-                            for k in xrange(1, j-1))) / L[j][j]
+                            for k in xrange(1, j-1)])) / L[j][j]
         return L
 
     def sample(self):
@@ -89,5 +89,9 @@ class MixtureModel(ProbabilityModel):
     # atomic probabilities vector ap (numpy.array of size k) and by the tuple of 
     # probability models pm
     def __init__(self,ap,pm):
-        self.ap = ap
         self.pm = pm
+        self.categorical = Categorical(ap)
+
+    def sample(self):
+        i = self.categorical.sample()
+        return self.pm[i].sample()
