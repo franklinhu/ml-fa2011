@@ -158,10 +158,27 @@ Top P and S stations
 
 \end_deeper
 \begin_layout Enumerate
-The time residual at (0,0) with the training set is -0.453959 with variance
- 0.106609.
+Time residuals at (0,0) with k=6 for top stations 
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+Station 1069, P: 0.486271 with variance 0.227381
+\end_layout
+
+\begin_layout Itemize
+Station 908, P: -0.453959 with variance 0.106609
+\end_layout
+
+\begin_layout Itemize
+Station 1069, S: -4.201359 with variance 10.532116
+\end_layout
+
+\begin_layout Itemize
+Station 908, S: -4.100434 with variance 7.158598
+\end_layout
+
+\end_deeper
 \end_deeper
 \end_body
 \end_document

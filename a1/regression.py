@@ -38,13 +38,10 @@ def klocalLinearRegression(station, phase, x, data, k):
     sorted_list = sorted(filtered_data, cmp=lambda x,y: cmp(x[0], y[0]))
 
     for elem in sorted_list[0:k]:
-        print elem
         regression_list.append((elem[1], elem[2]))
         time_list.append(elem[2])
-    print regression_list
     slope,intercept,r_value,p_value,stderr = scipy.stats.linregress(regression_list)
 
-    print dist(station_loc, x)
     return (slope * dist(station_loc, x) + intercept, scipy.var(time_list))
                 
 def localLinearRegressionForP1(x, data):
@@ -100,8 +97,14 @@ def printTopStations(data):
         print station, s_events[station]
 
 if __name__ == "__main__":
-    data = csv.reader(open('trainingData.csv'))
+    handle = csv.reader(open('trainingData.csv'))
+    data = []
+    for row in handle:
+        data.append(row)
     #printTopStations(data)
 
-    print klocalLinearRegression('908', 'P', (0, 0), data, 6)
+    print "1069, P", klocalLinearRegression('1069', 'P', (0, 0), data, 6)
+    print "908, P", klocalLinearRegression('908', 'P', (0, 0), data, 6)
+    print "1069, S", klocalLinearRegression('1069', 'S', (0, 0), data, 6)
+    print "908, S", klocalLinearRegression('908', 'S', (0, 0), data, 6)
 
