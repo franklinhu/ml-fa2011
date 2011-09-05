@@ -157,6 +157,11 @@ Top P and S stations
 \end_layout
 
 \end_deeper
+\begin_layout Enumerate
+The time residual at (0,0) with the training set is -0.453959 with variance
+ 0.106609.
+\end_layout
+
 \end_deeper
 \end_body
 \end_document
