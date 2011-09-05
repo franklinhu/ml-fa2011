@@ -57,4 +57,27 @@ def localWeightedRegression(station, phase, x, data):
 # print A.T                                    # Transpose of A.
 # print A.I                                    # Inverse of A.
 
+def add_event(event_dict, station_id):
+  if station_id in event_dict:
+      event_dict[station_id] += 1
+  else:
+      event_dict[station_id] = 1
 
+def printTopStations(data):
+    p_events = {}
+    s_events = {}
+    for event in data:
+        if event[9] == 'P':
+            add_event(p_events, event[5])
+        elif event[9] == 'S':
+            add_event(s_events, event[5])
+
+    for station in sorted(p_events, key=p_events.get, reverse=True):
+        print station, p_events[station]
+    print ""
+    for station in sorted(s_events, key=s_events.get, reverse=True):
+        print station, s_events[station]
+
+if __name__ == "__main__":
+    data = csv.reader(open('trainingData.csv'))
+    printTopStations(data)
