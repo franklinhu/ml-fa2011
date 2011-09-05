@@ -1,0 +1,162 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Franklin Hu
+\end_layout
+
+\begin_layout Standard
+SID: 20157715
+\end_layout
+
+\begin_layout Standard
+CS 194-10
+\end_layout
+
+\begin_layout Standard
+2011-09-09
+\end_layout
+
+\begin_layout Standard
+Assignment 1
+\end_layout
+
+\begin_layout Enumerate
+Uncertainty of predictions made by linear regression
+\begin_inset Formula 
+\begin{align*}
+Var(\hat{w})= & E[(\hat{w}-E[\hat{w}])(\hat{w}-E[\hat{w}])^{T}]\\
+= & E[(\hat{w}-w)(\hat{w}-w)^{T}]\\
+= & E[((X^{T}X)^{-1}X^{T}Y-w)((X^{T}X)^{-1}X^{T}Y-w)^{T}]\\
+= & E[((X^{T}X)^{-1}X^{T}Y)^{2}-(X^{T}X)^{-1}X^{T}Yw-w(X^{T}X)^{-1}X^{T}Y+w^{2}]\\
+=
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Weighted regression
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+If we let 
+\begin_inset Formula $G_{i}=\sqrt{F_{i}}$
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\sum_{i=1}^{N}F_{i}(y_{i}-w^{T}x_{i})^{2}= & \sum_{i=1}^{N}G_{i}^{2}(y_{i}-w^{T}x_{i})^{2}\\
+= & \sum_{i=1}^{N}(G_{i}y_{i}-G_{i}w^{T}x_{i})^{2}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Predicting travel times for seismic waves
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Top P and S stations
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $P_{1}$
+\end_inset
+
+ is station 1069 with 4239 events
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $P_{2}$
+\end_inset
+
+ is station 908 with 3996 events
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $S_{1}$
+\end_inset
+
+ is station 1069 with 486 events
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $S_{2}$
+\end_inset
+
+ is station 908 with 444 events
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_body
+\end_document
