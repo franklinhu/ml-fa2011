@@ -45,23 +45,78 @@ def klocalLinearRegression(station, phase, x, data, k):
     return (slope * dist(station_loc, x) + intercept, scipy.var(time_list))
                 
 def localLinearRegressionForP1(x, data):
-   pass
+    station = '1069'
+    return klocalLinearRegression(station, 'P', x, data, k)
 
 def localLinearRegressionForP2(x, data):
-   pass
+    station = '908'
+    return klocalLinearRegression(station, 'P', x, data, k)
 
 def localLinearRegressionForS1(x, data):
-   pass
+    station = '1069'
+    return klocalLinearRegression(station, 'S', x, data, k)
 
 def localLinearRegressionForS2(x, data):
-   pass
-
+    station = '908'
+    return klocalLinearRegression(station, 'S', x, data, k)
 
 ## Estimate the residual time using locally weighted
 ## regression with Gaussian or Laplacian kernel
 ## Outputs estimate(float)
 def localWeightedRegression(station, phase, x, data):
    pass
+
+def filterData(station, phase, data):
+    filtered_data = []
+    for d in data:
+        if (station == d[5]) and (phase == d[9]):
+            filtered_data.append(d)
+    return filtered_data
+
+def crossValidation(data, factor):
+    buckets = [[] for x in xrange(factor)]
+    for d in data:
+        r = random.random_integers(0, factor-1)
+        buckets[r].append(d)
+    return buckets
+    
+def pickCrossValidationBucket(bucketed_data, bucket_num):
+    concat = []
+    for b in bucketed_data[0:bucket_num]:
+        concat += b
+    for b in bucketed_data[bucket_num+1:]:
+        concat += b
+    return concat, bucketed_data[bucket_num]
+
+def findBestKForLinearRegression(station, phase, data):
+    factor = 10
+    filtered_data = filterData(station, phase, data)
+    bucketed_data = crossValidation(filtered_data, factor)
+    ks = range(factor)
+    random.shuffle(ks)
+    print [len(b) for b in bucketed_data]
+    min_error = float('inf')
+    best_k = 0
+    for i in xrange(factor):
+        training,testing = pickCrossValidationBucket(bucketed_data, i)
+        k = ks[i]
+        print "Got training/testing sets"
+
+        results = []
+        for test in testing:
+            loc = (float(test[1]), float(test[2]))
+            estimate,variance = klocalLinearRegression(station, phase, loc, training, k)
+            actual = float(test[10])
+            results.append((estimate, actual))
+
+        error = sum([(estimate-actual)**2 for estimate,actual in results])
+        print "Error:", error
+        if error < min_error:
+            min_error = error
+            best_k = k
+    return best_k
+
+
 
 ## An example to read data and count the number of P-phase detections
 ## and do matrix operations
@@ -103,8 +158,10 @@ if __name__ == "__main__":
         data.append(row)
     #printTopStations(data)
 
-    print "1069, P", klocalLinearRegression('1069', 'P', (0, 0), data, 6)
-    print "908, P", klocalLinearRegression('908', 'P', (0, 0), data, 6)
-    print "1069, S", klocalLinearRegression('1069', 'S', (0, 0), data, 6)
-    print "908, S", klocalLinearRegression('908', 'S', (0, 0), data, 6)
+    #print "1069, P", klocalLinearRegression('1069', 'P', (0, 0), data, 6)
+    #print "908, P", klocalLinearRegression('908', 'P', (0, 0), data, 6)
+    #print "1069, S", klocalLinearRegression('1069', 'S', (0, 0), data, 6)
+    #print "908, S", klocalLinearRegression('908', 'S', (0, 0), data, 6)
 
+    k = findBestKForLinearRegression('1069', 'P', data)
+    print k
