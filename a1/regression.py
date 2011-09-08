@@ -37,12 +37,25 @@ def klocalLinearRegression(station, phase, x, data, k):
     time_list = []
     sorted_list = sorted(filtered_data, cmp=lambda x,y: cmp(x[0], y[0]))
 
+    X = []
+    Y = []
     for elem in sorted_list[0:k]:
+        X.append((1, elem[1]))
+        Y.append(elem[2])
         regression_list.append((elem[1], elem[2]))
         time_list.append(elem[2])
-    slope,intercept,r_value,p_value,stderr = scipy.stats.linregress(regression_list)
 
-    return (slope * dist(station_loc, x) + intercept, scipy.var(time_list))
+    w_hat = getWHat(X, Y)
+    w_hat_transpose = transpose(w_hat)
+
+    estimate = dot(w_hat_transpose, (1, dist(x, station_loc)))
+    variance = -1
+
+    return estimate, variance
+
+def getWHat(X, Y):
+    X_transpose = transpose(X)
+    return dot(dot(linalg.inv(dot(X_transpose, X)), X_transpose), Y)
                 
 def localLinearRegressionForP1(x, data):
     station = '1069'
