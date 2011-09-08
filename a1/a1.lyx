@@ -130,7 +130,7 @@ Var(\hat{w}) & =\mathbb{E}[(\hat{w}-\mathbb{E}[\hat{w}])(\hat{w}-\mathbb{E}[\hat
  & =\mathbb{E}[(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}Y((X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}Y)^{\mathrm{T}}]-ww^{\mathrm{T}}\\
  & =\mathbb{E}[(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}YY^{\mathrm{T}}X(X^{\mathrm{T}}X)^{-1}]-ww^{\mathrm{T}}\\
  & =\mathbb{E}[(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}(Xw+\epsilon)(Xw+\epsilon)^{\mathrm{T}}X(X^{\mathrm{T}}X)^{-1}]-ww^{\mathrm{T}}\\
- & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}+Xw\epsilon+\epsilon w^{\mathrm{T}}+\epsilon\epsilon^{\mathrm{T}}]X(X^{\mathrm{T}}X)^{-1}-ww^{\mathrm{T}}\\
+ & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}+Xw\epsilon+\epsilon w^{\mathrm{T}X^\mathrm{T}}+\epsilon\epsilon^{\mathrm{T}}]X(X^{\mathrm{T}}X)^{-1}-ww^{\mathrm{T}}\\
  & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}(\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}]+Xw\mathbb{E}[\epsilon]+\mathbb{E}[\epsilon]w^{\mathrm{T}}X^{\mathrm{T}}+\mathbb{E}[\epsilon\epsilon^{\mathrm{T}}])X(X^{\mathrm{T}}X)-ww^{\mathrm{T}}\\
  & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}(\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}]+0+0+\sigma^{2})X(X^{\mathrm{T}}X)-ww^{\mathrm{T}}\\
  & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}Xww^{\mathrm{T}}X^{\mathrm{T}}X(X^{\mathrm{T}}X)^{-1}+(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}\sigma^{2}X(X^{\mathrm{T}}X)^{-1}-ww^{\mathrm{T}}\\
@@ -158,7 +158,10 @@ Weighted regression
  Then, we can reorganize 
 \begin_inset Formula 
 \begin{align*}
-F_{i}(y_{i}\mathbf{w^{T}x_{i}})^{2} & =G_{i}^{2}(y_{i}-\mathbf{w^{T}x_{i}})^{2} & =G_{i}^{2}y_{i}^{2}-2G_{i}^{2}y_{i}\mathbf{w^{T}x_{i}}+G_{i}^{2}x_{i}^{2} & =(G_{i}y_{i}-G_{i}\mathbf{w^{T}x_{i}})^{2}
+F_{i}(y_{i}-\mathbf{w^{T}x_{i}})^{2} \\
+&=G_{i}^{2}(y_{i}-\mathbf{w^{T}x_{i}})^{2} \\
+&=G_{i}^{2}y_{i}^{2}-2G_{i}^{2}y_{i}\mathbf{w^{T}x_{i}}+G_{i}^{2}x_{i}^{2} \\
+&=(G_{i}y_{i}-G_{i}\mathbf{w^{T}x_{i}})^{2}
 \end{align*}
 
 \end_inset
@@ -218,7 +221,7 @@ G_{N}y_{N}
 \begin_inset Formula 
 \[
 \mathbf{X'}=\left(\begin{array}{cccc}
-G_{1}\mathbf{x_{1}} & G_{2}\mathbf{x_{2}} & \hdots G_{N}\mathbf{x_{N}}\end{array}\right)
+G_{1}\mathbf{x_{1}} & G_{2}\mathbf{x_{2}} & \hdots G_{N} & \mathbf{x_{N}}\end{array}\right)
 \]
 
 \end_inset
