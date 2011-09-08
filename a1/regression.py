@@ -24,34 +24,39 @@ def dist(loc1, loc2):
 ## Outputs estimate(float) and varestimate(float) using the return command, e.g.
 ## return estimate, varestimate
 def klocalLinearRegression(station, phase, x, data, k):
-    filtered_data = []
+    filtered_data = filterData(station, phase, data)
+    return klocalLinearRegressionFilteredData(station, phase, x, filtered_data, k)
+
+# Invariant: elements in data all are from station _station_ and 
+#            phase _phase_
+def klocalLinearRegressionFilteredData(station, phase, x, data, k):
+    projected_data = []
     max_dist = 0
     station_loc = None
     for d in data:
-        if (station == d[5]) and (phase == d[9]):
-            if station_loc == None:
-                station_loc = (float(d[6]), float(d[7]))
-            loc = (float(d[1]), float(d[2]))
-            filtered_data.append((dist(loc, x), dist(loc, station_loc), float(d[10])))
-    regression_list = []
-    time_list = []
-    sorted_list = sorted(filtered_data, cmp=lambda x,y: cmp(x[0], y[0]))
+        if station_loc == None:
+            station_loc = (float(d[6]), float(d[7]))
+        loc = (float(d[1]), float(d[2]))
+        projected_data.append((dist(loc, x), dist(loc, station_loc), float(d[10])))
+    sorted_list = sorted(projected_data, cmp=lambda a,b: cmp(a[0], b[0]))
 
     X = []
     Y = []
     for elem in sorted_list[0:k]:
         X.append((1, elem[1]))
         Y.append(elem[2])
-        regression_list.append((elem[1], elem[2]))
-        time_list.append(elem[2])
 
-    w_hat = getWHat(X, Y)
-    w_hat_transpose = transpose(w_hat)
+    try:
+        w_hat = getWHat(X, Y)
+        w_hat_transpose = transpose(w_hat)
 
-    estimate = dot(w_hat_transpose, (1, dist(x, station_loc)))
-    variance = -1
+        estimate = dot(w_hat_transpose, (1, dist(x, station_loc)))
+        variance = -1
 
-    return estimate, variance
+        return estimate, variance
+    except numpy.linalg.linalg.LinAlgError as e:
+        print X, Y
+        return 0, 0
 
 def getWHat(X, Y):
     X_transpose = transpose(X)
@@ -80,13 +85,15 @@ def localWeightedRegression(station, phase, x, data):
    pass
 
 def filterData(station, phase, data):
+    print "++ Filtering for station %s with phase %s" % (station, phase)
     filtered_data = []
     for d in data:
         if (station == d[5]) and (phase == d[9]):
             filtered_data.append(d)
     return filtered_data
 
-def crossValidation(data, factor):
+def bucketForCrossValidation(data, factor):
+    print "++ Bucketing into %d buckets" % factor
     buckets = [[] for x in xrange(factor)]
     for d in data:
         r = random.random_integers(0, factor-1)
@@ -102,28 +109,28 @@ def pickCrossValidationBucket(bucketed_data, bucket_num):
     return concat, bucketed_data[bucket_num]
 
 def findBestKForLinearRegression(station, phase, data):
+    print "+ Finding best k for station %s with phase %s" % (station, phase)
     factor = 10
     filtered_data = filterData(station, phase, data)
-    bucketed_data = crossValidation(filtered_data, factor)
+    bucketed_data = bucketForCrossValidation(filtered_data, factor)
     ks = range(factor)
     random.shuffle(ks)
-    print [len(b) for b in bucketed_data]
     min_error = float('inf')
     best_k = 0
     for i in xrange(factor):
         training,testing = pickCrossValidationBucket(bucketed_data, i)
         k = ks[i]
-        print "Got training/testing sets"
 
+        print "++ Test: k=%d on %d samples" % (i, len(testing))
         results = []
         for test in testing:
             loc = (float(test[1]), float(test[2]))
-            estimate,variance = klocalLinearRegression(station, phase, loc, training, k)
+            estimate,variance = klocalLinearRegressionFilteredData(station, phase, loc, training, k)
             actual = float(test[10])
             results.append((estimate, actual))
 
         error = sum([(estimate-actual)**2 for estimate,actual in results])
-        print "Error:", error
+        print "Error for k=%d: %f" % (i, error)
         if error < min_error:
             min_error = error
             best_k = k
@@ -171,10 +178,10 @@ if __name__ == "__main__":
         data.append(row)
     #printTopStations(data)
 
-    #print "1069, P", klocalLinearRegression('1069', 'P', (0, 0), data, 6)
-    #print "908, P", klocalLinearRegression('908', 'P', (0, 0), data, 6)
-    #print "1069, S", klocalLinearRegression('1069', 'S', (0, 0), data, 6)
-    #print "908, S", klocalLinearRegression('908', 'S', (0, 0), data, 6)
+    print "1069, P, %s" % str(klocalLinearRegression('1069', 'P', (0, 0), data, 6))
+    print "908, P, %s" % str(klocalLinearRegression('908', 'P', (0, 0), data, 6))
+    print "1069, S, %s" % str(klocalLinearRegression('1069', 'S', (0, 0), data, 6))
+    print "908, S, %s" % str(klocalLinearRegression('908', 'S', (0, 0), data, 6))
 
     k = findBestKForLinearRegression('1069', 'P', data)
     print k
