@@ -5,7 +5,7 @@ import numpy as np
 import csv
 import scipy.stats
 
-LAMBDA = 0.01
+LAMBDA = 0.1
 
 ## Calculates the great circle distance between two point on the earth's
 ## surface in degrees. loc1 and loc2 are pairs of longitude and latitude. E.g.
@@ -61,8 +61,7 @@ def klocalLinearRegressionFilteredData(station, phase, x, data, k):
 
 def getWHat(X, Y):
     X_transpose = transpose(X)
-    lambda_matrix = empty((len(X[0]), len(X[0])))
-    lambda_matrix.fill(LAMBDA)
+    lambda_matrix = LAMBDA * eye(len(X[0]))
     return dot(dot(linalg.inv(dot(X_transpose, X) + lambda_matrix), 
                    X_transpose), 
                Y)
@@ -188,5 +187,10 @@ if __name__ == "__main__":
     print "1069, S, %s" % str(klocalLinearRegression('1069', 'S', (0, 0), data, 6))
     print "908, S, %s" % str(klocalLinearRegression('908', 'S', (0, 0), data, 6))
 
-    k = findBestKForLinearRegression('1069', 'P', data)
-    print k
+    print "Best k values:"
+    print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
+    print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
+    print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
+    print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
+
+
