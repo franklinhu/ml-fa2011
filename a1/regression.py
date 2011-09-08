@@ -5,6 +5,8 @@ import numpy as np
 import csv
 import scipy.stats
 
+LAMBDA = 0.01
+
 ## Calculates the great circle distance between two point on the earth's
 ## surface in degrees. loc1 and loc2 are pairs of longitude and latitude. E.g.
 ## int(dist_deg((10,0), (20, 0))) gives 10
@@ -38,6 +40,7 @@ def klocalLinearRegressionFilteredData(station, phase, x, data, k):
             station_loc = (float(d[6]), float(d[7]))
         loc = (float(d[1]), float(d[2]))
         projected_data.append((dist(loc, x), dist(loc, station_loc), float(d[10])))
+
     sorted_list = sorted(projected_data, cmp=lambda a,b: cmp(a[0], b[0]))
 
     X = []
@@ -46,21 +49,23 @@ def klocalLinearRegressionFilteredData(station, phase, x, data, k):
         X.append((1, elem[1]))
         Y.append(elem[2])
 
-    try:
-        w_hat = getWHat(X, Y)
-        w_hat_transpose = transpose(w_hat)
+    if len(X) == 0:
+        print k, sorted_list
+    w_hat = getWHat(X, Y)
+    w_hat_transpose = transpose(w_hat)
 
-        estimate = dot(w_hat_transpose, (1, dist(x, station_loc)))
-        variance = -1
+    estimate = dot(w_hat_transpose, (1, dist(x, station_loc)))
+    variance = -1
 
-        return estimate, variance
-    except numpy.linalg.linalg.LinAlgError as e:
-        print X, Y
-        return 0, 0
+    return estimate, variance
 
 def getWHat(X, Y):
     X_transpose = transpose(X)
-    return dot(dot(linalg.inv(dot(X_transpose, X)), X_transpose), Y)
+    lambda_matrix = empty((len(X[0]), len(X[0])))
+    lambda_matrix.fill(LAMBDA)
+    return dot(dot(linalg.inv(dot(X_transpose, X) + lambda_matrix), 
+                   X_transpose), 
+               Y)
                 
 def localLinearRegressionForP1(x, data):
     station = '1069'
@@ -113,7 +118,7 @@ def findBestKForLinearRegression(station, phase, data):
     factor = 10
     filtered_data = filterData(station, phase, data)
     bucketed_data = bucketForCrossValidation(filtered_data, factor)
-    ks = range(factor)
+    ks = range(1, factor+1)
     random.shuffle(ks)
     min_error = float('inf')
     best_k = 0
@@ -121,7 +126,7 @@ def findBestKForLinearRegression(station, phase, data):
         training,testing = pickCrossValidationBucket(bucketed_data, i)
         k = ks[i]
 
-        print "++ Test: k=%d on %d samples" % (i, len(testing))
+        print "++ Test: k=%d on %d samples" % (k, len(testing))
         results = []
         for test in testing:
             loc = (float(test[1]), float(test[2]))
@@ -130,7 +135,7 @@ def findBestKForLinearRegression(station, phase, data):
             results.append((estimate, actual))
 
         error = sum([(estimate-actual)**2 for estimate,actual in results])
-        print "Error for k=%d: %f" % (i, error)
+        print "++ Error for k=%d: %f" % (k, error)
         if error < min_error:
             min_error = error
             best_k = k
