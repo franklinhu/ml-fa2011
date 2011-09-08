@@ -25,9 +25,10 @@
 \bibtex_command default
 \index_command default
 \paperfontsize default
+\spacing single
 \use_hyperref false
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_amsmath 1
 \use_esint 1
 \use_mhchem 1
@@ -42,6 +43,10 @@
 \shortcut idx
 \color #008000
 \end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 0.5in
+\bottommargin 0.5in
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -60,13 +65,11 @@
 \begin_body
 
 \begin_layout Standard
-Franklin Hu
-Sunil Pedapudi
+Franklin Hu, Sunil Pedapudi
 \end_layout
 
 \begin_layout Standard
-SID: 20157715
-SID: 20247144
+SID: 20157715, SID: 20247144
 \end_layout
 
 \begin_layout Standard
@@ -83,36 +86,61 @@ Assignment 1
 
 \begin_layout Enumerate
 Uncertainty of predictions made by linear regression
+\end_layout
+
+\begin_layout Standard
 We first note the following:
+\end_layout
 
+\begin_layout Standard
 Given 
-\begin{equation*} 
-Var(X) = \mathbb{E}[(X - \mathbb{E}[X])(X-\mathbb{E}[X])^\mathrm{T}], 
-\end{equation*} 
-for \(X = \epsilon \),
-\begin{equation*}
-Var(\epsilon) = \mathbb{E}[(\epsilon - \mathbb{E}[\epsilon])(\epsilon - \mathbb{E}[\epsilon])^\mathrm{T}] \\
-= \mathbb{E}[(\epsilon - 0)(\epsilon - 0)^\mathrm{T}] \\
-= \mathbb{E}[\epsilon\epsilon^\mathrm{T}]
-\end{equation*}
+\begin_inset Formula 
+\[
+Var(X)=\mathbb{E}[(X-\mathbb{E}[X])(X-\mathbb{E}[X])^{\mathrm{T}}],
+\]
 
-Then,
+\end_inset
+
+ for 
+\begin_inset Formula \ensuremath{X=\epsilon}
+
+\end_inset
+
+, 
+\begin_inset Formula 
+\[
+Var(\epsilon)=\mathbb{E}[(\epsilon-\mathbb{E}[\epsilon])(\epsilon-\mathbb{E}[\epsilon])^{\mathrm{T}}]=\mathbb{E}[(\epsilon-0)(\epsilon-0)^{\mathrm{T}}]=\mathbb{E}[\epsilon\epsilon^{\mathrm{T}}]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then, 
+\begin_inset Formula 
 \begin{align*}
-Var(\hat{w})&=\mathbb{E}[(\hat{w}-\mathbb{E}[\hat{w}])(\hat{w}-\mathbb{E}[\hat{w}])^\mathrm{T}] \\
-&=\mathbb{E}[(\hat{w}-\mathbb{E}[\hat{w}])(\hat{w}^\mathrm{T}-\mathbb{E}[\hat{w}]^\mathrm{T})] \\
-&=\mathbb{E}[\hat{w}\hat{w}^\mathrm{T}-\hat{w}\mathbb{E}[\hat{w}]^\mathrm{T}-\mathbb{E}[\hat{w}]\hat{w}^\mathrm{T}+\mathbb{E}[\hat{w}]\mathbb{E}[\hat{w}]^\mathrm{T}] \\
-&=\mathbb{E}[\hat{w}\hat{w}^\mathrm{T}-\hat{w}w^\mathrm{T}-w\hat{w}^\mathrm{T}+w\hat{w}^\mathrm{T}] \\
-&=\mathbb{E}[\hat{w}\hat{w}^\mathrm{T}]-\mathbb{E}[\hat{w}]w^\mathrm{T}-w\mathbb{E}[\hat{w}^\mathrm{T}]+ww^\mathrm{T} \\
-&=\mathbb{E}[\hat{w}\hat{w}^\mathrm{T}]-w\hat{w}^\mathrm{T}-w\hat{w}^\mathrm{T}+ww^\mathrm{T} \\
-&=\mathbb{E}[(X^\mathrm{T}X)^{-1}X^\mathrm{T}Y((X^\mathrm{T}X)^{-1}X^\mathrm{T}Y)^\mathrm{T}]-ww^\mathrm{T} \\
-&=\mathbb{E}[(X^\mathrm{T}X)^{-1}X^\mathrm{T}YY^\mathrm{T}X(X^\mathrm{T}X)^{-1}]-ww^\mathrm{T} \\
-&=\mathbb{E}[(X^\mathrm{T}X)^{-1}X^\mathrm{T}(Xw+\epsilon)(Xw+\epsilon)^\mathrm{T}X(X^\mathrm{T}X)^{-1}]-ww^\mathrm{T} \\
-&=(X^\mathrm{T}X)^{-1}X^\mathrm{T}\mathbb{E}[Xww^\mathrm{T}X^\mathrm{T}+Xw\epsilon+\epsilon w^\mathrm{T}+\epsilon\epsilon^\mathrm{T}]X(X^\mathrm{T}X)^{-1}-ww^\mathrm{T} \\
-&=(X^\mathrm{T}X)^{-1}X^\mathrm{T}(\mathbb{E}[Xww^\mathrm{T}X^\mathrm{T}]+Xw\mathbb{E}[\epsilon]+\mathbb{E}[\epsilon]w^\mathrm{T}X^\mathrm{T}+\mathbb{E}[\epsilon\epsilon^\mathrm{T}])X(X^\mathrm{T}X)-ww^\mathrm{T} \\
-&=(X^\mathrm{T}X)^{-1}X^\mathrm{T}(\mathbb{E}[Xww^\mathrm{T}X^\mathrm{T}]+0+0+\sigma^2)X(X^\mathrm{T}X)-ww^\mathrm{T} \\
-&=(X^\mathrm{T}X)^{-1}X^\mathrm{T}Xww^\mathrm{T}X^\mathrm{T}X(X^\mathrm{T}X)^{-1}+(X^\mathrm{T}X)^{-1}X^\mathrm{T}\sigma^2X(X^\mathrm{T}X)^{-1}-ww^\mathrm{T} \\
-&=ww^\mathrm{T}+(X^\mathrm{T}X)^{-1}X^\mathrm{T}X(X^\mathrm{T}X)^{-1}\sigma^2-ww^\mathrm{T} \\
-&=(X^\mathrm{T}X)^{-1}\sigma^2
+Var(\hat{w}) & =\mathbb{E}[(\hat{w}-\mathbb{E}[\hat{w}])(\hat{w}-\mathbb{E}[\hat{w}])^{\mathrm{T}}]\\
+ & =\mathbb{E}[(\hat{w}-\mathbb{E}[\hat{w}])(\hat{w}^{\mathrm{T}}-\mathbb{E}[\hat{w}]^{\mathrm{T}})]\\
+ & =\mathbb{E}[\hat{w}\hat{w}^{\mathrm{T}}-\hat{w}\mathbb{E}[\hat{w}]^{\mathrm{T}}-\mathbb{E}[\hat{w}]\hat{w}^{\mathrm{T}}+\mathbb{E}[\hat{w}]\mathbb{E}[\hat{w}]^{\mathrm{T}}]\\
+ & =\mathbb{E}[\hat{w}\hat{w}^{\mathrm{T}}-\hat{w}w^{\mathrm{T}}-w\hat{w}^{\mathrm{T}}+w\hat{w}^{\mathrm{T}}]\\
+ & =\mathbb{E}[\hat{w}\hat{w}^{\mathrm{T}}]-\mathbb{E}[\hat{w}]w^{\mathrm{T}}-w\mathbb{E}[\hat{w}^{\mathrm{T}}]+ww^{\mathrm{T}}\\
+ & =\mathbb{E}[\hat{w}\hat{w}^{\mathrm{T}}]-w\hat{w}^{\mathrm{T}}-w\hat{w}^{\mathrm{T}}+ww^{\mathrm{T}}\\
+ & =\mathbb{E}[(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}Y((X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}Y)^{\mathrm{T}}]-ww^{\mathrm{T}}\\
+ & =\mathbb{E}[(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}YY^{\mathrm{T}}X(X^{\mathrm{T}}X)^{-1}]-ww^{\mathrm{T}}\\
+ & =\mathbb{E}[(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}(Xw+\epsilon)(Xw+\epsilon)^{\mathrm{T}}X(X^{\mathrm{T}}X)^{-1}]-ww^{\mathrm{T}}\\
+ & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}+Xw\epsilon+\epsilon w^{\mathrm{T}}+\epsilon\epsilon^{\mathrm{T}}]X(X^{\mathrm{T}}X)^{-1}-ww^{\mathrm{T}}\\
+ & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}(\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}]+Xw\mathbb{E}[\epsilon]+\mathbb{E}[\epsilon]w^{\mathrm{T}}X^{\mathrm{T}}+\mathbb{E}[\epsilon\epsilon^{\mathrm{T}}])X(X^{\mathrm{T}}X)-ww^{\mathrm{T}}\\
+ & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}(\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}]+0+0+\sigma^{2})X(X^{\mathrm{T}}X)-ww^{\mathrm{T}}\\
+ & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}Xww^{\mathrm{T}}X^{\mathrm{T}}X(X^{\mathrm{T}}X)^{-1}+(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}\sigma^{2}X(X^{\mathrm{T}}X)^{-1}-ww^{\mathrm{T}}\\
+ & =ww^{\mathrm{T}}+(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}X(X^{\mathrm{T}}X)^{-1}\sigma^{2}-ww^{\mathrm{T}}\\
+ & =(X^{\mathrm{T}}X)^{-1}\sigma^{2}
+\end{align*}
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Enumerate
@@ -121,35 +149,123 @@ Weighted regression
 
 \begin_deeper
 \begin_layout Enumerate
-(a) Let \(G_i = \sqrt{F_i}\). Then, we can reorganize 
+(a) Let 
+\begin_inset Formula \ensuremath{G_{i}=\sqrt{F_{i}}}
+
+\end_inset
+
+.
+ Then, we can reorganize 
+\begin_inset Formula 
 \begin{align*}
-  F_i(y_i\mathbf{w^Tx_i})^2 &= G^2_i(y_i - \mathbf{w^Tx_i})^2
-  &= G^2_iy^2_i - 2G^2_iy_i\mathbf{w^Tx_i}+G^2_ix^2_i
-  &= (G_iy_i - G_i\mathbf{w^Tx_i})^2
-\end{align*} \\ \\
-(b) Let us first express \(G_i\) as a matrix \(\mathbf{G}\). Given 
-\begin{equation*}
-  \mathbf{g} = \left( \begin{array}{c}
-    G_1 \\ G_2 \\ \vdots \\ G_N
-  \end{array} \right)
-\end{equation*}
-we can express \(\mathbf{G} = \mathbf{g^TI}\). Then, we realize that
-\begin{equation*}
-  \mathbf{Y'} = \left( \begin{array}{c}
-    G_1y_1 \\ G_2y_2 \\ \vdots \\ G_Ny_N 
-  \end{array} \right)
-\end{equation*}
-\begin{equation*}
-  \mathbf{X'} = \left( \begin{array}{cccc}
-    G_1\mathbf{x_1} & G_2\mathbf{x_2} & \hdots G_N\mathbf{x_N}
-  \end{array} \right)
-\end{equation*}
-which is simply \(\mathbf{X'} = \mathbf{GX}\) and \(\mathbf{Y'} = \mathbf{GY}\). \\ \\
-(c) Since we have obtained a data matrix \(\mathbf{X'}\) and a label matrix \(\mathbf{Y'}\), we can substitute to find \(\hat{w}\):
-\begin{align*}
-  \hat{w} = (\mathbf{X'^TX'})^{-1}\mathbf{X^TY}
-  & = ((\mathbf{GX})^T\mathbf{X})^{-1}(\mathbf{GX})^T\mathbf{GY}
+F_{i}(y_{i}\mathbf{w^{T}x_{i}})^{2} & =G_{i}^{2}(y_{i}-\mathbf{w^{T}x_{i}})^{2} & =G_{i}^{2}y_{i}^{2}-2G_{i}^{2}y_{i}\mathbf{w^{T}x_{i}}+G_{i}^{2}x_{i}^{2} & =(G_{i}y_{i}-G_{i}\mathbf{w^{T}x_{i}})^{2}
 \end{align*}
+
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ (b) Let us first express 
+\begin_inset Formula \ensuremath{G_{i}}
+
+\end_inset
+
+ as a matrix 
+\begin_inset Formula \ensuremath{\mathbf{G}}
+
+\end_inset
+
+.
+ Given 
+\begin_inset Formula 
+\[
+\mathbf{g}=\left(\begin{array}{c}
+G_{1}\\
+G_{2}\\
+\vdots\\
+G_{N}
+\end{array}\right)
+\]
+
+\end_inset
+
+ we can express 
+\begin_inset Formula \ensuremath{\mathbf{G}=\mathbf{g^{T}I}}
+
+\end_inset
+
+.
+ Then, we realize that 
+\begin_inset Formula 
+\[
+\mathbf{Y'}=\left(\begin{array}{c}
+G_{1}y_{1}\\
+G_{2}y_{2}\\
+\vdots\\
+G_{N}y_{N}
+\end{array}\right)
+\]
+
+\end_inset
+
+ 
+\begin_inset Formula 
+\[
+\mathbf{X'}=\left(\begin{array}{cccc}
+G_{1}\mathbf{x_{1}} & G_{2}\mathbf{x_{2}} & \hdots G_{N}\mathbf{x_{N}}\end{array}\right)
+\]
+
+\end_inset
+
+ which is simply 
+\begin_inset Formula \ensuremath{\mathbf{X'}=\mathbf{GX}}
+
+\end_inset
+
+ and 
+\begin_inset Formula \ensuremath{\mathbf{Y'}=\mathbf{GY}}
+
+\end_inset
+
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ (c) Since we have obtained a data matrix 
+\begin_inset Formula \ensuremath{\mathbf{X'}}
+
+\end_inset
+
+ and a label matrix 
+\begin_inset Formula \ensuremath{\mathbf{Y'}}
+
+\end_inset
+
+, we can substitute to find 
+\begin_inset Formula \ensuremath{\hat{w}}
+
+\end_inset
+
+: 
+\begin_inset Formula 
+\begin{align*}
+\hat{w}=(\mathbf{X'^{T}X'})^{-1}\mathbf{X^{T}Y} & =((\mathbf{GX})^{T}\mathbf{X})^{-1}(\mathbf{GX})^{T}\mathbf{GY}
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \end_deeper
