@@ -62,7 +62,8 @@ def klocalLinearRegressionFilteredData(station, phase, x, data, k):
     w_hat_transpose = transpose(w_hat)
 
     estimate = dot(w_hat_transpose, (1, x[0], x[1]))
-    variance = -1
+    data_variance = var(Y)
+    variance = getVariance(X, data_variance, (1, x[0], x[1]))
 
     return estimate, variance
 
@@ -73,6 +74,11 @@ def getWHat(X, Y, useLambda):
         lambda_matrix = LAMBDA * eye(len(X[0]))
         tmp = tmp + lambda_matrix
     return dot(dot(linalg.inv(tmp), X_transpose), Y)
+
+def getVariance(X, data_variance, x_new):
+   return data_variance * dot(dot(transpose(x_new), 
+                                  linalg.inv(dot(transpose(X), X))),
+                              x_new)
                 
 def localLinearRegressionForP1(x, data):
     station = '1069'
@@ -94,7 +100,7 @@ def localLinearRegressionForS2(x, data):
 ## regression with Gaussian or Laplacian kernel
 ## Outputs estimate(float)
 def localWeightedRegression(station, phase, x, data):
-   pass
+   filtered_data = filterData(station, phase, data)
 
 def filterData(station, phase, data):
     print "++ Filtering for station %s with phase %s" % (station, phase)
@@ -145,7 +151,7 @@ def findBestKForLinearRegression(station, phase, data):
                 results.append((estimate, actual))
 
             error = sum([(estimate-actual)**2 for estimate,actual in results])
-            print error
+            #print error
             if error < 1000:
                k_tested.append(k) 
                errors.append(error) 
@@ -155,7 +161,7 @@ def findBestKForLinearRegression(station, phase, data):
 
     #sums = {}
     #min_error = float('inf')
-    #best_k = 0
+    best_k = 0
     #for e in errors:
     #    i, k, error = e
     #    if k in sums:
@@ -217,9 +223,9 @@ if __name__ == "__main__":
     print "908, S, %s" % str(klocalLinearRegression('908', 'S', (0, 0), data, 6))
 
     print "Best k values:"
-    #print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
+    print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
     #print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
     #print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
-    print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
+    #print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
 
 
