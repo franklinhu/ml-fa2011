@@ -62,8 +62,7 @@ def klocalLinearRegressionFilteredData(station, phase, x, data, k):
     w_hat_transpose = transpose(w_hat)
 
     estimate = dot(w_hat_transpose, (1, x[0], x[1]))
-    data_variance = var(Y)
-    variance = getVariance(X, data_variance, (1, x[0], x[1]))
+    variance = getVariance(X, (1, x[0], x[1]))
 
     return estimate, variance
 
@@ -75,10 +74,10 @@ def getWHat(X, Y, useLambda):
         tmp = tmp + lambda_matrix
     return dot(dot(linalg.inv(tmp), X_transpose), Y)
 
-def getVariance(X, data_variance, x_new):
-   return data_variance * dot(dot(transpose(x_new), 
-                                  linalg.inv(dot(transpose(X), X))),
-                              x_new)
+def getVariance(X, x_new):
+   return dot(dot(transpose(x_new), 
+                  linalg.inv(dot(transpose(X), X))),
+              x_new)
                 
 def localLinearRegressionForP1(x, data):
     station = '1069'
@@ -100,7 +99,7 @@ def localLinearRegressionForS2(x, data):
 ## regression with Gaussian or Laplacian kernel
 ## Outputs estimate(float)
 def localWeightedRegression(station, phase, x, data):
-   filtered_data = filterData(station, phase, data)
+    filtered_data = filterData(station, phase, data)
 
 def filterData(station, phase, data):
     print "++ Filtering for station %s with phase %s" % (station, phase)
@@ -132,7 +131,9 @@ def findBestKForLinearRegression(station, phase, data):
     filtered_data = filterData(station, phase, data)
     bucketed_data = bucketForCrossValidation(filtered_data, factor)
     ks = xrange(10, 200, 5)
-    #random.shuffle(ks)
+
+    variance_hit = 0
+    variance_total = 0
 
     k_tested = []
     errors = []
@@ -150,8 +151,12 @@ def findBestKForLinearRegression(station, phase, data):
                 actual = float(test[10])
                 results.append((estimate, actual))
 
+                variance_total += 1
+                stddev = math.sqrt(variance)
+                if abs(estimate-actual) < stddev:
+                    variance_hit += 1
+
             error = sum([(estimate-actual)**2 for estimate,actual in results])
-            #print error
             if error < 1000:
                k_tested.append(k) 
                errors.append(error) 
@@ -172,6 +177,8 @@ def findBestKForLinearRegression(station, phase, data):
     #    if sums[k] < min_error:
     #        best_k = k
     #        min_error = sums[k]
+
+    print "Variance hits: %d/%d = %f" % (variance_hit, variance_total, float(variance_hit)/variance_total)
 
     return best_k
 
