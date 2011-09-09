@@ -389,7 +389,12 @@ Station 908, S: k=58
 	scale 50
 
 \end_inset
-
+ (d) We aim to calculate if the range \(\left(\) experimental variance \(\pm\) standard deviation of variance \(right)\) encompasses the true variance \(Var(\hat{w})\). We call the scenario where \(Var(\hat{w})\) lies within said range a "hit." Then, calculating the variance hit ratios for Station 1069 and Station 908 yields the following results: \\
+ Station 1069, P \\ Variance hits: 2517/6354 = 0.396128 \\
+ Station 908, P \\ Variance hits: 1841/5994 = 0.307140 \\
+ Station 1069, S \\ Variance hits: 265/726 = 0.365014 \\
+ Station 908, S \\ Variance hits: 229/666 = 0.343844 \\
+We speculate that the ratio is less than 68% as anticipated mostly due to the inaccuracy of a poorly tuned linear regression model. This yields a greater variance in experimental error meaning experimental variance is likely to be outside the range of \(Var(\hat{w}) \pm \sigma \)
 
 \end_layout
 
