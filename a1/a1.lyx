@@ -145,7 +145,7 @@ Weighted regression
 
 \begin_deeper
 \begin_layout Enumerate
-(a) Let 
+Let 
 \begin_inset Formula \ensuremath{G_{i}=\sqrt{F_{i}}}
 
 \end_inset
@@ -154,20 +154,11 @@ Weighted regression
  Then, we can reorganize 
 \begin_inset Formula 
 \begin{align*}
-F_{i}(y_{i}-\mathbf{w^{T}x_{i}})^{2}\\
- & =G_{i}^{2}(y_{i}-\mathbf{w^{T}x_{i}})^{2}\\
+F_{i}(y_{i}-\mathbf{w^{T}x_{i}})^{2} & =G_{i}^{2}(y_{i}-\mathbf{w^{T}x_{i}})^{2}\\
  & =G_{i}^{2}y_{i}^{2}-2G_{i}^{2}y_{i}\mathbf{w^{T}x_{i}}+G_{i}^{2}x_{i}^{2}\\
  & =(G_{i}y_{i}-G_{i}\mathbf{w^{T}x_{i}})^{2}
 \end{align*}
 
-\end_inset
-
- 
-\begin_inset Newline newline
-\end_inset
-
- 
-\begin_inset Newline newline
 \end_inset
 
  (b) Let us first express 
@@ -313,19 +304,19 @@ Time residuals at (0,0) with k=6 for top stations
 
 \begin_deeper
 \begin_layout Itemize
-Station 1069, P: 0.486271
+Station 1069, P: -0.17753345136616999
 \end_layout
 
 \begin_layout Itemize
-Station 908, P: -0.453959
+Station 908, P: -1.5740069952010929
 \end_layout
 
 \begin_layout Itemize
-Station 1069, S: -4.201359
+Station 1069, S: 2.1081519933440749
 \end_layout
 
 \begin_layout Itemize
-Station 908, S: -4.100434
+Station 908, S: -30.214221599799373
 \end_layout
 
 \end_deeper
