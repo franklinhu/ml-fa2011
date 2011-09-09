@@ -32,33 +32,44 @@ def klocalLinearRegression(station, phase, x, data, k):
 
 # Invariant: elements in data all are from station _station_ and 
 #            phase _phase_
-def klocalLinearRegressionFilteredData(station, phase, x, data, k):
+def klocalLinearRegressionFilteredData(station, phase, x, data, k, weight_function=None):
     projected_data = []
     max_dist = 0
     station_loc = None
+
     for d in data:
         if station_loc == None:
             station_loc = (float(d[6]), float(d[7]))
         loc = (float(d[1]), float(d[2]))
-        projected_data.append((dist(loc, x), loc, float(d[10])))
+        if not weight_function == None:
+            weight = math.sqrt(weight_function(0.1, loc, x))
+        else:
+            weight = 0
+        projected_data.append((dist(loc, x), loc, float(d[10]), weight))
 
     sorted_list = sorted(projected_data, cmp=lambda a,b: cmp(a[0], b[0]))
 
     X = []
     Y = []
+    weight_vector = []
     for elem in sorted_list[0:k]:
         X.append((1, elem[1][0], elem[1][1]))
         Y.append(elem[2])
+        if not weight_function == None:
+            weight_vector.append(elem[3])
 
     # Special case k=1 since we'll only have one sample
     #if k == 1:
     #    X.append((1, 0, 0))
     #    Y.append(0)
 
+    if weight_function == None:
+        weight_vector = None
+
     try:
-        w_hat = getWHat(X, Y, False)
+        w_hat = getWHat(X, Y, False, weight_vector)
     except linalg.LinAlgError as e:
-        w_hat = getWHat(X, Y, True)
+        w_hat = getWHat(X, Y, True, weight_vector)
     w_hat_transpose = transpose(w_hat)
 
     estimate = dot(w_hat_transpose, (1, x[0], x[1]))
@@ -66,13 +77,18 @@ def klocalLinearRegressionFilteredData(station, phase, x, data, k):
 
     return estimate, variance
 
-def getWHat(X, Y, useLambda):
-    X_transpose = transpose(X)
+def getWHat(X, Y, useLambda, weights=None):
+    if not weights == None:
+        X_transpose = transpose(dot(weights * eye(len(weights)), X))
+        Y = dot(weights, Y)
+    else:
+        X_transpose = transpose(X)
     tmp = dot(X_transpose, X)
     if useLambda:
         lambda_matrix = LAMBDA * eye(len(X[0]))
         tmp = tmp + lambda_matrix
-    return dot(dot(linalg.inv(tmp), X_transpose), Y)
+    return dot(dot(linalg.inv(tmp), X_transpose),
+               Y)
 
 def getTrainingVariance(w_hat_transpose, data):
     errors = []
@@ -168,6 +184,7 @@ def findBestKForLinearRegression(station, phase, data):
 
     k_tested = []
     errors = []
+    weighted_errors = []
     for i in xrange(factor):
         training,testing = pickCrossValidationBucket(bucketed_data, i)
         #k = ks[i]
@@ -176,11 +193,15 @@ def findBestKForLinearRegression(station, phase, data):
         for k in ks:
             print "++ Test: k=%d" % k
             results = []
+            #weighted_results = []
             for test in testing:
                 loc = (float(test[1]), float(test[2]))
                 estimate,variance = klocalLinearRegressionFilteredData(station, phase, loc, training, k)
                 actual = float(test[10])
                 results.append((estimate, actual))
+
+                #weighted_est, weighted_var = klocalLinearRegressionFilteredData(station, phase, loc, training, k, localWeightFunction2)
+                #weighted_results.append((weighted_est, actual))
 
                 variance_total += 1
                 stddev = math.sqrt(variance)
@@ -188,7 +209,8 @@ def findBestKForLinearRegression(station, phase, data):
                     variance_hit += 1
 
             error = sum([(estimate-actual)**2 for estimate,actual in results])
-            print error
+            #weighted_error = sum([(estimate-actual)**2 for estimate, actual in weighted_results])
+            print error #, weighted_error
             if error < 1000:
                 k_tested.append(k) 
                 errors.append(error) 
@@ -261,8 +283,8 @@ if __name__ == "__main__":
 
     print "Best k values:"
     #print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
-    print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
+    #print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
     #print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
-    #print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
+    print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
 
 
