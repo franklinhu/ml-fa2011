@@ -62,7 +62,7 @@ def klocalLinearRegressionFilteredData(station, phase, x, data, k):
     w_hat_transpose = transpose(w_hat)
 
     estimate = dot(w_hat_transpose, (1, x[0], x[1]))
-    variance = getVariance(X, (1, x[0], x[1]))
+    variance = getTrainingVariance(w_hat_transpose, data)
 
     return estimate, variance
 
@@ -74,6 +74,15 @@ def getWHat(X, Y, useLambda):
         tmp = tmp + lambda_matrix
     return dot(dot(linalg.inv(tmp), X_transpose), Y)
 
+def getTrainingVariance(w_hat_transpose, data):
+    errors = []
+    for d in data:
+        estimate = dot(w_hat_transpose, (1, float(d[1]), float(d[2])))
+        actual = float(d[10])
+        error = abs(estimate - actual)
+        errors.append(error)
+    return var(errors)
+
 def getVariance(X, x_new):
    return dot(dot(transpose(x_new), 
                   linalg.inv(dot(transpose(X), X))),
@@ -81,19 +90,22 @@ def getVariance(X, x_new):
                 
 def localLinearRegressionForP1(x, data):
     station = '1069'
-    return klocalLinearRegression(station, 'P', x, data, k)
+    k = 12
+    return klocalLinearRegression(station, 'P', x, data, k)[0]
 
 def localLinearRegressionForP2(x, data):
     station = '908'
-    return klocalLinearRegression(station, 'P', x, data, k)
+    k = 15
+    return klocalLinearRegression(station, 'P', x, data, k)[0]
 
 def localLinearRegressionForS1(x, data):
     station = '1069'
-    return klocalLinearRegression(station, 'S', x, data, k)
+    k = 8
+    return klocalLinearRegression(station, 'S', x, data, k)[0]
 
 def localLinearRegressionForS2(x, data):
     station = '908'
-    return klocalLinearRegression(station, 'S', x, data, k)
+    return klocalLinearRegression(station, 'S', x, data, k)[0]
 
 ## Estimate the residual time using locally weighted
 ## regression with Gaussian or Laplacian kernel
@@ -130,7 +142,7 @@ def findBestKForLinearRegression(station, phase, data):
     factor = 10
     filtered_data = filterData(station, phase, data)
     bucketed_data = bucketForCrossValidation(filtered_data, factor)
-    ks = xrange(10, 200, 5)
+    ks = xrange(2, 30, 1)
 
     variance_hit = 0
     variance_total = 0
@@ -157,9 +169,10 @@ def findBestKForLinearRegression(station, phase, data):
                     variance_hit += 1
 
             error = sum([(estimate-actual)**2 for estimate,actual in results])
+            print error
             if error < 1000:
-               k_tested.append(k) 
-               errors.append(error) 
+                k_tested.append(k) 
+                errors.append(error) 
 
     plt.plot(k_tested, errors,'x')
     plt.show()
@@ -230,8 +243,8 @@ if __name__ == "__main__":
     print "908, S, %s" % str(klocalLinearRegression('908', 'S', (0, 0), data, 6))
 
     print "Best k values:"
-    print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
-    #print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
+    #print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
+    print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
     #print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
     #print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
 
