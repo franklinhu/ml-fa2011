@@ -90,28 +90,47 @@ def getVariance(X, x_new):
                 
 def localLinearRegressionForP1(x, data):
     station = '1069'
+    phase = 'P'
     k = 12
-    return klocalLinearRegression(station, 'P', x, data, k)[0]
+    filtered_data = filterData(station, phase, data)
+    return klocalLinearRegressionFilteredData(station, phase, x, filtered_data, k)[0]
 
 def localLinearRegressionForP2(x, data):
     station = '908'
+    phase = 'P'
     k = 15
-    return klocalLinearRegression(station, 'P', x, data, k)[0]
+    filtered_data = filterData(station, phase, data)
+    return klocalLinearRegressionFilteredData(station, phase, x, filtered_data, k)[0]
 
 def localLinearRegressionForS1(x, data):
     station = '1069'
+    phase = 'S'
     k = 8
-    return klocalLinearRegression(station, 'S', x, data, k)[0]
+    filtered_data = filterData(station, phase, data)
+    return klocalLinearRegressionFilteredData(station, phase, x, filtered_data, k)[0]
 
 def localLinearRegressionForS2(x, data):
     station = '908'
-    return klocalLinearRegression(station, 'S', x, data, k)[0]
+    phase = 'S'
+    k = 58
+    filtered_data = filterData(station, phase, data)
+    return klocalLinearRegressionFilteredData(station, phase, x, filtered_data, k)[0]
 
 ## Estimate the residual time using locally weighted
 ## regression with Gaussian or Laplacian kernel
 ## Outputs estimate(float)
 def localWeightedRegression(station, phase, x, data):
     filtered_data = filterData(station, phase, data)
+
+
+def localWeightFunction1(b, x1, x2):
+    return b/dist(x1, x2)
+
+def localWeightFunction2(b, x1, x2):
+    return e ** (-dist(x1, x2)/b)
+
+def localWeightFunction3(b, x1, x2):
+    return e ** (-dist(x1, x2) ** 2 / b ** 2)
 
 def filterData(station, phase, data):
     print "++ Filtering for station %s with phase %s" % (station, phase)
@@ -193,9 +212,7 @@ def findBestKForLinearRegression(station, phase, data):
 
     print "Variance hits: %d/%d = %f" % (variance_hit, variance_total, float(variance_hit)/variance_total)
 
-    return best_k
-
-
+    return 0
 
 ## An example to read data and count the number of P-phase detections
 ## and do matrix operations
