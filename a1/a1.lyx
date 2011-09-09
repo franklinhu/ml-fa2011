@@ -45,8 +45,8 @@
 \end_index
 \leftmargin 1in
 \topmargin 1in
-\rightmargin 0.5in
-\bottommargin 0.5in
+\rightmargin 1in
+\bottommargin 1in
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -327,18 +327,70 @@ Best k values
 \begin_deeper
 \begin_layout Itemize
 Station 1069, P: k=12
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 1069p-high-granularity.png
+	scale 50
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 Station 908, P: k=15
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 908p-high-granularity.png
+	scale 50
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 Station 1069, S: k=8
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 1069s-high-granularity.png
+	scale 50
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 Station 908, S: k=58
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 908s-high-granularity.png
+	scale 50
+
+\end_inset
+
+
 \end_layout
 
 \end_deeper
