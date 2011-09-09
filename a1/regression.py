@@ -62,7 +62,7 @@ def klocalLinearRegressionFilteredData(station, phase, x, data, k):
     w_hat_transpose = transpose(w_hat)
 
     estimate = dot(w_hat_transpose, (1, x[0], x[1]))
-    variance = getTrainingVariance(w_hat_transpose, data)
+    variance = getTrainingVariance(w_hat_transpose, data) #, getVariance(X, (1, x[0], x[1]))
 
     return estimate, variance
 
@@ -143,9 +143,10 @@ def filterData(station, phase, data):
 def bucketForCrossValidation(data, factor):
     print "++ Bucketing into %d buckets" % factor
     buckets = [[] for x in xrange(factor)]
-    for d in data:
-        r = random.random_integers(0, factor-1)
-        buckets[r].append(d)
+    for i in xrange(len(data)/4):
+       d = data[i]
+       r = random.random_integers(0, factor-1)
+       buckets[r].append(d)
     return buckets
     
 def pickCrossValidationBucket(bucketed_data, bucket_num):
@@ -161,7 +162,7 @@ def findBestKForLinearRegression(station, phase, data):
     factor = 10
     filtered_data = filterData(station, phase, data)
     bucketed_data = bucketForCrossValidation(filtered_data, factor)
-    ks = xrange(2, 30, 1)
+    ks = xrange(12, 18, 1)
 
     variance_hit = 0
     variance_total = 0
@@ -176,17 +177,20 @@ def findBestKForLinearRegression(station, phase, data):
         for k in ks:
             print "++ Test: k=%d" % k
             results = []
+            #all_variances = []
             for test in testing:
                 loc = (float(test[1]), float(test[2]))
                 estimate,variance = klocalLinearRegressionFilteredData(station, phase, loc, training, k)
                 actual = float(test[10])
                 results.append((estimate, actual))
+            #   all_variances.append(variance)
 
-                variance_total += 1
-                stddev = math.sqrt(variance)
-                if abs(estimate-actual) < stddev:
-                    variance_hit += 1
-
+            #mean_var = sum(all_variances[0])/len(all_variances)
+            #var_of_variances = sum([(var - mean_var)**2 for var in all_variances[0]])/len(all_variances)
+            #stddev_of_variances = sqrt(var_of_variances)
+            #for v in all_variances:
+            #   if abs(v[0] - v[1]) <= stddev_of_variances:
+            #      variance_hit += 1
             error = sum([(estimate-actual)**2 for estimate,actual in results])
             print error
             if error < 1000:
@@ -262,7 +266,7 @@ if __name__ == "__main__":
     print "Best k values:"
     #print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
     print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
-    #print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
-    #print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
+    print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
+    print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
 
 
