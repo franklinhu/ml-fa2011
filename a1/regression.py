@@ -4,6 +4,7 @@ from numpy import linalg
 import numpy as np
 import csv
 import scipy.stats
+import matplotlib.pyplot as plt
 
 LAMBDA = 0.001
 
@@ -39,25 +40,28 @@ def klocalLinearRegressionFilteredData(station, phase, x, data, k):
         if station_loc == None:
             station_loc = (float(d[6]), float(d[7]))
         loc = (float(d[1]), float(d[2]))
-        projected_data.append((dist(loc, x), dist(loc, station_loc), float(d[10])))
+        projected_data.append((dist(loc, x), loc, float(d[10])))
 
     sorted_list = sorted(projected_data, cmp=lambda a,b: cmp(a[0], b[0]))
 
     X = []
     Y = []
     for elem in sorted_list[0:k]:
-        X.append((1, elem[1]))
+        X.append((1, elem[1][0], elem[1][1]))
         Y.append(elem[2])
 
     # Special case k=1 since we'll only have one sample
-    if k == 1:
-        X.append((1, 0))
-        Y.append(0)
+    #if k == 1:
+    #    X.append((1, 0, 0))
+    #    Y.append(0)
 
-    w_hat = getWHat(X, Y, False)
+    try:
+        w_hat = getWHat(X, Y, False)
+    except linalg.LinAlgError as e:
+        w_hat = getWHat(X, Y, True)
     w_hat_transpose = transpose(w_hat)
 
-    estimate = dot(w_hat_transpose, (1, dist(x, station_loc)))
+    estimate = dot(w_hat_transpose, (1, x[0], x[1]))
     variance = -1
 
     return estimate, variance
@@ -121,27 +125,47 @@ def findBestKForLinearRegression(station, phase, data):
     factor = 10
     filtered_data = filterData(station, phase, data)
     bucketed_data = bucketForCrossValidation(filtered_data, factor)
-    ks = range(1, factor+1)
-    random.shuffle(ks)
-    min_error = float('inf')
-    best_k = 0
+    ks = xrange(10, 100, 10)
+    #random.shuffle(ks)
+
+    k_tested = []
+    errors = []
     for i in xrange(factor):
         training,testing = pickCrossValidationBucket(bucketed_data, i)
-        k = ks[i]
+        #k = ks[i]
 
-        print "++ Test: k=%d on %d samples" % (k, len(testing))
-        results = []
-        for test in testing:
-            loc = (float(test[1]), float(test[2]))
-            estimate,variance = klocalLinearRegressionFilteredData(station, phase, loc, training, k)
-            actual = float(test[10])
-            results.append((estimate, actual))
+        print "++ Testing fold %d with %d samples" % (i, len(testing))
+        for k in ks:
+            print "++ Test: k=%d" % k
+            results = []
+            for test in testing:
+                loc = (float(test[1]), float(test[2]))
+                estimate,variance = klocalLinearRegressionFilteredData(station, phase, loc, training, k)
+                actual = float(test[10])
+                results.append((estimate, actual))
 
-        error = sum([(estimate-actual)**2 for estimate,actual in results])
-        print "++ Error for k=%d: %f" % (k, error)
-        if error < min_error:
-            min_error = error
-            best_k = k
+            error = sum([(estimate-actual)**2 for estimate,actual in results])
+            print error
+            k_tested.append(k)
+            errors.append(error)
+
+    plt.plot(k_tested, errors,'x')
+    plt.show()
+
+    #sums = {}
+    #min_error = float('inf')
+    #best_k = 0
+    #for e in errors:
+    #    i, k, error = e
+    #    if k in sums:
+    #        sums[k] += error
+    #    else:
+    #       # sums[k] = error
+
+    #    if sums[k] < min_error:
+    #        best_k = k
+    #        min_error = sums[k]
+
     return best_k
 
 
@@ -192,9 +216,9 @@ if __name__ == "__main__":
     print "908, S, %s" % str(klocalLinearRegression('908', 'S', (0, 0), data, 6))
 
     print "Best k values:"
-    print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
-    print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
-    print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
+    #print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
+    #print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
+    #print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
     print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
 
 
