@@ -125,7 +125,7 @@ def findBestKForLinearRegression(station, phase, data):
     factor = 10
     filtered_data = filterData(station, phase, data)
     bucketed_data = bucketForCrossValidation(filtered_data, factor)
-    ks = xrange(10, 100, 10)
+    ks = xrange(10, 200, 5)
     #random.shuffle(ks)
 
     k_tested = []
@@ -146,8 +146,9 @@ def findBestKForLinearRegression(station, phase, data):
 
             error = sum([(estimate-actual)**2 for estimate,actual in results])
             print error
-            k_tested.append(k)
-            errors.append(error)
+            if error < 1000:
+               k_tested.append(k) 
+               errors.append(error) 
 
     plt.plot(k_tested, errors,'x')
     plt.show()
