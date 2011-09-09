@@ -320,6 +320,28 @@ Station 908, S: -30.214221599799373
 \end_layout
 
 \end_deeper
+\begin_layout Enumerate
+Best k values
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Station 1069, P: k=12
+\end_layout
+
+\begin_layout Itemize
+Station 908, P: k=15
+\end_layout
+
+\begin_layout Itemize
+Station 1069, S: k=8
+\end_layout
+
+\begin_layout Itemize
+Station 908, S: k=58
+\end_layout
+
+\end_deeper
 \end_deeper
 \end_body
 \end_document
