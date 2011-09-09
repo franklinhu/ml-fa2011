@@ -86,13 +86,13 @@ Assignment 1
 
 \begin_layout Enumerate
 Uncertainty of predictions made by linear regression
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Standard
 We first note the following:
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Standard
 Given 
 \begin_inset Formula 
 \[
@@ -114,10 +114,6 @@ Var(\epsilon)=\mathbb{E}[(\epsilon-\mathbb{E}[\epsilon])(\epsilon-\mathbb{E}[\ep
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Then, 
 \begin_inset Formula 
 \begin{align*}
@@ -130,7 +126,7 @@ Var(\hat{w}) & =\mathbb{E}[(\hat{w}-\mathbb{E}[\hat{w}])(\hat{w}-\mathbb{E}[\hat
  & =\mathbb{E}[(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}Y((X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}Y)^{\mathrm{T}}]-ww^{\mathrm{T}}\\
  & =\mathbb{E}[(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}YY^{\mathrm{T}}X(X^{\mathrm{T}}X)^{-1}]-ww^{\mathrm{T}}\\
  & =\mathbb{E}[(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}(Xw+\epsilon)(Xw+\epsilon)^{\mathrm{T}}X(X^{\mathrm{T}}X)^{-1}]-ww^{\mathrm{T}}\\
- & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}+Xw\epsilon+\epsilon w^{\mathrm{T}X^\mathrm{T}}+\epsilon\epsilon^{\mathrm{T}}]X(X^{\mathrm{T}}X)^{-1}-ww^{\mathrm{T}}\\
+ & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}+Xw\epsilon+\epsilon w^{\mathrm{T}X^{\mathrm{T}}}+\epsilon\epsilon^{\mathrm{T}}]X(X^{\mathrm{T}}X)^{-1}-ww^{\mathrm{T}}\\
  & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}(\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}]+Xw\mathbb{E}[\epsilon]+\mathbb{E}[\epsilon]w^{\mathrm{T}}X^{\mathrm{T}}+\mathbb{E}[\epsilon\epsilon^{\mathrm{T}}])X(X^{\mathrm{T}}X)-ww^{\mathrm{T}}\\
  & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}(\mathbb{E}[Xww^{\mathrm{T}}X^{\mathrm{T}}]+0+0+\sigma^{2})X(X^{\mathrm{T}}X)-ww^{\mathrm{T}}\\
  & =(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}Xww^{\mathrm{T}}X^{\mathrm{T}}X(X^{\mathrm{T}}X)^{-1}+(X^{\mathrm{T}}X)^{-1}X^{\mathrm{T}}\sigma^{2}X(X^{\mathrm{T}}X)^{-1}-ww^{\mathrm{T}}\\
@@ -158,10 +154,10 @@ Weighted regression
  Then, we can reorganize 
 \begin_inset Formula 
 \begin{align*}
-F_{i}(y_{i}-\mathbf{w^{T}x_{i}})^{2} \\
-&=G_{i}^{2}(y_{i}-\mathbf{w^{T}x_{i}})^{2} \\
-&=G_{i}^{2}y_{i}^{2}-2G_{i}^{2}y_{i}\mathbf{w^{T}x_{i}}+G_{i}^{2}x_{i}^{2} \\
-&=(G_{i}y_{i}-G_{i}\mathbf{w^{T}x_{i}})^{2}
+F_{i}(y_{i}-\mathbf{w^{T}x_{i}})^{2}\\
+ & =G_{i}^{2}(y_{i}-\mathbf{w^{T}x_{i}})^{2}\\
+ & =G_{i}^{2}y_{i}^{2}-2G_{i}^{2}y_{i}\mathbf{w^{T}x_{i}}+G_{i}^{2}x_{i}^{2}\\
+ & =(G_{i}y_{i}-G_{i}\mathbf{w^{T}x_{i}})^{2}
 \end{align*}
 
 \end_inset
@@ -317,19 +313,19 @@ Time residuals at (0,0) with k=6 for top stations
 
 \begin_deeper
 \begin_layout Itemize
-Station 1069, P: 0.486271 with variance 0.227381
+Station 1069, P: 0.486271
 \end_layout
 
 \begin_layout Itemize
-Station 908, P: -0.453959 with variance 0.106609
+Station 908, P: -0.453959
 \end_layout
 
 \begin_layout Itemize
-Station 1069, S: -4.201359 with variance 10.532116
+Station 1069, S: -4.201359
 \end_layout
 
 \begin_layout Itemize
-Station 908, S: -4.100434 with variance 7.158598
+Station 908, S: -4.100434
 \end_layout
 
 \end_deeper
