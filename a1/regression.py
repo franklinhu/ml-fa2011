@@ -159,8 +159,7 @@ def filterData(station, phase, data):
 def bucketForCrossValidation(data, factor):
     print "++ Bucketing into %d buckets" % factor
     buckets = [[] for x in xrange(factor)]
-    for i in xrange(len(data)/4):
-       d = data[i]
+    for d in data:
        r = random.random_integers(0, factor-1)
        buckets[r].append(d)
     return buckets
@@ -290,7 +289,7 @@ if __name__ == "__main__":
     print "Best k values:"
     #print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
     #print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
-    #print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
-    #print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
+    print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
+    print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
 
 
