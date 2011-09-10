@@ -291,6 +291,6 @@ if __name__ == "__main__":
     #print "1069 P: k=%d" % findBestKForLinearRegression('1069', 'P', data)
     #print "908  P: k=%d" % findBestKForLinearRegression('908', 'P', data)
     #print "1069 S: k=%d" % findBestKForLinearRegression('1069', 'S', data)
-    print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
+    #print "908  S: k=%d" % findBestKForLinearRegression('908', 'S', data)
 
 

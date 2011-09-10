@@ -389,7 +389,14 @@ Station 908, S: k=58
 	scale 50
 
 \end_inset
- (d) We aim to calculate if the range \(\left(\) experimental variance \(\pm\) standard deviation of variance \(right)\) encompasses the true variance \(Var(\hat{w})\). We call the scenario where \(Var(\hat{w})\) lies within said range a "hit." Then, calculating the variance hit ratios for Station 1069 and Station 908 yields the following results: \\
+ (d) \\
+ Calculated variances:
+Station 1069, P: 0.36189316227862506
+Station 908, P: 3.1508421171913805
+Station 1069, S: 34.603213666560798
+Station 908, S: 270.9101228221956
+
+ We aim to calculate if the range \(\left(\) experimental variance \(\pm\) standard deviation of variance \(right)\) encompasses the true variance \(Var(\hat{w})\). We call the scenario where \(Var(\hat{w})\) lies within said range a "hit." Then, calculating the variance hit ratios for Station 1069 and Station 908 yields the following results: \\
  Station 1069, P \\ Variance hits: 2517/6354 = 0.396128 \\
  Station 908, P \\ Variance hits: 1841/5994 = 0.307140 \\
  Station 1069, S \\ Variance hits: 265/726 = 0.365014 \\
