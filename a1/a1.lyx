@@ -389,20 +389,59 @@ Station 908, S: k=58
 	scale 50
 
 \end_inset
- (d) \\
- Calculated variances:
-Station 1069, P: 0.36189316227862506
-Station 908, P: 3.1508421171913805
-Station 1069, S: 34.603213666560798
-Station 908, S: 270.9101228221956
 
- We aim to calculate if the range \(\left(\) experimental variance \(\pm\) standard deviation of variance \(right)\) encompasses the true variance \(Var(\hat{w})\). We call the scenario where \(Var(\hat{w})\) lies within said range a "hit." Then, calculating the variance hit ratios for Station 1069 and Station 908 yields the following results: \\
- Station 1069, P \\ Variance hits: 2517/6354 = 0.396128 \\
- Station 908, P \\ Variance hits: 1841/5994 = 0.307140 \\
- Station 1069, S \\ Variance hits: 265/726 = 0.365014 \\
- Station 908, S \\ Variance hits: 229/666 = 0.343844 \\
-We speculate that the ratio is less than 68% as anticipated mostly due to the inaccuracy of a poorly tuned linear regression model. This yields a greater variance in experimental error meaning experimental variance is likely to be outside the range of \(Var(\hat{w}) \pm \sigma \)
 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Calculated variances:
+\begin_inset Newline newline
+\end_inset
+
+We aim to calculate if the range [experimental variance 
+\begin_inset Formula $\ensuremath{\pm}$
+\end_inset
+
+ standard deviation of variance] encompasses the true variance 
+\begin_inset Formula $\ensuremath{Var(\hat{w})}$
+\end_inset
+
+.
+ We call the scenario where 
+\begin_inset Formula $\ensuremath{Var(\hat{w})}$
+\end_inset
+
+ lies within said range a "hit." Then, calculating the variance hit ratios
+ for Station 1069 and Station 908 yields the following results:
+\begin_inset Newline newline
+\end_inset
+
+We speculate that the ratio is less than 68% as anticipated mostly due to
+ the inaccuracy of a poorly tuned linear regression model.
+ This yields a greater variance in experimental error meaning experimental
+ variance is likely to be outside the range of 
+\begin_inset Formula $Var(\hat{w})\pm\sigma$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Station 1069, P Variance hits: 2517/6354 = 0.396128
+\end_layout
+
+\begin_layout Itemize
+Station 908, P Variance hits: 1841/5994 = 0.307140
+\end_layout
+
+\begin_layout Itemize
+Station 1069, S Variance hits: 265/726 = 0.365014
+\end_layout
+
+\begin_layout Itemize
+Station 908, S Variance hits: 229/666 = 0.343844
 \end_layout
 
 \end_deeper
