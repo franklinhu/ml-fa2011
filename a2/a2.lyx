@@ -235,5 +235,99 @@ The answer for (c) is not always true.
 \end_layout
 
 \end_deeper
+\begin_layout Enumerate
+3 point dataset
+\end_layout
+
+\begin_layout Enumerate
+Seismic waves
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+phase
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Lg,1594,0.0178114489401
+\end_layout
+
+\begin_layout Itemize
+P,61779,0.690322148101
+\end_layout
+
+\begin_layout Itemize
+PKP,5974,0.0667538243215
+\end_layout
+
+\begin_layout Itemize
+Pg,403,0.00450314549741
+\end_layout
+
+\begin_layout Itemize
+Pn,10762,0.120255215492
+\end_layout
+
+\begin_layout Itemize
+Rg,11,0.000122914641369
+\end_layout
+
+\begin_layout Itemize
+S,4685,0.0523504631647
+\end_layout
+
+\begin_layout Itemize
+Sn,4285,0.0478808398422
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+iphase
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Lg,2171,0.0242588805828
+\end_layout
+
+\begin_layout Itemize
+N,10683,0.119372464886
+\end_layout
+
+\begin_layout Itemize
+P,50815,0.567809772831
+\end_layout
+
+\begin_layout Itemize
+Pg,5291,0.0591219424983
+\end_layout
+
+\begin_layout Itemize
+Pn,12610,0.140904875242
+\end_layout
+
+\begin_layout Itemize
+Px,365,0.00407853128178
+\end_layout
+
+\begin_layout Itemize
+Rg,444,0.00496128188797
+\end_layout
+
+\begin_layout Itemize
+Sn,318,0.00355335054138
+\end_layout
+
+\begin_layout Itemize
+Sx,4179,0.0466963896618
+\end_layout
+
+\begin_layout Itemize
+tx,2617,0.0292425105874 
+\end_layout
+
+\end_deeper
+\end_deeper
 \end_body
 \end_document
