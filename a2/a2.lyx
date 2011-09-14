@@ -85,8 +85,56 @@ Assignment 2
 \end_layout
 
 \begin_layout Enumerate
+Kernels
+\end_layout
+
+\begin_layout Enumerate
+Logistic Regression
+\begin_inset Newline newline
+\end_inset
+
+Given:
+\begin_inset Formula 
+\begin{align*}
+L(w)= & -\sum_{i=1}^{N}log(\frac{1}{1+e^{y_{i}(w^{T}x_{i}+b)}})+\lambda\Vert w\Vert_{2}^{2}
+\end{align*}
+
+\end_inset
+
 
 \end_layout
 
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial L}{\partial w_{j}}= & -\sum_{i=1}^{N}(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot-1\cdot(1+e^{y_{i}(w^{T}x_{i}+b)})^{-2}(e^{y_{i}(w^{T}x_{i}+b)})\cdot x_{j}y_{j}+\frac{\partial}{\partial w_{j}}(\lambda\Vert w\Vert_{2}^{2})\\
+= & -\sum_{i=1}^{N}\frac{-e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})}\cdot x_{j}y_{j}+2\lambda w_{j}\\
+= & x_{j}y_{j}\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})}+2\lambda w_{j}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial^{2}L}{\partial w_{j}\partial w_{k}}= & \frac{\partial L}{\partial w_{k}}(x_{j}y_{j}\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})}+2\lambda w_{j})\\
+= & x_{j}y_{j}\sum_{i=1}^{N}\frac{(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})-e^{y_{i}(w^{T}x_{i}+b)}\cdot\frac{\partial L}{\partial w_{k}}(1+e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+= & x_{j}y_{j}\sum_{i=1}^{N}\frac{(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})-e^{y_{i}(w^{T}x_{i}+b)}\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+= & x_{j}y_{j}\sum_{i=1}^{N}\frac{(1+e^{y_{i}(w^{T}x_{i}+b)}-e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+= & x_{j}y_{j}\sum_{i=1}^{N}\frac{\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+= & x_{j}y_{j}\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}x_{k}y_{k}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+= & x_{j}x_{k}y_{j}y_{k}\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
