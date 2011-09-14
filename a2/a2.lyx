@@ -136,5 +136,70 @@ L(w)= & -\sum_{i=1}^{N}log(\frac{1}{1+e^{y_{i}(w^{T}x_{i}+b)}})+\lambda\Vert w\V
 \end_layout
 
 \end_deeper
+\begin_layout Enumerate
+Training data
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Yes the classes {+,-} are linearly separable.
+ The - class is represented by circles in the graph below.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 3a.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+The best hyperplane by inspection is:
+\begin_inset Formula 
+\begin{align*}
+x_{2}= & -x_{1}+1.5\\
+x_{1}+x_{2}-1.5= & 0\\
+\left(\begin{array}{cc}
+1 & 1\end{array}\right)\left(\begin{array}{c}
+x_{1}\\
+x_{2}
+\end{array}\right)-1.5= & 0
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+So therefore 
+\begin_inset Formula $w=\left(\begin{array}{c}
+1\\
+1
+\end{array}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $b=-1.5$
+\end_inset
+
+.
+ The support vectors are 
+\begin_inset Formula $(1,0),(0,1),(2,0),(1,1)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+If we remove a support vector, then the optimal margin will increase since
+ there are fewer constraints.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
