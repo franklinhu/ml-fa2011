@@ -328,6 +328,56 @@ tx,2617,0.0292425105874
 \end_layout
 
 \end_deeper
+\begin_layout Enumerate
+TODO
+\end_layout
+
+\begin_layout Enumerate
+Top stations
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+7: 8751 detections
+\end_layout
+
+\begin_layout Enumerate
+24: 5794 detections
+\end_layout
+
+\begin_layout Enumerate
+3: 2677 detections
+\end_layout
+
+\begin_layout Enumerate
+80: 2528 detections
+\end_layout
+
+\begin_layout Enumerate
+19: 2478 detections
+\end_layout
+
+\begin_layout Enumerate
+38: 2429 detections
+\end_layout
+
+\begin_layout Enumerate
+63: 2411 detections
+\end_layout
+
+\begin_layout Enumerate
+12: 2343 detections 
+\end_layout
+
+\begin_layout Enumerate
+74: 2265 detections
+\end_layout
+
+\begin_layout Enumerate
+65: 2227 detections
+\end_layout
+
+\end_deeper
 \end_deeper
 \end_body
 \end_document
