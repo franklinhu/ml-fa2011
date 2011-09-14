@@ -200,6 +200,40 @@ If we remove a support vector, then the optimal margin will increase since
  there are fewer constraints.
 \end_layout
 
+\begin_layout Enumerate
+The answer for (c) is not always true.
+ Consider if we have a class + with points 
+\begin_inset Formula $(0,0),(0,1),(0,2)$
+\end_inset
+
+ and a class - with points 
+\begin_inset Formula $(1,0),(1,1),(1,2)$
+\end_inset
+
+.
+ If we remove either 
+\begin_inset Formula $(0,1)$
+\end_inset
+
+ or 
+\begin_inset Formula $(1,1)$
+\end_inset
+
+, the best hyperplane does not change and thus the optimal margin remains
+ the same.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename 3d.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
 \end_deeper
 \end_body
 \end_document
