@@ -4,6 +4,8 @@
 # Assignment 2
 # confusion-matrix
 
+from collections import defaultdict
+import csv
 import sys
 
 if __name__ == "__main__":
@@ -14,6 +16,38 @@ if __name__ == "__main__":
   filename = sys.argv[1]
   X = sys.argv[2]
   Z = sys.argv[3]
+  X_index = -1
+  Z_index = -1
 
+  handle = open(filename, 'r')
+  header = handle.next()
+  header = header.rstrip("\n").split(",")
 
+  # Get the indices of the X and Z attributes
+  for i in xrange(len(header)):
+    col = header[i]
+    if col == X:
+      X_index = i
+    elif col == Z:
+      Z_index = i
+  
+  # If any of attributes are not in list, abor
+  if X_index == -1:
+    print "Invalid attribute: %s" % X
+    sys.exit(2)
+  if Z_index == -1:
+    print "Invalid attribute: %s" % Z
+    sys.exit(2)
 
+  attribute_counter = defaultdict(lambda : defaultdict(int))
+  data = csv.reader(handle)
+  for line in data:
+    if len(line) > 0:
+      x_val = line[X_index]
+      z_val = line[Z_index]
+      attribute_counter[x_val][z_val] += 1
+
+  print attribute_counter
+  keys = attribute_counter.keys()
+  for key in keys:
+    print key, sum(attribute_counter[key].values())
