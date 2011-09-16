@@ -39,7 +39,7 @@ if __name__ == "__main__":
       attribute_index = i
       break
   
-# If attribute is not in list, abort
+  # If attribute is not in list, abort
   if attribute_index == -1:
     print "Invalid attribute"
     sys.exit(2)
