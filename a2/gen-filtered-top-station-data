@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+# Franklin Hu, Sunil Pedapudi
+# CS 194-10
+# Assignment 2
+# gen-filtered-top-station-data
+
+from collections import defaultdict
+import csv
+import sys
+
+STATION_INDEX = 12
+PHASE_INDEX = 28
+TOP_STATIONS = [str(x) for x in [7, 24, 3, 80, 19, 38, 63, 12, 74, 65]]
+FEATURE_INDICES = [
+  ('ddet60', 58),
+  ('dtime60', 59), 
+  ('hmxmn', 39), 
+  ('htov0.25', 48), 
+  ('htov0.5', 49), 
+  ('htov1', 50), 
+  ('htov2', 51), 
+  ('htov4', 52), 
+  ('hvrat', 38), 
+  ('hvratp', 37), 
+  ('inang1', 44), 
+  ('inang3', 40), 
+  ('per', 8), 
+  ('plans', 35), 
+  ('rect', 34), 
+  ('arrival_slow', 4), 
+  ('ddet100', 62), 
+  ('dtime100', 63), 
+  ('ddet300', 66), 
+  ('dtime300', 67)]
+
+def transform_datum(datum):
+  features = []
+  for i in xrange(len(FEATURE_INDICES)):
+    name,idx = FEATURE_INDICES[i]
+    features.append("%d:%s" % (i+1, datum[idx]))
+
+  if datum[PHASE_INDEX].startswith('P'):
+    target = 1
+  else:
+    target = -1
+  return "%d %s" % (target, " ".join(features))
+
+def station_outfile(station):
+  filename = "station_%s.txt" % station
+  return open(filename, 'w')
+
+if __name__ == "__main__":
+  if len(sys.argv) < 2:
+    print "Usage: gen-filtered-top-station-data <data-file>"
+    sys.exit(1)
+
+  filename = sys.argv[1]
+
+  data = csv.reader(open(filename, 'r'))
+  buffers = defaultdict(list)
+  for datum in data:
+    if not datum:
+      continue
+    station = datum[STATION_INDEX]
+    if station in TOP_STATIONS:
+      buffers[station].append(transform_datum(datum))
+
+  for station in buffers:
+    handle = station_outfile(station)
+    for row in buffers[station]:
+      handle.write(row)
+      handle.write("\n")
+    handle.close()
+    print "Successfully wrote to file: %s" % handle.name
+
