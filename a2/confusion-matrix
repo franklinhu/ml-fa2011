@@ -10,7 +10,7 @@ import sys
 
 if __name__ == "__main__":
   if len(sys.argv) < 4:
-    print "Usage: confusion-matrix X Z"
+    print "Usage: confusion-matrix <data-file> X Z"
     sys.exit(1)
 
   filename = sys.argv[1]
