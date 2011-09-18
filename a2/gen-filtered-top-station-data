@@ -56,14 +56,19 @@ if __name__ == "__main__":
 
   filename = sys.argv[1]
 
-  data = csv.reader(open(filename, 'r'))
+  handle = open(filename, 'r')
+  handle.next()
+  data = csv.reader(handle)
   buffers = defaultdict(list)
+  all_data = []
   for datum in data:
     if not datum:
       continue
     station = datum[STATION_INDEX]
+    transformed = transform_datum(datum)
     if station in TOP_STATIONS:
-      buffers[station].append(transform_datum(datum))
+      buffers[station].append(transformed)
+    all_data.append(transformed)
 
   for station in buffers:
     handle = station_outfile(station)
@@ -72,4 +77,11 @@ if __name__ == "__main__":
       handle.write("\n")
     handle.close()
     print "Successfully wrote to file: %s" % handle.name
+
+  handle = open('transformed_data.txt', 'w')
+  for d in all_data:
+    handle.write(d)
+    handle.write("\n")
+  handle.close()
+  print "Successfully wrote to file: %s" % handle.name
 
