@@ -49,6 +49,10 @@ def station_outfile(station):
   filename = "station_%s.txt" % station
   return open(filename, 'w')
 
+def untransformed_outfile(station):
+  filename = "trainingData_%s.csv" % station
+  return open(filename, 'w')
+
 if __name__ == "__main__":
   if len(sys.argv) < 2:
     print "Usage: gen-filtered-top-station-data <data-file>"
@@ -57,9 +61,10 @@ if __name__ == "__main__":
   filename = sys.argv[1]
 
   handle = open(filename, 'r')
-  handle.next()
+  first_row = handle.next()
   data = csv.reader(handle)
   buffers = defaultdict(list)
+  untransformed_buffers = defaultdict(list)
   all_data = []
   for datum in data:
     if not datum:
@@ -68,12 +73,23 @@ if __name__ == "__main__":
     transformed = transform_datum(datum)
     if station in TOP_STATIONS:
       buffers[station].append(transformed)
+      untransformed_buffers[station].append(datum)
     all_data.append(transformed)
 
   for station in buffers:
     handle = station_outfile(station)
     for row in buffers[station]:
       handle.write(row)
+      handle.write("\n")
+    handle.close()
+    print "Successfully wrote to file: %s" % handle.name
+
+  for station in untransformed_buffers:
+    handle = untransformed_outfile(station)
+    handle.write(first_row)
+    handle.write("\n\n")
+    for row in untransformed_buffers[station]:
+      handle.write(",".join(row))
       handle.write("\n")
     handle.close()
     print "Successfully wrote to file: %s" % handle.name

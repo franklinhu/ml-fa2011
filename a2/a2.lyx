@@ -2537,7 +2537,7 @@ Data munging
 \end_layout
 
 \begin_deeper
-\begin_layout Enumerate
+\begin_layout Itemize
 \begin_inset Tabular
 <lyxtabular version="3" rows="11" columns="3">
 <features tabularvalignment="middle">
@@ -2558,16 +2558,16 @@ station
 \begin_inset Text
 
 \begin_layout Plain Layout
-classifier accuracy (%)
+iphase accuracy (%)
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+classifier accuracy (%)
 \end_layout
 
 \end_inset
@@ -2587,16 +2587,16 @@ classifier accuracy (%)
 \begin_inset Text
 
 \begin_layout Plain Layout
-88.08
+97.75
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+88.08
 \end_layout
 
 \end_inset
@@ -2616,16 +2616,16 @@ classifier accuracy (%)
 \begin_inset Text
 
 \begin_layout Plain Layout
-92.15
+87.23
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+92.15
 \end_layout
 
 \end_inset
@@ -2645,16 +2645,16 @@ classifier accuracy (%)
 \begin_inset Text
 
 \begin_layout Plain Layout
-92.02
+83.86
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+92.02
 \end_layout
 
 \end_inset
@@ -2674,16 +2674,16 @@ classifier accuracy (%)
 \begin_inset Text
 
 \begin_layout Plain Layout
-88.10
+95.64
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+88.10
 \end_layout
 
 \end_inset
@@ -2703,16 +2703,16 @@ classifier accuracy (%)
 \begin_inset Text
 
 \begin_layout Plain Layout
-88.87
+67.56
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+88.87
 \end_layout
 
 \end_inset
@@ -2732,16 +2732,16 @@ classifier accuracy (%)
 \begin_inset Text
 
 \begin_layout Plain Layout
-90.69
+94.74
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+90.69
 \end_layout
 
 \end_inset
@@ -2761,16 +2761,16 @@ classifier accuracy (%)
 \begin_inset Text
 
 \begin_layout Plain Layout
-88.18
+91.09
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+88.18
 \end_layout
 
 \end_inset
@@ -2790,16 +2790,16 @@ classifier accuracy (%)
 \begin_inset Text
 
 \begin_layout Plain Layout
-88.77
+82.33
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+88.77
 \end_layout
 
 \end_inset
@@ -2819,16 +2819,16 @@ classifier accuracy (%)
 \begin_inset Text
 
 \begin_layout Plain Layout
-89.56
+81.44
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+89.56
 \end_layout
 
 \end_inset
@@ -2848,16 +2848,16 @@ classifier accuracy (%)
 \begin_inset Text
 
 \begin_layout Plain Layout
-92.51
+81.56
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+92.51
 \end_layout
 
 \end_inset
