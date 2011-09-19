@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\begin{document}
+
+4a. \\
+No\\
+
+4b. \\
+\begin{align*}
+  \phi(x_1) &= [1, 0, 0]^T\\
+  \phi(x_2) &= [1, -\sqrt{2}, 1]^T\\
+  \phi(x_3) &= [1, \sqrt{2}, 1]^T\\
+\end{align*}
+  Yes, this is linearly separable with the hyperplane \(x^2 = \frac{1}{2}\)\\
+
+4c. \\
+Let 
+\begin{align*}
+  x_1 &= 0\\
+  x_2 &= -1\\
+  x_3 &= 1\\
+  y_1 &= 1\\
+  y_2 &= -1\\
+  y_3 &= -1\\
+  \Lambda(w_1, w_2, w_3, b, \lambda, \mu, \varepsilon)
+  =& \frac{1}{2}\Vert w\Vert _2^2\\
+  &+ \lambda(y_1(w_1+b) - 1)\\
+  &+ \mu(y_2(w_1-\sqrt{2}w_2 + w_3 + b) - 1)\\
+  &+ \varepsilon(y_3(w_1 + \sqrt{2}w_2 + w_3 + b) - 1)
+\end{align*}
+Then, using the method of Lagrange multipliers,
+\begin{align}
+\frac{\partial\Lambda}{\partial w_1} &= \frac{1}{2}w_1^2 + \lambda - \mu - \varepsilon = 0\\
+\frac{\partial\Lambda}{\partial w_2} &= \frac{1}{2}w_2^2 + \sqrt{2}\mu - \sqrt{2}\varepsilon = 0\\
+\frac{\partial\Lambda}{\partial w_3} &= \frac{1}{2}w_3^2 - \mu - \varepsilon = 0\\
+\frac{\partial\Lambda}{\partial b} &= \lambda - \mu - \varepsilon = 0\\
+\frac{\partial\Lambda}{\partial \lambda} &= w_1 + b - 1 = 0\\
+\frac{\partial\Lambda}{\partial \mu} &= -(w_1 - \sqrt{2}w_2 + w_3 + b) - 1 = 0\\
+\frac{\partial\Lambda}{\partial \varepsilon} &= -(w_1 + \sqrt{2}w_2 + w_3 + b) - 1 = 0
+\end{align}
+
+We inspect these equations to arrive at the following conclusions:\\
+From (4), we know \(\lambda - \mu - \varepsilon = 0\) so in (1), we realize that \(\frac{1}{2}w_1^2 + \lambda - \mu - \varepsilon = \frac{1}{2}w_1^2 = 0\), therefore \(w_1 = 0\). Then, in (5), \(w_1 + b - 1 = 0 + b - 1 = 0\), therefore \(b = 1\). Then, (6) and (7) render a system of simple equations.
+\begin{gather*}
+  -(0-\sqrt{2}w_2+w_3+1)-1 = 0\\
+  -(0+\sqrt{2}w_2+w_3+1)-1 = 0
+\end{gather*}
+Solving this system of equations renders \(w_3 = -1\) and \(w_2 = 0\).
+
+4d.
+Generalizing the solution to 4c. renders that \(b = \rho\)\) from (5). Given \rho_1
+and \rho_2, let us say that 4c. expresses \(b, \mathbf{w}\) for some \rho_1. Then,
+for some \rho_2, we find \(b = \rho_2, \mathbf{w} = [0,0,-2\rho_2]\). We realize that
+our function classifies according to the sign of \rho(\mathbf{w^Tx} + b) instead of
+simply \mathbf{w^Tx} + b. Knowing that \rho \geq 1, we realize that
+\(sign(\mathbf{w^Tx} + b) = sign(\rho(\mathbf{w^Tx} + b))\) so the classification
+remains the same for all such \rho.
+
+\end{document}

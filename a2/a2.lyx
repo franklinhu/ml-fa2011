@@ -70,6 +70,7 @@ Franklin Hu, Sunil Pedapudi
 
 \begin_layout Standard
 SID: 20157715
+SID: 20247144
 \end_layout
 
 \begin_layout Standard
@@ -167,85 +168,35 @@ The separating line on the original input space is a plane that rests at
 \end_layout
 
 \begin_layout Enumerate
-\begin_inset Formula 
+Given,
 \begin{align*}
-(x_{1}-a)^{2}+(x_{2}-b)^{2}-r^{2}= & 0\\
-x_{1}^{2}-2ax_{1}+a^{2}+x_{2}^{2}-2bx_{2}+b^{2}-r^{2}= & 0
+(x_{1}-a)^{2}+(x_{2}-b)^{2}-r^{2} &= 0\\
+x_{1}^{2}-2ax_{1}+a^{2}+x_{2}^{2}-2bx_{2}+b^{2}-r^{2} &= 0
 \end{align*}
 
-\end_inset
+let us pose the following:
 
-
-\begin_inset Newline newline
-\end_inset
-
-If we let 
-\begin_inset Formula $x=\left(\begin{array}{c}
-x_{1}\\
-x_{2}\\
-x_{1}^{2}\\
-x_{2}^{2}
-\end{array}\right)$
-\end_inset
-
-:
-\begin_inset Formula 
 \begin{align*}
-\left(\begin{array}{cccc}
--2a & -2b & 1 & 1\end{array}\right)\left(\begin{array}{c}
-x_{1}\\
-x_{2}\\
-x_{1}^{2}\\
-x_{2}^{2}
-\end{array}\right)+(a^{2}+b^{2}-r^{2})= & 0
+  \mathbf{w} &= [-2a, -2b, 1, 1]\\
+  \mathbf{x} &= [x_1, x_2, x_1^2, x_2^2]\\
+  \beta &= a^2+b^2-r^2\\
+  \mathbf{w^Tx} + b &> 0 \textnormal{, if } \mathbf{x} \textnormal{ escapes the circle region}\\
+  \mathbf{w^Tx} + b &< 0 \textnormal{, if } \mathbf{x} \textnormal{ occupies the circle region}\\
+  \mathbf{w^Tx} + b &= 0 \textnormal{, if } \mathbf{x} \textnormal{ demarcates the circle region}\\
 \end{align*}
 
-\end_inset
+We then let \(y_i = -1\) if \(\mathbf{x}\) occupies the region inside the circle;
+\(y_i = 1\) otherwise. Then, to satisfy the separability constraint, we note that
+\begin{equation*}
+  y_i(\mathbf{w^Tx}+\beta) > 0, \forall i
+\end{equation*}
 
-
-\begin_inset Newline newline
-\end_inset
-
-If we would like to classify points inside the circle with -1 and points
- outside the circle with +1, we can adjust this to be:
-\begin_inset Formula 
-\[
-\hat{y}=sign(\left(\begin{array}{cccc}
--2a & -2b & 1 & 1\end{array}\right)\left(\begin{array}{c}
-x_{1}\\
-x_{2}\\
-x_{1}^{2}\\
-x_{2}^{2}
-\end{array}\right)+(a^{2}+b^{2}-r^{2}))
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Enumerate
-\begin_inset Formula 
-\begin{align*}
-c(x_{1}-a)^{2}+d(x_{2}-b)^{2}-1= & 0\\
-cx_{1}^{2}-2acx_{1}+ca^{2}+dx_{2}^{2}-2bdx_{2}+db^{2}-1= & 0\\
-\left(\begin{array}{cccccc}
-ca^{2}+db^{2}-1 & -2ac & -2bd & c & d & 0\end{array}\right)\left(\begin{array}{c}
-1\\
-x_{1}\\
-x_{2}\\
-x_{1}^{2}\\
-x_{2}^{2}\\
-x_{1}x_{2}
-\end{array}\right)= & 0
-\end{align*}
-
-\end_inset
-
+Thus, we show that in feature space \((x_1, x_2, x_1^2, x_2^2)\), the region defined by \((x_{1}-a)^{2}+(x_{2}-b)^{2}-r^{2} = 0\) is linearly separable.
 
 \end_layout
 
 \end_deeper
+
 \begin_layout Enumerate
 Logistic Regression
 \begin_inset Newline newline
@@ -254,7 +205,7 @@ Logistic Regression
 Given:
 \begin_inset Formula 
 \begin{align*}
-L(w)= & -\sum_{i=1}^{N}log(\frac{1}{1+e^{y_{i}(w^{T}x_{i}+b)}})+\lambda\Vert w\Vert_{2}^{2}
+L(w)&= -\sum_{i=1}^{N}log(\frac{1}{1+e^{y_{i}(w^{T}x_{i}+b)}})+\lambda\Vert w\Vert_{2}^{2}
 \end{align*}
 
 \end_inset
@@ -266,9 +217,10 @@ L(w)= & -\sum_{i=1}^{N}log(\frac{1}{1+e^{y_{i}(w^{T}x_{i}+b)}})+\lambda\Vert w\V
 \begin_layout Enumerate
 \begin_inset Formula 
 \begin{align*}
-\frac{\partial L}{\partial w_{j}}= & -\sum_{i=1}^{N}(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot-1\cdot(1+e^{y_{i}(w^{T}x_{i}+b)})^{-2}(e^{y_{i}(w^{T}x_{i}+b)})\cdot x_{j}y_{j}+\frac{\partial}{\partial w_{j}}(\lambda\Vert w\Vert_{2}^{2})\\
-= & -\sum_{i=1}^{N}\frac{-e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})}\cdot x_{j}y_{j}+2\lambda w_{j}\\
-= & x_{j}y_{j}\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})}+2\lambda w_{j}
+\frac{\partial L}{\partial w_{j}}
+&= -\sum_{i=1}^{N}(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot-1\cdot(1+e^{y_{i}(w^{T}x_{i}+b)})^{-2}(e^{y_{i}(w^{T}x_{i}+b)})\cdot x_{ij}y_{i}+\frac{\partial}{\partial w_{j}}(\lambda\Vert w\Vert_{2}^{2})\\
+&= -\sum_{i=1}^{N}\frac{-e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})}\cdot x_{ij}y_{i}+2\lambda w_{j}\\
+&= \sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})}\cdot x_{ij}y_{i}+2\lambda w_{j}\\
 \end{align*}
 
 \end_inset
@@ -279,15 +231,18 @@ L(w)= & -\sum_{i=1}^{N}log(\frac{1}{1+e^{y_{i}(w^{T}x_{i}+b)}})+\lambda\Vert w\V
 \begin_layout Enumerate
 \begin_inset Formula 
 \begin{align*}
-\frac{\partial^{2}L}{\partial w_{j}\partial w_{k}}= & \frac{\partial L}{\partial w_{k}}(x_{j}y_{j}\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})}+2\lambda w_{j})\\
-= & x_{j}y_{j}\sum_{i=1}^{N}\frac{(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})-e^{y_{i}(w^{T}x_{i}+b)}\cdot\frac{\partial L}{\partial w_{k}}(1+e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
-= & x_{j}y_{j}\sum_{i=1}^{N}\frac{(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})-e^{y_{i}(w^{T}x_{i}+b)}\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
-= & x_{j}y_{j}\sum_{i=1}^{N}\frac{(1+e^{y_{i}(w^{T}x_{i}+b)}-e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
-= & x_{j}y_{j}\sum_{i=1}^{N}\frac{\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
-= & x_{j}y_{j}\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}x_{k}y_{k}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
-= & x_{j}x_{k}y_{j}y_{k}\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}
+\frac{\partial^{2}L}{\partial w_{j}\partial w_{k}} &=  \frac{\partial L}{\partial w_{k}}(\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})}\cdot x_{ij}y_{i}+2\lambda w_{j})\\
+&= \sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})-e^{y_{i}(w^{T}x_{i}+b)}\cdot\frac{\partial L}{\partial w_{k}}(1+e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+&= \sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})-e^{y_{i}(w^{T}x_{i}+b)}\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+&= \sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot(1+e^{y_{i}(w^{T}x_{i}+b)}-e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+&= \sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot \frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+&= \sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot e^{y_{i}(w^{T}x_{i}+b)}x_{ik}y_{i}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+&= \sum_{i=1}^{N}\frac{x_{ij}x_{ik}y_{i}y_{i}\cdot e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
 \end{align*}
-
+Since \(y_i^2 = 1\), we simply rewrite this as
+\begin{equation*}
+  \sum_{i=1}^{N}x_{ij}x_{ik}\cdot \frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}
+\end{equation*}
 \end_inset
 
 
@@ -319,13 +274,13 @@ Yes the classes {+,-} are linearly separable.
 The best hyperplane by inspection is:
 \begin_inset Formula 
 \begin{align*}
-x_{2}= & -x_{1}+1.5\\
-x_{1}+x_{2}-1.5= & 0\\
+x_{2}&= -x_{1}+1.5\\
+x_{1}+x_{2}-1.5&= 0\\
 \left(\begin{array}{cc}
 1 & 1\end{array}\right)\left(\begin{array}{c}
 x_{1}\\
 x_{2}
-\end{array}\right)-1.5= & 0
+\end{array}\right)-1.5 &= 0
 \end{align*}
 
 \end_inset

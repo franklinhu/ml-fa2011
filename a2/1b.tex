@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\begin{document}
+
+1b. Given,
+\begin{align*}
+(x_{1}-a)^{2}+(x_{2}-b)^{2}-r^{2} &= 0\\
+x_{1}^{2}-2ax_{1}+a^{2}+x_{2}^{2}-2bx_{2}+b^{2}-r^{2} &= 0
+\end{align*}
+
+let us pose the following:
+
+\begin{align*}
+  \mathbf{w} &= [-2a, -2b, 1, 1]\\
+  \mathbf{x} &= [x_1, x_2, x_1^2, x_2^2]\\
+  \beta &= a^2+b^2-r^2\\
+  \mathbf{w^Tx} + b &> 0 \textnormal{, if } \mathbf{x} \textnormal{ escapes the circle region}\\
+  \mathbf{w^Tx} + b &< 0 \textnormal{, if } \mathbf{x} \textnormal{ occupies the circle region}\\
+  \mathbf{w^Tx} + b &= 0 \textnormal{, if } \mathbf{x} \textnormal{ demarcates the circle region}\\
+\end{align*}
+
+We then let \(y_i = -1\) if \(\mathbf{x}\) occupies the region inside the circle;
+\(y_i = 1\) otherwise. Then, to satisfy the separability constraint, we note that
+\begin{equation*}
+  y_i(\mathbf{w^Tx}+\beta) > 0, \forall i
+\end{equation*}
+
+Thus, we show that in feature space \((x_1, x_2, x_1^2, x_2^2)\), the region defined by \((x_{1}-a)^{2}+(x_{2}-b)^{2}-r^{2} = 0\) is linearly separable.
+\end{document}

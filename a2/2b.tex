@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\begin{document}
+
+\begin{align*}
+\frac{\partial^{2}L}{\partial w_{j}\partial w_{k}} &=  \frac{\partial L}{\partial w_{k}}(\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})}\cdot x_{ij}y_{i}+2\lambda w_{j})\\
+&= \sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})-e^{y_{i}(w^{T}x_{i}+b)}\cdot\frac{\partial L}{\partial w_{k}}(1+e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+&= \sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot(1+e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})-e^{y_{i}(w^{T}x_{i}+b)}\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+&= \sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot(1+e^{y_{i}(w^{T}x_{i}+b)}-e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+&= \sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot \frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+&= \sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot e^{y_{i}(w^{T}x_{i}+b)}x_{ik}y_{i}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+&= \sum_{i=1}^{N}\frac{x_{ij}x_{ik}y_{i}y_{i}\cdot e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+\end{align*}
+Since \(y_i^2 = 1\), we simply rewrite this as
+\begin{equation}
+  \sum_{i=1}^{N}x_{ij}x_{ik}\cdot \frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+\end{equation}
+
+Then, we wish to show
+\begin{equation*}
+  \mathbf{a^THa} \equiv \sum_{j,k}a_ja_kH_{j,k} \geq 0
+\end{equation*}
+
+Note that summation (1) indicates the \(j,k^{th}\) element of the Hessian which allows us to rewrite the the above inequality as
+\begin{align*}
+  \sum_{j,k}a_ja_kH_{j,k} 
+  &= \sum_{j,k}a_ja_k\sum_{i=1}^{N}x_{ij}x_{ik}\cdot\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+  &= \sum_{j,k}a_ja_k\sum_{i=1}^{N}x_{ij}x_{ik}\cdot\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+  &= \sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}a_ja_kx_{ij}x_{ik}\\
+  &= \sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}\mathbf{a^Tx}a_kx_{ik}\\
+  &= \sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}\mathbf{a^Tx}\mathbf{a^Tx}\\
+  &= \sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}\mathbf{a^Tx}\mathbf{a^Tx}\\
+  &= \sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\cdot(\mathbf{a^Tx})^2 \geq 0\\
+\end{align*}
+We show this summation is non-negative by showing each component of the summation is non-negative. Consider
+\begin{align*}
+  \sum_{i=1}^{N}\frac{\alpha}{\beta}\cdot\epsilon
+  &= \sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\cdot(\mathbf{a^Tx})^2 \geq 0
+\textnormal{Then, we realize that}\\
+\alpha &= e^{y_{i}(w^{T}x_{i}+b)} > 0, \textnormal{since } e^z \textnormal{ is always positive}\\
+\beta &= (1+e^{y_{i}(w^{T}x_{i}+b)})^{2} > 0\\
+\epsilon &= (\mathbf{a^Tx})^2 \geq 0\\
+\end{align*}
+
+Therefore, \(L\) is convex. 
+\end{document}
