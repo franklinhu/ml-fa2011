@@ -238,6 +238,76 @@ Thus, we show that in feature space
  
 \end_layout
 
+\begin_layout Enumerate
+Given 
+\begin_inset Formula 
+\begin{align*}
+K(\mathbf{u},\mathbf{v}) & =(1+\mathbf{u^{T}v})^{2}\\
+ & =1+2\mathbf{u^{T}v}+(\mathbf{u^{T}v})^{2}\\
+ & =1+2u_{1}v_{1}+2u_{2}v_{2}+(u_{1}^{2}v_{1}^{2}+2u_{1}v_{1}u_{2}+v_{2}+u_{2}^{2}v_{2}^{2})
+\end{align*}
+
+\end_inset
+
+Let us realize that this kernel suggests a feature space 
+\begin_inset Formula \ensuremath{[1,\sqrt{2}u_{1},\sqrt{2}u_{2},u_{1}^{2},u_{2}^{2},\sqrt{2}u_{1}u_{2}]}
+
+\end_inset
+
+.
+ For simplicity, we adapt this feature space more generally as 
+\begin_inset Formula \ensuremath{[1,x_{1},x_{2},x_{1}^{2},x_{2}^{2},x_{1}x_{2}]}
+
+\end_inset
+
+ and drop the constant multipliers as suggested.
+ Then, given an ellipse is defined by 
+\begin_inset Formula 
+\begin{align*}
+c(x_{1}-a)^{2}+d(x_{2}-b)^{2} & =1\\
+cx_{1}-2acx_{1}+ca_{2}^{2}+dx_{2}^{2}-2dbx_{2}+db^{2}-1 & =0
+\end{align*}
+
+\end_inset
+
+ we wish to recycle the proof from 1b.
+ To do this, we form the following vector 
+\begin_inset Formula 
+\[
+\mathbf{w}=[ca^{2}+db^{2},-2ac,-2db,c,d,0]
+\]
+
+\end_inset
+
+ Then, we define 
+\begin_inset Formula \ensuremath{y_{i}=-1}
+
+\end_inset
+
+ if a point lies within the ellipse, 
+\begin_inset Formula \ensuremath{y_{i}=1}
+
+\end_inset
+
+ otherwise.
+ We simply adopt the inequalities from 1b and claim that 
+\begin_inset Formula 
+\begin{align*}
+\mathbf{w^{T}x}+\beta & >0\textnormal{, if }\mathbf{x}\textnormal{ escapes the ellipse region}\\
+\mathbf{w^{T}x}+\beta & <0\textnormal{, if }\mathbf{x}\textnormal{ occupies the ellipse region}\\
+\mathbf{w^{T}x}+\beta & =0\textnormal{, if }\mathbf{x}\textnormal{ demarcates the ellipse region}
+\end{align*}
+
+\end_inset
+
+ which satisfies the separability constraint 
+\begin_inset Formula \ensuremath{y_{i}(\mathbf{w^{T}x}+\beta)>0,\forall i}
+
+\end_inset
+
+ 
+\end_layout
+
 \end_deeper
 \begin_layout Enumerate
 Logistic Regression
@@ -328,7 +398,7 @@ Note that summation (1) indicates the
  & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}\mathbf{a^{T}x}\sum_{k}a_{k}x_{ik}\\
  & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}\mathbf{a^{T}x}\mathbf{a^{T}x}\\
  & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}\mathbf{a^{T}x}\mathbf{a^{T}x}\\
- & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\cdot(\mathbf{a^{T}x})^{2}\geq0\\
+ & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\cdot(\mathbf{a^{T}x})^{2}\geq0
 \end{align*}
 
 \end_inset
