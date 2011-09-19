@@ -182,9 +182,9 @@ let us pose the following:
 \mathbf{w} & =[-2a,-2b,1,1]\\
 \mathbf{x} & =[x_{1},x_{2},x_{1}^{2},x_{2}^{2}]\\
 \beta & =a^{2}+b^{2}-r^{2}\\
-\mathbf{w^{T}x}+b & >0\textnormal{, if }\mathbf{x}\textnormal{ escapes the circle region}\\
-\mathbf{w^{T}x}+b & <0\textnormal{, if }\mathbf{x}\textnormal{ occupies the circle region}\\
-\mathbf{w^{T}x}+b & =0\textnormal{, if }\mathbf{x}\textnormal{ demarcates the circle region}\\
+\mathbf{w^{T}x}+\beta & >0\textnormal{, if }\mathbf{x}\textnormal{ escapes the circle region}\\
+\mathbf{w^{T}x}+\beta & <0\textnormal{, if }\mathbf{x}\textnormal{ occupies the circle region}\\
+\mathbf{w^{T}x}+\beta & =0\textnormal{, if }\mathbf{x}\textnormal{ demarcates the circle region}
 \end{align*}
 
 \end_inset
@@ -267,16 +267,80 @@ L(w) & =-\sum_{i=1}^{N}log(\frac{1}{1+e^{y_{i}(w^{T}x_{i}+b)}})+\lambda\Vert w\V
  & =\sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot(1+e^{y_{i}(w^{T}x_{i}+b)}-e^{y_{i}(w^{T}x_{i}+b)})\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
  & =\sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot\frac{\partial L}{\partial w_{k}}(e^{y_{i}(w^{T}x_{i}+b)})}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
  & =\sum_{i=1}^{N}\frac{x_{ij}y_{i}\cdot e^{y_{i}(w^{T}x_{i}+b)}x_{ik}y_{i}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
- & =\sum_{i=1}^{N}\frac{x_{ij}x_{ik}y_{i}y_{i}\cdot e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}
+ & =\sum_{i=1}^{N}\frac{x_{ij}x_{ik}y_{i}y_{i}\cdot e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
 \end{align*}
-Since \ensuremath{y_{i}^{2}=1}, we simply rewrite this as 
-\[
-\sum_{i=1}^{N}x_{ij}x_{ik}\cdot\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}
-\]
 
 \end_inset
 
 
+\begin_inset Newline newline
+\end_inset
+
+Since 
+\begin_inset Formula \ensuremath{y_{i}^{2}=1}
+
+\end_inset
+
+, we simply rewrite this as 
+\begin_inset Formula 
+\begin{equation}
+\sum_{i=1}^{N}x_{ij}x_{ik}\cdot\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Then, we wish to show 
+\begin_inset Formula 
+\[
+\mathbf{a^{T}Ha}\equiv\sum_{j,k}a_{j}a_{k}H_{j,k}\geq0
+\]
+
+\end_inset
+
+Note that summation (1) indicates the 
+\begin_inset Formula \ensuremath{j,k^{th}}
+
+\end_inset
+
+ element of the Hessian which allows us to rewrite the the above inequality
+ as 
+\begin_inset Formula 
+\begin{align*}
+\sum_{j,k}a_{j}a_{k}H_{j,k} & =\sum_{j,k}a_{j}a_{k}\sum_{i=1}^{N}x_{ij}x_{ik}\cdot\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+ & =\sum_{j,k}a_{j}a_{k}\sum_{i=1}^{N}x_{ij}x_{ik}\cdot\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
+ & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}a_{j}a_{k}x_{ij}x_{ik}\\
+ & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}\mathbf{a^{T}x}a_{k}x_{ik}\\
+ & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}\mathbf{a^{T}x}\mathbf{a^{T}x}\\
+ & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}\mathbf{a^{T}x}\mathbf{a^{T}x}\\
+ & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\cdot(\mathbf{a^{T}x})^{2}\geq0\\
+\end{align*}
+
+\end_inset
+
+ We show this summation is non-negative by showing each component of the
+ summation is non-negative.
+ Consider 
+\begin_inset Formula 
+\begin{align*}
+\sum_{i=1}^{N}\frac{\alpha}{\beta}\cdot\epsilon & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\cdot(\mathbf{a^{T}x})^{2}\geq0\textnormal{ Then, we realize that}\\
+\alpha & =e^{y_{i}(w^{T}x_{i}+b)}>0,\textnormal{since }e^{z}\textnormal{ is always positive}\\
+\beta & =(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}>0\\
+\epsilon & =(\mathbf{a^{T}x})^{2}\geq0
+\end{align*}
+
+\end_inset
+
+Therefore, 
+\begin_inset Formula \ensuremath{L}
+
+\end_inset
+
+ is convex.
+ 
 \end_layout
 
 \end_deeper
