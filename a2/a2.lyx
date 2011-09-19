@@ -167,13 +167,13 @@ The separating line on the original input space is a plane that rests at
 \begin_inset Newline newline
 \end_inset
 
-
+Mapping this back into the original Euclidean space,
 \begin_inset Graphics
 	filename 1a-remapped-original.png
 	scale 50
 
 \end_inset
-
+Note that we indicate the separation using a grey shade in quadrants 1 and 3.
 
 \end_layout
 
@@ -274,7 +274,7 @@ cx_{1}-2acx_{1}+ca_{2}^{2}+dx_{2}^{2}-2dbx_{2}+db^{2}-1 & =0
  To do this, we form the following vector 
 \begin_inset Formula 
 \[
-\mathbf{w}=[ca^{2}+db^{2},-2ac,-2db,c,d,0]
+\mathbf{w}=[ca^{2}+db^{2}-1,-2ac,-2db,c,d,0]
 \]
 
 \end_inset
