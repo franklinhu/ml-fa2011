@@ -6,6 +6,7 @@
 
 from collections import defaultdict
 import csv
+import random
 import sys
 
 STATION_INDEX = 12
@@ -45,9 +46,11 @@ def transform_datum(datum):
     target = -1
   return "%d %s" % (target, " ".join(features))
 
-def station_outfile(station):
-  filename = "station_%s.txt" % station
-  return open(filename, 'w')
+def station_outfiles(station):
+  everything = "station_%s.txt" % station
+  training = "station_%s_training.txt" % station
+  holdout = "station_%s_holdout.txt" % station
+  return open(everything, 'w'), open(training, 'w'), open(holdout, 'w')
 
 def untransformed_outfile(station):
   filename = "trainingData_%s.csv" % station
@@ -77,11 +80,20 @@ if __name__ == "__main__":
     all_data.append(transformed)
 
   for station in buffers:
-    handle = station_outfile(station)
+    everything, training, holdout = station_outfiles(station)
     for row in buffers[station]:
-      handle.write(row)
-      handle.write("\n")
-    handle.close()
+      everything.write(row)
+      everything.write("\n")
+
+      if random.random() < 0.1:
+        holdout.write(row)
+        holdout.write("\n")
+      else:
+        training.write(row)
+        training.write("\n")
+    everything.close()
+    training.close()
+    holdout.close()
     print "Successfully wrote to file: %s" % handle.name
 
   for station in untransformed_buffers:
