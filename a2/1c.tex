@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\begin{document}
+
+Given
+\begin{align*}
+  K(\mathbf{u},\mathbf{v}) &= (1 + \mathbf{u^Tv})^2\\
+  &= 1+2\mathbf{u^Tv}+(\mathbf{u^Tv})^2\\
+  &= 1+2\mathbf{u^Tv}+(\mathbf{u^Tv})^2\\
+  &= 1+2u_1v_1+2u_2v_2+(u_1^2v_1^2+2u_1v_1u_2+v_2 + u_2^2v_2^2)
+\end{align*}
+
+Let us realize that this kernel suggests a feature space
+\([1, \sqrt{2}u_1, \sqrt{2}u_2, u_1^2, u_2^2, \sqrt{2}u_1u_2]\). For simplicity,
+we adapt this feature space more generally as \([1, x_1, x_2, x_1^2, x_2^2, x_1x_2]\)
+and drop the constant multipliers as suggested. Then, given an ellipse is defined by
+\begin{align*}
+  c(x_1-a)^2 + d(x_2-b)^2  &= 1\\
+  cx_1-2acx_1 + ca_2^2 + dx_2^2 - 2dbx_2 + db^2 - 1 &= 0\\
+\end{align*}
+we wish to recycle the proof from 1b. To do this, we form the following vector
+\begin{equation*}
+  \mathbf{w} = [ca^2+db^2, -2ac, -2db, c, d, 0]
+\end{equation*}
+Then, we define \(y_i = -1 \) if a point lies within the ellipse, \(y_i = 1 \) otherwise.
+We simply adopt the inequalities from 1b and claim that
+\begin{align*}
+  \mathbf{w^{T}x}+\beta & >0\textnormal{, if }\mathbf{x}\textnormal{ escapes the ellipse region}\\
+  \mathbf{w^{T}x}+\beta & <0\textnormal{, if }\mathbf{x}\textnormal{ occupies the ellipse region}\\
+  \mathbf{w^{T}x}+\beta & =0\textnormal{, if }\mathbf{x}\textnormal{ demarcates the ellipse region}
+\end{align*}
+which satisfies the separability constraint \(y_{i}(\mathbf{w^{T}x}+\beta)>0,\forall i\)
+\end{document}
