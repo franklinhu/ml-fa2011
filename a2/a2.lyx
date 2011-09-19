@@ -168,13 +168,22 @@ The separating line on the original input space is a plane that rests at
 \end_inset
 
 Mapping this back into the original Euclidean space,
+\begin_inset Newline newline
+\end_inset
+
+
 \begin_inset Graphics
 	filename 1a-remapped-original.png
 	scale 50
 
 \end_inset
-Note that we indicate the separation using a grey shade in quadrants 1 and 3.
 
+
+\begin_inset Newline newline
+\end_inset
+
+Note that we indicate the separation using a grey shade in quadrants 1 and
+ 3.
 \end_layout
 
 \begin_layout Enumerate
@@ -639,20 +648,63 @@ From (4), we know
 
 \end_inset
 
-To show that the margin is \(\frac{1}{\Vert \hat{w}\Vert}\), let us consider a function
+
+\begin_inset Newline newline
+\end_inset
+
+To show that the margin is 
+\begin_inset Formula \ensuremath{\frac{1}{\Vert\hat{w}\Vert}}
+
+\end_inset
+
+, let us consider a function 
+\begin_inset Formula 
 \begin{align*}
-  \gamma_i &= y_i(\frac{\mathbf{w^Tx_i}}{\Vert \hat{w}\Vert}+\frac{b}{\Vert \hat{w}\Vert}\\
-  \textnormal{with the objective of finding}\\
-  max_{i \epsilon \{1,2,3\}} \vert\gamma_i\vert = \textnormal{margin}
+\gamma_{i}= & y_{i}(\frac{\mathbf{w^{T}x_{i}}}{\Vert\hat{w}\Vert}+\frac{b}{\Vert\hat{w}\Vert}\\
+\textnormal{with the objective of finding}\\
+max_{i\epsilon\{1,2,3\}}\vert\gamma_{i}\vert= & \textnormal{margin}
 \end{align*}
-Then, we can evaluate \(\gamma_i\) for all such \(i\).
+
+\end_inset
+
+ Then, we can evaluate 
+\begin_inset Formula \ensuremath{\gamma_{i}}
+
+\end_inset
+
+ for all such 
+\begin_inset Formula \ensuremath{i}
+
+\end_inset
+
+.
+ 
+\begin_inset Formula 
 \begin{align*}
-  \gamma_1 = (\frac{\mathbf{w^T}}{4}[0,0,0] + \frac{1}{4}) = \frac{1}{4}
-  \gamma_2 = -(\frac{\mathbf{w^T}}{4}[0,0,1] + \frac{1}{4}) = \frac{1}{2}
-  \gamma_3 = -(\frac{\mathbf{w^T}}{4}[0,0,1] + \frac{1}{4}) = \frac{1}{2}
-  max(\gamma_1, \gamma_2, \gamma_3) = \frac{1}{2}
+\gamma_{1}=(\frac{\mathbf{w^{T}}}{4}[0,0,0]+\frac{1}{4}) & =\frac{1}{4}\\
+\gamma_{2}=-(\frac{\mathbf{w^{T}}}{4}[0,0,1]+\frac{1}{4}) & =\frac{1}{2}\\
+\gamma_{3}=-(\frac{\mathbf{w^{T}}}{4}[0,0,1]+\frac{1}{4}) & =\frac{1}{2}\\
+max(\gamma_{1},\gamma_{2},\gamma_{3}) & =\frac{1}{2}
 \end{align*}
-  We realize that \(\frac{1}{\Vert w\Vert_2}\) is \(\frac{1}{\sqrt{0+0+(-2)^2}} = \frac{1}{2}\) and thus, the margin is \(\frac{1}{\Vert w\Vert}\)..
+
+\end_inset
+
+ We realize that 
+\begin_inset Formula \ensuremath{\frac{1}{\Vert w\Vert_{2}}}
+
+\end_inset
+
+ is 
+\begin_inset Formula \ensuremath{\frac{1}{\sqrt{0+0+(-2)^{2}}}=\frac{1}{2}}
+
+\end_inset
+
+ and thus, the margin is 
+\begin_inset Formula \ensuremath{\frac{1}{\Vert w\Vert}}
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Enumerate
