@@ -48,6 +48,23 @@ From (4), we know \(\lambda - \mu - \varepsilon = 0\) so in (1), we realize that
 \end{gather*}
 Solving this system of equations renders \(w_3 = -1\) and \(w_2 = 0\).
 
+To show that the margin is \(\frac{1}{\Vert \hat{w}\Vert}\), let us consider a function
+\begin{align*}
+  \gamma_i &= y_i(\frac{\mathbf{w^Tx_i}}{\Vert \hat{w}\Vert}+\frac{b}{\Vert \hat{w}\Vert}\\
+  \textnormal{with the objective of finding}\\
+  max_{i \epsilon \{1,2,3\}} \vert\gamma_i\vert = \textnormal{margin}
+\end{align*}
+Then, we can evaluate \(\gamma_i\) for all such \(i\).
+\begin{align*}
+  \gamma_1 = (\frac{\mathbf{w^T}}{4}[0,0,0] + \frac{1}{4}) &= \frac{1}{4}\\
+  \gamma_2 = -(\frac{\mathbf{w^T}}{4}[0,0,1] + \frac{1}{4}) &= \frac{1}{2}\\
+  \gamma_3 = -(\frac{\mathbf{w^T}}{4}[0,0,1] + \frac{1}{4}) &= \frac{1}{2}\\
+  max(\gamma_1, \gamma_2, \gamma_3) &= \frac{1}{2}
+\end{align*}
+  We realize that \(\frac{1}{\Vert w\Vert_2}\) is
+  \(\frac{1}{\sqrt{0+0+(-2)^2}} = \frac{1}{2}\) and thus, the margin is
+  \(\frac{1}{\Vert w\Vert}\).
+
 4d.
 Generalizing the solution to 4c. renders that \(b = \rho\) from (5). Given \(\rho_1\)
 and \(\rho_2\), let us say that 4c. expresses \(b, \mathbf{w}\) for some \(\rho_1\). Then,
