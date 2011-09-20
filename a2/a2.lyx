@@ -534,7 +534,10 @@ The answer for (c) is not always true.
 
 \end_deeper
 \begin_layout Enumerate
-3 point dataset
+\begin_inset Formula $ $
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -659,7 +662,7 @@ To show that the margin is
 , let us consider a function 
 \begin_inset Formula 
 \begin{align*}
-\gamma_{i}= & y_{i}(\frac{\mathbf{w^{T}x_{i}}}{\Vert\hat{w}\Vert}+\frac{b}{\Vert\hat{w}\Vert}\\
+\gamma_{i}= & y_{i}\left(\frac{\mathbf{w^{T}x_{i}}}{\Vert\hat{w}\Vert}+\frac{b}{\Vert\hat{w}\Vert}\right)\\
 \textnormal{with the objective of finding}\\
 max_{i\epsilon\{1,2,3\}}\vert\gamma_{i}\vert= & \textnormal{margin}
 \end{align*}
@@ -680,9 +683,9 @@ max_{i\epsilon\{1,2,3\}}\vert\gamma_{i}\vert= & \textnormal{margin}
  
 \begin_inset Formula 
 \begin{align*}
-\gamma_{1}=(\frac{\mathbf{w^{T}}}{4}[0,0,0]+\frac{1}{4}) & =\frac{1}{4}\\
-\gamma_{2}=-(\frac{\mathbf{w^{T}}}{4}[0,0,1]+\frac{1}{4}) & =\frac{1}{2}\\
-\gamma_{3}=-(\frac{\mathbf{w^{T}}}{4}[0,0,1]+\frac{1}{4}) & =\frac{1}{2}\\
+\gamma_{1}=\left(\frac{\mathbf{w^{T}}}{4}[0,0,0]+\frac{1}{4}\right) & =\frac{1}{4}\\
+\gamma_{2}=-\left(\frac{\mathbf{w^{T}}}{4}[0,0,1]+\frac{1}{4}\right) & =\frac{1}{2}\\
+\gamma_{3}=-\left(\frac{\mathbf{w^{T}}}{4}[0,0,1]+\frac{1}{4}\right) & =\frac{1}{2}\\
 max(\gamma_{1},\gamma_{2},\gamma_{3}) & =\frac{1}{2}
 \end{align*}
 
@@ -699,7 +702,7 @@ max(\gamma_{1},\gamma_{2},\gamma_{3}) & =\frac{1}{2}
 \end_inset
 
  and thus, the margin is 
-\begin_inset Formula \ensuremath{\frac{1}{\Vert w\Vert}}
+\begin_inset Formula \ensuremath{\frac{1}{\Vert w\Vert_{2}}}
 
 \end_inset
 
@@ -4961,6 +4964,15 @@ classifier accuracy (%)
 \end_deeper
 \begin_layout Enumerate
 Optimal c
+\begin_inset Newline newline
+\end_inset
+
+We tested exponentially growing c values to find the best order of magnitude.
+ Our test values were in the range 
+\begin_inset Formula $c\in10^{[-3,3]}$
+\end_inset
+
+.
 \end_layout
 
 \begin_deeper
