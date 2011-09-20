@@ -69,7 +69,7 @@ Franklin Hu, Sunil Pedapudi
 \end_layout
 
 \begin_layout Standard
-SID: 20157715SID: 20247144
+SID: 20157715, SID: 20247144
 \end_layout
 
 \begin_layout Standard
@@ -4997,7 +4997,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.42
+10
 \end_layout
 
 \end_inset
@@ -5006,7 +5006,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-93.23
+99.03
 \end_layout
 
 \end_inset
@@ -5026,7 +5026,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.5
+1
 \end_layout
 
 \end_inset
@@ -5035,7 +5035,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-86.64
+96.59
 \end_layout
 
 \end_inset
@@ -5046,7 +5046,123 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
+3
+\end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+99.29
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+80
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+19
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+97.67
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+38
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+99.4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+63
 \end_layout
 
 \end_inset
@@ -5064,7 +5180,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-87.43
+82.68
 \end_layout
 
 \end_inset
@@ -5075,7 +5191,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+12
 \end_layout
 
 \end_inset
@@ -5084,7 +5200,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.2
+100
 \end_layout
 
 \end_inset
@@ -5093,7 +5209,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-87.03
+96.62
 \end_layout
 
 \end_inset
@@ -5104,7 +5220,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+74
 \end_layout
 
 \end_inset
@@ -5113,7 +5229,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.05
+1
 \end_layout
 
 \end_inset
@@ -5122,123 +5238,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-87.98
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.01
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-89.79
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.001
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-92.04
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.0001
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-92.20
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-92.15
+98.51
 \end_layout
 
 \end_inset
@@ -5249,7 +5249,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+65
 \end_layout
 
 \end_inset
@@ -5258,7 +5258,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+1
 \end_layout
 
 \end_inset
@@ -5267,7 +5267,7 @@ accuracy
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+93.16
 \end_layout
 
 \end_inset
