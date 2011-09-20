@@ -4,6 +4,7 @@
 # discrete-histogram
 # confusion-matrix
 
+from collections import defaultdict
 import csv
 import sys
 
@@ -59,8 +60,6 @@ def run_discrete_histogram():
   keys.sort()
   for key in keys:
     print "%s,%s,%s" % (key,frequencies[key],float(frequencies[key])/total)
-
-from collections import defaultdict
 
 def run_confusion_matrix():
   if len(sys.argv) < 4:
