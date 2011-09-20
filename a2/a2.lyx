@@ -776,6 +776,24 @@ Generalizing the solution to 4c.
 .
 \end_layout
 
+\begin_layout Enumerate
+We realize that in a dataset, non-zero values of x have a negative class.
+ then, 
+\begin_inset Formula $w^{T}x$
+\end_inset
+
+ will be negative for 
+\begin_inset Formula $x^{2}\geq1$
+\end_inset
+
+.
+ multiplying this product by 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+, a negative value, will always render a positive value.
+\end_layout
+
 \end_deeper
 \begin_layout Enumerate
 Seismic waves
