@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+from collections import defaultdict
+import csv
+
+STATION_INDEX = 12
+TOP_STATIONS = [str(x) for x in [7, 24, 3, 80, 19, 38, 63, 12, 74, 65]]
+
+if __name__ == "__main__":
+  data = csv.reader(open('trainingData.csv'))
+  data.next()
+
+  outbuf = defaultdict(list)
+  for row in data:
+    if len(row) > 0:
+      if row[STATION_INDEX] in TOP_STATIONS:
+        outbuf[row[STATION_INDEX]].append(row)
+
+  for station in outbuf:
+    rows = outbuf[station]
+    handle = open('trainingData_%s.csv' % station, 'w')
+    for row in rows:
+      handle.write(','.join(row))
+      handle.write('\n')
+    handle.close()
+
+

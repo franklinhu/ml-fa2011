@@ -1,0 +1,70 @@
+#!/usr/bin/env python
+# Franklin Hu, Sunil Pedapudi
+# CS 194-10
+# Assignment 2
+# multi-classify
+#
+# Given a test file, use all 8 models and guess model with highest output
+from collections import defaultdict
+import csv
+import json
+import os
+import subprocess
+import sys
+import time
+
+import gen_all_filtered_data
+
+DATA_DIR = "5fg_data"
+MODEL_DIR = "5fg_models"
+SCRATCH_DIR = "5fg_scratch"
+PHASES = ['Lg', 'P', 'Pg', 'PKP', 'Pn', 'Rg', 'S', 'Sn']
+
+PHASE_INDEX = 28
+
+DATA_SCRATCH = 'data_scratch'
+SCRATCH_FILE = 'scratch'
+
+def write_transform_row(station, row, phase):
+  transformed = gen_all_filtered_data.transform_datum(row, phase)
+  actual_phase = row[PHASE_INDEX]
+  #name = '5fg_data_single/%s/%s_line_%d_%s_%s' % (station, station,
+  #                                                counter, actual_phase, 
+  #                                                phase)
+  handle = open(DATA_SCRATCH, 'w')
+  handle.write(transformed)
+  handle.close()
+
+if __name__ == "__main__":
+  if len(sys.argv) < 2:
+    print "Usage: multi-classify station"
+    sys.exit(1)
+  station = sys.argv[1]
+
+  counters = defaultdict(lambda : defaultdict(int))
+  datafile = 'trainingData_%s.csv' % station
+  data = csv.reader(open(datafile))
+  for row in data:
+    vals = []
+    for phase in PHASES:
+      write_transform_row(station, row, phase)
+      actual_phase = row[PHASE_INDEX]
+      subprocess.Popen(['svm_classify',
+                        DATA_SCRATCH,
+                        '%s/model_%s_%s' % (MODEL_DIR, station, phase),
+                        SCRATCH_FILE])
+      handle = open(SCRATCH_FILE)
+      val = handle.readline()
+      handle.close()
+
+      vals.append((val, phase, actual_phase))
+      
+    best = max(vals)
+    predicted = best[1]
+    actual = best[2]
+    counters[predicted][actual] += 1
+
+  handle = open('station_%s_counters' % station, 'w')
+  handle.write(json.dumps(counters))
+  handle.close()
+

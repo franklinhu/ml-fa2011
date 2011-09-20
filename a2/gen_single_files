@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+STATIONS = ['12', '19', '24', '38', '3', '63', '65', '74', '7', '80']
+if __name__ == "__main__":
+  for station in STATIONS:
+    handle = open('5fg_data_single/station_%s_holdout.txt' % station)
+    counter = 0
+    for line in handle:
+      new = open('5fg_data_single/%s/line_%d' % (station, counter), 'w')
+      new.write(line)
+      new.close()
+      counter += 1
+    handle.close()
