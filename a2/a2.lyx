@@ -404,9 +404,8 @@ Note that summation (1) indicates the
  & =\sum_{j,k}a_{j}a_{k}\sum_{i=1}^{N}x_{ij}x_{ik}\cdot\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\\
  & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j,k}a_{j}a_{k}x_{ij}x_{ik}\\
  & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\sum_{j}a_{j}x_{ij}\sum_{k}a_{k}x_{ik}\\
- & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\mathbf{a^{T}x}\sum_{k}a_{k}x_{ik}\\
- & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\mathbf{a^{T}x}\mathbf{a^{T}x}\\
- & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\mathbf{a^{T}x}\mathbf{a^{T}x}\\
+ & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\cdot\mathbf{a^{T}x}\sum_{k}a_{k}x_{ik}\\
+ & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\cdot\mathbf{a^{T}x}\mathbf{a^{T}x}\\
  & =\sum_{i=1}^{N}\frac{e^{y_{i}(w^{T}x_{i}+b)}}{(1+e^{y_{i}(w^{T}x_{i}+b)})^{2}}\cdot(\mathbf{a^{T}x})^{2}\geq0
 \end{align*}
 
