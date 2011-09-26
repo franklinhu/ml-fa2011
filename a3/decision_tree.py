@@ -8,8 +8,12 @@ class decision_tree:
     self.attribute = attribute
     self.value_to_tree = {}
 
+  def add_subtree(self, value, subtree):
+    self.value_to_tree[value] = subtree
+
   def classify(self, example):
-    pass
+    value = example[self.attribute]
+    return self.value_to_tree[value].classify(example)
 
 # Implementation of leaf nodes of a decision tree
 class decision_tree_leaf(decision_tree):
