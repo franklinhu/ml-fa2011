@@ -7,7 +7,7 @@ import math
 import pickle
 import sys
 
-from decision_tree import decision_tree
+from decision_tree import *
 
 GOAL = 'goal'
 STATIONS = []
