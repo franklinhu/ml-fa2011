@@ -27,7 +27,10 @@ def decision_tree_learn(examples, attributes, parent_examples):
   A = importance(attributes, examples)
   tree = decision_tree(A)
 
-  raise Exception("NOT FINISHED")
+  for exs in group_by_attribute(A, examples):
+    subtree = decision_tree_learn(exs, list(attribtues).remove(A), examples)
+    tree.add_subtree(A, subtree)
+  return tree
 
 def plurality_value(examples):
   if not examples:
