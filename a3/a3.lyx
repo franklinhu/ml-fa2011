@@ -126,6 +126,25 @@ H(S)\leq & 1
 
 \end_inset
 
+
+\begin_inset Newline newline
+\end_inset
+
+When 
+\begin_inset Formula $p=n$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+H(S)= & B(\frac{p}{p+p})=B(0.5)\\
+= & -0.5\cdot log(0.5)-0.5\cdot log(0.5)\\
+= & -log(0.5)\\
+= & 1
+\end{align*}
+
+\end_inset
+
  
 \end_layout
 
