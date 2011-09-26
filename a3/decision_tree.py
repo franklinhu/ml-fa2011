@@ -8,7 +8,7 @@ class decision_tree:
     self.attribute = attribute
     self.value_to_tree = {}
 
-  def predict(self, example):
+  def classify(self, example):
     pass
 
 # Implementation of leaf nodes of a decision tree
@@ -16,5 +16,5 @@ class decision_tree_leaf(decision_tree):
   def __init__(self, value):
     self.value = value
 
-  def predict(self, example):
+  def classify(self, example):
     return self.value

@@ -3,4 +3,4 @@
 # Fall 2011
 
 def classify(decision_tree, example):
-  pass
+  return decision_tree.classify(example)
