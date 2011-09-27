@@ -49,6 +49,9 @@ def decision_tree_learn(examples, attributes, parent_examples):
   print "++ Computing best attribute"
   A, tree = get_best_attribute(attributes, examples)
 
+  if A is None:
+    return plurality_value(examples)
+
   print "++ Splitting on attribute: %s" % A
   if A in DISCRETE_ATTRIBUTES:
     for attr_val, exs in group_by_attribute(A, examples):
@@ -59,6 +62,10 @@ def decision_tree_learn(examples, attributes, parent_examples):
   
   # Since all the attributes are continuous, do binary split
   lt_exs, gt_exs = split_by_attribute(A, tree.get_split_point(), examples)
+
+  if (len(lt_exs) == 0) or (len(gt_exs) == 0):
+    return plurality_value(examples)
+
   lt_subtree = decision_tree_learn(lt_exs, attributes, examples)
   gt_subtree = decision_tree_learn(gt_exs, attributes, examples)
 
@@ -133,7 +140,7 @@ def continuous_info_gain(attribute, examples):
   index = 0
   total = len(sortable)
   best_gain = 0
-  best_index = index
+  best_index = index + 1
   while index < len(sortable):
     # Skip over elements that have the same class under this attribute
     current_goal = sortable[index].get_goal()
