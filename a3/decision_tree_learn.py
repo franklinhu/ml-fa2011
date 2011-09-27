@@ -12,6 +12,18 @@ from decision_tree import *
 GOAL = 'goal'
 STATIONS = []
 
+class Example:
+  def __init__(self, datum, schema):
+    if not len(datum) == len(schema):
+      raise Exception('Schema does not match example')
+
+    self.data = {}
+    for i in xrange(len(schema)):
+      self.data[schema[i]] = datum[i]
+  
+  def get(self, attribute):
+    return self.data[attribute]
+
 def decision_tree_learn(examples, attributes, parent_examples):
   # If no examples, use pluraity of parent
   if not examples:
@@ -50,7 +62,7 @@ def get_goal_counts(examples):
 
   counts = defaultdict(int)
   for e in examples:
-    counts[e[GOAL]] += 1
+    counts[e.get(GOAL)] += 1
   return counts
 
 def get_plurality(counts):
@@ -66,8 +78,8 @@ def same_class(attribute, examples):
   attr_val = None
   for e in examples:
     if attr_val is None:
-      attr_val = e[attribute]
-    elif not e[attribute] == attr_val:
+      attr_val = e.get(attribute)
+    elif not e.get(attribute) == attr_val:
       return False
 
   # All the same so create a leaf node with the common goal
@@ -95,7 +107,7 @@ def get_info_gain(attribute, examples):
 def bucket_examples_by_attribute(attribute, examples):
   bucketed = defaultdict(list)
   for e in examples:
-    bucketed[e[attribute]].append(e)
+    bucketed[e.get(attribute)].append(e)
   return bucketed
 
 def get_remainder_over_buckets(bucketed, total_count):
@@ -120,7 +132,7 @@ if __name__ == "__main__":
   data = csv.reader(open(input_file, 'r'))
   examples = defaultdict(list)
   for datum in data:
-    examples[datum[STATION_INDEX]].append(datum)
+    examples[datum[STATION_INDEX]].append(Example(datum))
   
   for station in STATIONS:
     e = examples[station]
