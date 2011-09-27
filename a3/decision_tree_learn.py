@@ -32,15 +32,18 @@ def decision_tree_learn(examples, attributes, parent_examples):
   print "+ Decision Tree Learn"
   # If no examples, use plurality of parent
   if not examples:
+    print "++ No examples, using plurality of parent"
     return plurality_value(parent_examples)
 
   # If all are of the same class, use that class
   common_class = same_class(examples)
   if common_class:
+    print "++ All of common class"
     return common_class
 
   # If there are no more attributes left, use plurality
   if not attributes:
+    print "++ No attributes, using plurality"
     return plurality_value(examples)
 
   print "++ Computing best attribute"
@@ -226,7 +229,7 @@ if __name__ == "__main__":
     # dt.prune()
     outfile = "tree_%s" % station
     handle = open(outfile, 'w')
-    handle.write(pickle.dump(dt))
+    pickle.dump(dt, handle)
     handle.close()
 
 
