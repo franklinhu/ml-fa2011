@@ -179,6 +179,12 @@ def get_remainder_over_buckets(bucketed, total_count):
     remainder += weight * bool_entropy(q)
   return remainder
 
+def group_by_attribute(attribute, examples):
+  buckets = defaultdict(list)
+  for e in examples:
+    buckets[e.get(attribute)] = e
+  return buckets.values()
+
 def split_by_attribute(attribute, split_point, examples):
   lt_exs = []
   gt_exs = []
