@@ -8,12 +8,15 @@ import pickle
 import sys
 
 from decision_tree import *
+import parallel
 
 DISCRETE_ATTRIBUTES = [1, 9, 10, 13, 14, 27, 27, 47, 54]
 GOAL = 'phase'
 GOAL_INDEX = 28
 STATIONS = [7, 24, 3, 80, 19, 38, 63, 12, 74, 65]
 STATION_INDEX = 12
+WORKERS = None
+BLACKLISTED_ATTRIBUTES = [GOAL_INDEX, 54]
 
 class Example:
   def __init__(self, datum):
@@ -54,8 +57,11 @@ def decision_tree_learn(examples, attributes, parent_examples):
 
   print "++ Splitting on attribute: %s" % A
   if A in DISCRETE_ATTRIBUTES:
+    print "++ Discrete attribute" 
+    new_attributes = list(attributes)
+    new_attributes.remove(A)
     for attr_val, exs in group_by_attribute(A, examples):
-      subtree = decision_tree_learn(exs, list(attributes).remove(A), 
+      subtree = decision_tree_learn(exs, new_attributes, 
                                     examples)
       tree.add_subtree(attr_val, subtree)
     return tree
@@ -76,7 +82,7 @@ def decision_tree_learn(examples, attributes, parent_examples):
 def plurality_value(examples):
   counts = get_goal_counts(examples)
   best_attr, best_val = get_plurality(counts)
-  return decision_tree_leaf(best_attr)
+  return decision_tree_leaf(best_attr, counts)
 
 def get_plurality_fraction(examples):
   counts = get_goal_counts(examples)
@@ -110,28 +116,25 @@ def same_class(examples):
       return False
 
   # All the same so create a leaf node with the common goal
-  return decision_tree_leaf(attr_val)
+  return decision_tree_leaf(attr_val, get_goal_counts(examples))
 
 def get_best_attribute(attributes, examples):
-  best_attr = None
-  best_gain = 0
-  best_split_point = None
-  for a in attributes:
-    if a in DISCRETE_ATTRIBUTES:
-      gain = discrete_info_gain(a, examples)
-      split_point = None
-    else:
-      gain, split_point = continuous_info_gain(a, examples)
-    
-    print "+++ Tried attribute: %s %f" % (a, gain)
-    if gain > best_gain:
-      best_gain = gain
-      best_attr = a
-      best_split_point = split_point
+  inputs = [[a, examples] for a in attributes]
+  output = WORKERS.run_over_data(inputs)
+
+  gain, best_attr, best_split_point = max(output)
 
   if best_attr in DISCRETE_ATTRIBUTES:
     return best_attr, decision_tree(best_attr)
   return best_attr, continuous_decision_tree(best_attr, best_split_point)
+
+def get_attribute_info_gain(attribute, examples):
+  if attribute in DISCRETE_ATTRIBUTES:
+    gain = discrete_info_gain(attribute, examples)
+    split_point = None
+  else:
+    gain, split_point = continuous_info_gain(attribute, examples)
+  return gain, attribute, split_point
 
 def continuous_info_gain(attribute, examples):
   sortable = list(examples)
@@ -207,8 +210,11 @@ def split_by_attribute(attribute, split_point, examples):
 
 def bool_entropy(q):
   if (q == 0) or (q == 1):
-    return -math.log(1, 2)
-  return -(q * math.log(q, 2) + (1 - q) * math.log(1 - q, 2))
+    return 0
+  retval = -(q * math.log(q, 2) + (1 - q) * math.log(1 - q, 2))
+  if retval < 0:
+    raise Exception(q)
+  return retval
 
 if __name__ == "__main__":
   if len(sys.argv) < 2:
@@ -228,12 +234,21 @@ if __name__ == "__main__":
     examples[int(datum[STATION_INDEX])].append(Example(datum))
 
   attributes = range(len(schema))
-  attributes.pop(GOAL_INDEX)
+  for i in BLACKLISTED_ATTRIBUTES:
+    attributes.remove(i)
+
+  WORKERS = parallel.Workers()
+  WORKERS.initialize_n_workers(2)
+  WORKERS.set_function(get_attribute_info_gain)
+  WORKERS.start()
   
   for station in STATIONS:
+    print "+ Station %d" % station
     exs = examples[station]
     dt = decision_tree_learn(exs, attributes, exs)
-    # dt.prune()
+
+    print "+ Pruning %d" % station
+    dt.prune()
     outfile = "tree_%s" % station
     handle = open(outfile, 'w')
     pickle.dump(dt, handle)
