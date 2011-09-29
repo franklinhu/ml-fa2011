@@ -161,9 +161,76 @@ Splitting continuous attributes
 Majority voting
 \end_layout
 
+\begin_deeper
 \begin_layout Enumerate
+Suppose we have 
+\begin_inset Formula $K$
+\end_inset
+
+ predictions 
+\begin_inset Formula $X_{k}$
+\end_inset
+
+ which predict some true value 
+\begin_inset Formula $\mu$
+\end_inset
+
+ with an error 
+\begin_inset Formula $\epsilon_{k}\sim N(0,\sigma^{2})$
+\end_inset
+
+ so 
+\begin_inset Formula $X_{k}=\mu+\epsilon_{k}$
+\end_inset
+
+.
+ Then,
+\begin_inset Formula 
+\begin{align*}
+\overline{X}= & \frac{1}{k}\cdot\sum_{k}X_{k}\\
+\text{Var}(\overline{X})= & \text{Var}(\frac{1}{k}\cdot\sum_{k}X_{k})\\
+= & \frac{1}{k^{2}}\text{Var}(\sum_{k}X_{k})
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Since the errors are independent, 
+\begin_inset Formula $\text{Var}(\sum_{k}X_{k})=\sum_{k}\text{Var}(X_{k})$
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\text{Var}(\overline{X})= & \frac{1}{k^{2}}\sum_{k}\text{Var}(X_{k})\\
+= & \frac{1}{k^{2}}\cdot k\sigma^{2}\\
+= & \frac{\sigma^{2}}{k}
+\end{align*}
+
+\end_inset
+
 
 \end_layout
 
+\begin_layout Enumerate
+Consider the case when the ensemble learning algorithm uses hypotheses that
+ are entirely dependent.
+ In this case, the error would be equal to 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+.
+ Thus, the error of ensemble learning where the independence assumption
+ is removed is never greater than 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
 \end_body
 \end_document
