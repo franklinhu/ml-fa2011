@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\begin{document}
+
+2.
+Discrete attributes -- \(0/1\) loss\\
+Without loss of generality, let us examine a node with \(m + n\) examples that we wish to split over an arbitrary attribute. This node contains \(m\) correctly classified examples and \(n\) incorrectly classified examples. We recognize that the empirical 0/1 loss for this node is \(\frac{n}{m+n}\). After splitting this node, we observe two children: one with \(m'+n'\) examples and another with \(m''+n''\) examples where \(m',m''\) represent the count of correctly classified examples in each child and \(n',n''\) represent the count of incorrectly classified examples in each child. We wish to show that the empirical loss across both these children is no worse than the empirical loss of the original node. Thus,
+\begin{equation*}
+\frac{m'+n'}{m+n}\frac{n'}{m'+n'} + \frac{m''+n''}{m+n}\frac{n''}{m''+n''} = \frac{n' + n''}{m+n} \leq \frac{n}{m+n}
+\end{equation*}
+We recognize that \(n' + n'' = n\) and thus obtain \(\frac{n}{m+n}\) which is the empirical loss of the original parent node. 
+\\\\
+Continuous attributes -- \(L_2\) loss\\
+Without loss of generality, let us examine a node with \(m + n = |{E}|\) examples that we wish to split over an arbitrary attribute. This node contains \(m\) correctly classified examples and \(n\) incorrectly classified examples which belong to the set \(E\). We associate a value of 0 with each correctly classified example and a value of 1 with each incorrectly classified example. Then, we wish to find the L2 loss of this node. Note: class(\(x\)) returns the value of the classification of x \(\in {0,1}\) and AVG returns the average over the values of the classification of the examples.
+\begin{align*}
+Loss &= \sum_{x \in E}(\mathrm{class}(x) - \mathrm{AVG}(E))^2\\
+&= \sum_{x \in E}(\mathrm{class}(x) - \frac{n}{m+n})^2\\
+&= m\left(0 - \frac{n}{m+n}\right)^2 + n\left(1-\frac{n}{m+n}\right)^2\\
+&= m\left(\frac{n}{m+n}\right)^2 + n\left(\frac{m}{m+n}\right)^2\\
+&= \frac{mn^2 + nm^2}{(m+n)^2}\\
+&= \frac{mn(m+n)}{(m+n)^2}\\
+&= \frac{mn}{m+n}
+\end{align*}
+
+Then, after splitting this node, we observe two children: one with \(m'+n'\) examples and another with \(m''+n''\) examples where \(m',m''\) represent the count of correctly classified examples in each child and \(n',n''\) represent the count of incorrectly classified examples in each child. We wish to show that the empirical loss across both these children is no worse than the empirical loss of the original node. Thus,
+\begin{align*}
+\frac{mn}{m+n} &\geq \frac{m'+n'}{m+n}\frac{m'n'}{m'+n'} + \frac{m''+n''}{m+n}\frac{m''n''}{m''+n''}\\
+mn &\geq m'n' + m''n''\\
+mn &\geq m'n' + (m-m')(n-n')\\
+mn &\geq m'n' + (mn-mn'-m'n+m'n')\\
+mn &\geq mn + 2m'n'-mn'-m'n\\
+0 &= 2m'n' - 2m'n' \geq 2m'n' - mn' - m'n\\
+\end{align*}
+which we obtain from the observation that \(mn' > m'n'\) and \(m'n > m'n'\) since \(m > m', n > n'\)
+\end{document}

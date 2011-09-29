@@ -1,0 +1,41 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\begin{document}
+
+1a. 
+Let us consider
+\begin{align*}
+B(q) &= -qlog(q)-(1-q)log(1-q)\\
+\frac{dB}{dq} &= log(1-q) - log(q)\\
+\frac{d^2B}{d^2q} &= \frac{1}{(q-1)q}\\
+\end{align*}
+
+Then, let \(q = \frac{p}{p+n}\). We wish to find a maxima in order to demonstrate \(H(S) = B(\frac{p}{p+n}) \leq 1\). Then, 
+
+\begin{align*}
+B'(\frac{p}{p+n})
+&= log(1-\frac{p}{p+n}) - log(\frac{p}{p+n})\\
+&= log(\frac{n}{p+n}) - log(\frac{p}{p+n})\\
+&= log(\frac{\frac{n}{p+n}}{\frac{p}{p+n}})\\
+&= log(\frac{n}{p}) = 0
+\end{align*}
+This shows that there exists an optima where \(n = p\) and we can verify that this point is a maximum by
+\begin{align*}
+B''(\frac{p}{p+n}) &= \frac{1}{(\frac{p}{p+n}-1)\frac{p}{p+n}}\\
+\textnormal{Since \(n = p\),}\\
+&= \frac{1}{(0.5-1)0.5} < 0
+\end{align*}
+Therefore, there exists a maximum when \(n = p\). Note that in this scenario,
+
+\begin{align*}
+H(S) 
+&= B(\frac{p}{p+p})=B(0.5)\\
+&= -0.5\cdot log(0.5)-0.5\cdot log(0.5)\\
+&= -log(0.5)\\
+&= 1
+\end{align*}
+
+which shows that the equality is achieved under said constraint.
+
+\end{document}
