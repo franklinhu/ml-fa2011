@@ -144,6 +144,201 @@ which shows that the equality is achieved under said constraint.
 \end_deeper
 \begin_layout Enumerate
 Empirical Loss and Splits
+\begin_inset Newline newline
+\end_inset
+
+Discrete attributes -- 
+\begin_inset Formula \ensuremath{0/1}
+
+\end_inset
+
+ loss
+\begin_inset Newline newline
+\end_inset
+
+Without loss of generality, let us examine a node with 
+\begin_inset Formula \ensuremath{m+n}
+
+\end_inset
+
+ examples that we wish to split over an arbitrary attribute.
+ This node contains 
+\begin_inset Formula \ensuremath{m}
+
+\end_inset
+
+ correctly classified examples and 
+\begin_inset Formula \ensuremath{n}
+
+\end_inset
+
+ incorrectly classified examples.
+ We recognize that the empirical 0/1 loss for this node is 
+\begin_inset Formula \ensuremath{\frac{n}{m+n}}
+
+\end_inset
+
+.
+ After splitting this node, we observe two children: one with 
+\begin_inset Formula \ensuremath{m'+n'}
+
+\end_inset
+
+ examples and another with 
+\begin_inset Formula \ensuremath{m''+n''}
+
+\end_inset
+
+ examples where 
+\begin_inset Formula \ensuremath{m',m''}
+
+\end_inset
+
+ represent the count of correctly classified examples in each child and
+ 
+\begin_inset Formula \ensuremath{n',n''}
+
+\end_inset
+
+ represent the count of incorrectly classified examples in each child.
+ We wish to show that the empirical loss across both these children is no
+ worse than the empirical loss of the original node.
+ Thus, 
+\begin_inset Formula 
+\[
+\frac{m'+n'}{m+n}\frac{n'}{m'+n'}+\frac{m''+n''}{m+n}\frac{n''}{m''+n''}=\frac{n'+n''}{m+n}\leq\frac{n}{m+n}
+\]
+
+\end_inset
+
+ We recognize that 
+\begin_inset Formula \ensuremath{n'+n''=n}
+
+\end_inset
+
+ and thus obtain 
+\begin_inset Formula \ensuremath{\frac{n}{m+n}}
+
+\end_inset
+
+ which is the empirical loss of the original parent node.
+ 
+\begin_inset Newline newline
+\end_inset
+
+ Continuous attributes -- 
+\begin_inset Formula \ensuremath{L_{2}}
+
+\end_inset
+
+ loss
+\begin_inset Newline newline
+\end_inset
+
+Without loss of generality, let us examine a node with 
+\begin_inset Formula \ensuremath{m+n=|{E}|}
+
+\end_inset
+
+ examples that we wish to split over an arbitrary attribute.
+ This node contains 
+\begin_inset Formula \ensuremath{m}
+
+\end_inset
+
+ correctly classified examples and 
+\begin_inset Formula \ensuremath{n}
+
+\end_inset
+
+ incorrectly classified examples which belong to the set 
+\begin_inset Formula \ensuremath{E}
+
+\end_inset
+
+.
+ We associate a value of 0 with each correctly classified example and a
+ value of 1 with each incorrectly classified example.
+ Then, we wish to find the L2 loss of this node.
+ Note: class(
+\begin_inset Formula \ensuremath{x}
+
+\end_inset
+
+) returns the value of the classification of x 
+\begin_inset Formula \ensuremath{\in{0,1}}
+
+\end_inset
+
+ and AVG returns the average over the values of the classification of the
+ examples.
+ 
+\begin_inset Formula 
+\begin{align*}
+Loss & =\sum_{x\in E}(\mathrm{class}(x)-\mathrm{AVG}(E))^{2}\\
+ & =\sum_{x\in E}(\mathrm{class}(x)-\frac{n}{m+n})^{2}\\
+ & =m\left(0-\frac{n}{m+n}\right)^{2}+n\left(1-\frac{n}{m+n}\right)^{2}\\
+ & =m\left(\frac{n}{m+n}\right)^{2}+n\left(\frac{m}{m+n}\right)^{2}\\
+ & =\frac{mn^{2}+nm^{2}}{(m+n)^{2}}\\
+ & =\frac{mn(m+n)}{(m+n)^{2}}\\
+ & =\frac{mn}{m+n}
+\end{align*}
+
+\end_inset
+
+Then, after splitting this node, we observe two children: one with 
+\begin_inset Formula \ensuremath{m'+n'}
+
+\end_inset
+
+ examples and another with 
+\begin_inset Formula \ensuremath{m''+n''}
+
+\end_inset
+
+ examples where 
+\begin_inset Formula \ensuremath{m',m''}
+
+\end_inset
+
+ represent the count of correctly classified examples in each child and
+ 
+\begin_inset Formula \ensuremath{n',n''}
+
+\end_inset
+
+ represent the count of incorrectly classified examples in each child.
+ We wish to show that the empirical loss across both these children is no
+ worse than the empirical loss of the original node.
+ Thus, 
+\begin_inset Formula 
+\begin{align*}
+\frac{mn}{m+n} & \geq\frac{m'+n'}{m+n}\frac{m'n'}{m'+n'}+\frac{m''+n''}{m+n}\frac{m''n''}{m''+n''}\\
+mn & \geq m'n'+m''n''\\
+mn & \geq m'n'+(m-m')(n-n')\\
+mn & \geq m'n'+(mn-mn'-m'n+m'n')\\
+mn & \geq mn+2m'n'-mn'-m'n\\
+0 & =2m'n'-2m'n'\geq2m'n'-mn'-m'n
+\end{align*}
+
+\end_inset
+
+ which we obtain from the observation that 
+\begin_inset Formula \ensuremath{mn'>m'n'}
+
+\end_inset
+
+ and 
+\begin_inset Formula \ensuremath{m'n>m'n'}
+
+\end_inset
+
+ since 
+\begin_inset Formula \ensuremath{m>m',n>n'}
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Enumerate
