@@ -8,3 +8,6 @@ from decision_tree_learn import Example
 def classify(decision_tree, example):
   e = Example(example)
   return decision_tree.classify(e)
+
+def bagged_classify(bagged_decision_tree, example):
+  return bagged_decision_tree.classify(Example(example))
