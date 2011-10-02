@@ -12,7 +12,6 @@ import dt_util
 from decision_tree import *
 import parallel
 
-DISCRETE_ATTRIBUTES = [1, 9, 10, 13, 14, 27, 27, 47, 54]
 ATTRIBUTE_INDICES = [
   ('ddet60', 58),
   ('dtime60', 59), 
@@ -67,16 +66,7 @@ def decision_tree_learn(examples, attributes, parent_examples):
     return dt_util.get_plurality_node(examples)
 
   print "++ Splitting on attribute: %s" % A
-  if A in DISCRETE_ATTRIBUTES:
-    print "++ Discrete attribute" 
-    new_attributes = list(attributes)
-    new_attributes.remove(A)
-    for attr_val, exs in group_by_attribute(A, examples):
-      subtree = decision_tree_learn(exs, new_attributes, 
-                                    examples)
-      tree.add_subtree(attr_val, subtree)
-    return tree
-  
+ 
   # Since all the attributes are continuous, do binary split
   lt_exs, gt_exs = split_by_attribute(A, tree.get_split_point(), examples)
 
@@ -96,16 +86,10 @@ def get_best_attribute(attributes, examples):
 
   gain, best_attr, best_split_point = max(output)
 
-  if best_attr in DISCRETE_ATTRIBUTES:
-    return best_attr, decision_tree(best_attr)
   return best_attr, continuous_decision_tree(best_attr, best_split_point)
 
 def get_attribute_info_gain(attribute, examples):
-  if attribute in DISCRETE_ATTRIBUTES:
-    gain = discrete_info_gain(attribute, examples)
-    split_point = None
-  else:
-    gain, split_point = continuous_info_gain(attribute, examples)
+  gain, split_point = continuous_info_gain(attribute, examples)
   return gain, attribute, split_point
 
 def continuous_info_gain(attribute, examples):
