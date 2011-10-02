@@ -54,7 +54,7 @@ class decision_tree:
     return decision_tree_leaf(best_class, unsplit_counts)
 
   def classify(self, example):
-    value = example[self.attribute]
+    value = example.get(self.attribute)
     return self.value_to_tree[value].classify(example)
 
 
@@ -96,8 +96,8 @@ class continuous_decision_tree(decision_tree):
     return self.evaluate_chi_square(chi_square, unsplit_counts)
 
   def classify(self, example):
-    value = example[self.attribute]
-    if value < split_point:
+    value = example.get(self.attribute)
+    if value < self.split_point:
       return self.lt_subtree.classify(example)
     return self.gt_subtree.classify(example)
 
@@ -131,3 +131,14 @@ class decision_tree_leaf(decision_tree):
 
   def classify(self, example):
     return self.value
+
+class bagged_decision_tree:
+  def __init__(self, trees):
+    self.trees = trees
+
+  def classify(self, example):
+    predictions = [tree.classify(example) for tree in self.trees]
+    cls, count = get_plurality(get_goal_counts(predictions))
+    return cls
+
+
