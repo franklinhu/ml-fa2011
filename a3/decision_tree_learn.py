@@ -5,18 +5,43 @@ import csv
 from collections import defaultdict
 import math
 import pickle
+import random
 import sys
 
 from decision_tree import *
 import parallel
 
 DISCRETE_ATTRIBUTES = [1, 9, 10, 13, 14, 27, 27, 47, 54]
+ATTRIBUTE_INDICES = [
+  ('ddet60', 58),
+  ('dtime60', 59), 
+  ('hmxmn', 39), 
+  ('htov0.25', 48), 
+  ('htov0.5', 49), 
+  ('htov1', 50), 
+  ('htov2', 51), 
+  ('htov4', 52), 
+  ('hvrat', 38), 
+  ('hvratp', 37), 
+  ('inang1', 44), 
+  ('inang3', 40), 
+  ('per', 8), 
+  ('plans', 35), 
+  ('rect', 34), 
+  ('arrival_slow', 4), 
+  ('ddet100', 62), 
+  ('dtime100', 63), 
+  ('ddet300', 66), 
+  ('dtime300', 67)]
+
 GOAL = 'phase'
 GOAL_INDEX = 28
 STATIONS = [7, 24, 3, 80, 19, 38, 63, 12, 74, 65]
 STATION_INDEX = 12
 WORKERS = None
 BLACKLISTED_ATTRIBUTES = [GOAL_INDEX, 54]
+
+BAGGING_M = 10
 
 class Example:
   def __init__(self, datum):
@@ -32,7 +57,6 @@ class Example:
     return self.data[GOAL_INDEX]
 
 def decision_tree_learn(examples, attributes, parent_examples):
-  print "+ Decision Tree Learn"
   # If no examples, use plurality of parent
   if not examples:
     print "++ No examples, using plurality of parent"
@@ -233,18 +257,21 @@ if __name__ == "__main__":
       continue
     examples[int(datum[STATION_INDEX])].append(Example(datum))
 
-  attributes = range(len(schema))
-  for i in BLACKLISTED_ATTRIBUTES:
-    attributes.remove(i)
+  attributes = [a[1] for a in ATTRIBUTE_INDICES] #range(len(schema))
+  #for i in BLACKLISTED_ATTRIBUTES:
+  #  attributes.remove(i)
 
   WORKERS = parallel.Workers()
-  WORKERS.initialize_n_workers(2)
+  WORKERS.initialize_n_workers(3)
   WORKERS.set_function(get_attribute_info_gain)
   WORKERS.start()
   
   for station in STATIONS:
     print "+ Station %d" % station
     exs = examples[station]
+
+    # Generate decision tree
+    """
     dt = decision_tree_learn(exs, attributes, exs)
 
     print "+ Pruning %d" % station
@@ -253,5 +280,19 @@ if __name__ == "__main__":
     handle = open(outfile, 'w')
     pickle.dump(dt, handle)
     handle.close()
+    """
 
+    # Generate bagged decision tree
+    trees = []
+    for m in xrange(BAGGING_M):
+      bag_exs = []
+      for n in xrange(len(exs)):
+        bag_exs.append(random.choice(exs))
 
+      tree = decision_tree_learn(bag_exs, attributes, bag_exs)
+      trees.append(tree)
+    bagged_tree = bagged_decision_tree(trees)
+    outfile = "bagged_tree_%s" % station
+    handle = open(outfile, 'w')
+    pickle.dump(bagged_tree, handle)
+    handle.close()
