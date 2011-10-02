@@ -6,7 +6,7 @@ from collections import defaultdict
 import numpy as np
 import scipy.stats
 
-import decision_tree_learn
+import dt_util
 
 CONFIDENCE_BOUND = 100
 
@@ -50,7 +50,7 @@ class decision_tree:
       return self
     
     print "++ Pruned"
-    best_class, best_val = decision_tree_learn.get_plurality(unsplit_counts)
+    best_class, best_val = dt_util.get_plurality(unsplit_counts)
     return decision_tree_leaf(best_class, unsplit_counts)
 
   def classify(self, example):
@@ -138,7 +138,8 @@ class bagged_decision_tree:
 
   def classify(self, example):
     predictions = [tree.classify(example) for tree in self.trees]
-    cls, count = get_plurality(get_goal_counts(predictions))
+    cls, count = dt_util.get_plurality(dt_util.get_goal_counts(
+                   predictions))
     return cls
 
 

@@ -8,6 +8,7 @@ import pickle
 import random
 import sys
 
+import dt_util
 from decision_tree import *
 import parallel
 
@@ -39,31 +40,17 @@ GOAL_INDEX = 28
 STATIONS = [7, 24, 3, 80, 19, 38, 63, 12, 74, 65]
 STATION_INDEX = 12
 WORKERS = None
-BLACKLISTED_ATTRIBUTES = [GOAL_INDEX, 54]
 
 BAGGING_M = 10
-
-class Example:
-  def __init__(self, datum):
-    self.data = datum
-  
-  def get(self, attribute_index):
-    val = self.data[attribute_index]
-    if attribute_index in DISCRETE_ATTRIBUTES:
-      return val
-    return float(val)
-
-  def get_goal(self):
-    return self.data[GOAL_INDEX]
 
 def decision_tree_learn(examples, attributes, parent_examples):
   # If no examples, use plurality of parent
   if not examples:
     print "++ No examples, using plurality of parent"
-    return plurality_value(parent_examples)
+    return dt_util.get_plurality_node(parent_examples)
 
   # If all are of the same class, use that class
-  common_class = same_class(examples)
+  common_class = dt_util.same_class(examples)
   if common_class:
     print "++ All of common class"
     return common_class
@@ -71,13 +58,13 @@ def decision_tree_learn(examples, attributes, parent_examples):
   # If there are no more attributes left, use plurality
   if not attributes:
     print "++ No attributes, using plurality"
-    return plurality_value(examples)
+    return dt_util.get_plurality_node(examples)
 
   print "++ Computing best attribute"
   A, tree = get_best_attribute(attributes, examples)
 
   if A is None:
-    return plurality_value(examples)
+    return dt_util.get_plurality_node(examples)
 
   print "++ Splitting on attribute: %s" % A
   if A in DISCRETE_ATTRIBUTES:
@@ -94,7 +81,7 @@ def decision_tree_learn(examples, attributes, parent_examples):
   lt_exs, gt_exs = split_by_attribute(A, tree.get_split_point(), examples)
 
   if (len(lt_exs) == 0) or (len(gt_exs) == 0):
-    return plurality_value(examples)
+    return dt_util.get_plurality_node(examples)
 
   lt_subtree = decision_tree_learn(lt_exs, attributes, examples)
   gt_subtree = decision_tree_learn(gt_exs, attributes, examples)
@@ -102,45 +89,6 @@ def decision_tree_learn(examples, attributes, parent_examples):
   tree.add_less_than_subtree(lt_subtree)
   tree.add_greater_than_subtree(gt_subtree)
   return tree
-
-def plurality_value(examples):
-  counts = get_goal_counts(examples)
-  best_attr, best_val = get_plurality(counts)
-  return decision_tree_leaf(best_attr, counts)
-
-def get_plurality_fraction(examples):
-  counts = get_goal_counts(examples)
-  best_attr, best_val = get_plurality(counts)
-  return float(best_val) / len(examples)
-
-def get_goal_counts(examples):
-  if not examples:
-    raise Exception('get_goal_counts called on empty examples list')
-
-  counts = defaultdict(int)
-  for e in examples:
-    counts[e.get_goal()] += 1
-  return counts
-
-def get_plurality(counts):
-  best_attr = None
-  best_val = 0
-  for k in counts:
-    if counts[k] > best_val:
-      best_attr = k
-      best_val = counts[k]
-  return best_attr, best_val
-
-def same_class(examples):
-  attr_val = None
-  for e in examples:
-    if attr_val is None:
-      attr_val = e.get_goal()
-    elif not e.get_goal() == attr_val:
-      return False
-
-  # All the same so create a leaf node with the common goal
-  return decision_tree_leaf(attr_val, get_goal_counts(examples))
 
 def get_best_attribute(attributes, examples):
   inputs = [[a, examples] for a in attributes]
@@ -179,8 +127,8 @@ def continuous_info_gain(attribute, examples):
 
     left = sortable[:index]
     right = sortable[index:]
-    l_entropy = bool_entropy(get_plurality_fraction(left))
-    r_entropy = bool_entropy(get_plurality_fraction(right))
+    l_entropy = bool_entropy(dt_util.get_plurality_fraction(left))
+    r_entropy = bool_entropy(dt_util.get_plurality_fraction(right))
     gain = (float(len(left)) / total) * l_entropy + \
            (float(len(right)) / total) * r_entropy
     if gain > best_gain:
@@ -197,7 +145,7 @@ def discrete_info_gain(attribute, examples):
 
   remainder = get_remainder_over_buckets(bucketed, total)
   
-  base_info = get_plurality_fraction(examples)
+  base_info = dt_util.get_plurality_fraction(examples)
   return base_info - remainder
 
 def bucket_examples_by_attribute(attribute, examples):
@@ -212,7 +160,7 @@ def get_remainder_over_buckets(bucketed, total_count):
   for k in keys:
     elems = bucketed[k]
     weight = float(len(elems)) / total_count
-    q = get_plurality_fraction(elems)
+    q = dt_util.get_plurality_fraction(elems)
     remainder += weight * bool_entropy(q)
   return remainder
 
@@ -255,11 +203,9 @@ if __name__ == "__main__":
   for datum in data:
     if not datum:
       continue
-    examples[int(datum[STATION_INDEX])].append(Example(datum))
+    examples[int(datum[STATION_INDEX])].append(dt_util.Example(datum))
 
-  attributes = [a[1] for a in ATTRIBUTE_INDICES] #range(len(schema))
-  #for i in BLACKLISTED_ATTRIBUTES:
-  #  attributes.remove(i)
+  attributes = [a[1] for a in ATTRIBUTE_INDICES]
 
   WORKERS = parallel.Workers()
   WORKERS.initialize_n_workers(3)
