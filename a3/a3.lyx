@@ -73,79 +73,72 @@ Entropy and Information Gain
 
 \begin_deeper
 \begin_layout Enumerate
+Let us consider 
 \begin_inset Formula 
 \begin{align*}
-H(S)= & B(\frac{p}{p+n})\\
-= & -\frac{p}{p+n}\cdot log(\frac{p}{p+n})-(1-\frac{p}{p+n})\cdot log(1-\frac{p}{p+n})\\
-= & -\frac{p}{p+n}\cdot log(\frac{p}{p+n})-\frac{n}{p+n}\cdot log(\frac{n}{p+n})\\
-= & \frac{1}{p+n}\cdot\left(-p\cdot log(\frac{p}{p+n})-n\cdot log(\frac{n}{p+n})\right)
+B(q) & =-qlog(q)-(1-q)log(1-q)\\
+\frac{dB}{dq} & =log(1-q)-log(q)\\
+\frac{d^{2}B}{d^{2}q} & =\frac{1}{(q-1)q}
 \end{align*}
 
 \end_inset
 
+Then, let 
+\begin_inset Formula \ensuremath{q=\frac{p}{p+n}}
 
-\begin_inset Newline newline
-\end_inset
-
-Since 
-\begin_inset Formula $\frac{p}{p+n}\in[0,1]$
-\end_inset
-
-, 
-\begin_inset Formula $log(\frac{p}{p+n})\in(-\infty,0]$
-\end_inset
-
- and
-\begin_inset Formula $-log(\frac{p}{p+n})\in[0,\infty)$
 \end_inset
 
 .
- Because 
-\begin_inset Formula $log(\frac{p}{p+n})<1$
+ We wish to find a maxima in order to demonstrate 
+\begin_inset Formula \ensuremath{H(S)=B(\frac{p}{p+n})\leq1}
+
 \end_inset
 
-, 
-\begin_inset Formula $H(S)$
-\end_inset
-
- must be greater than some function were we substitute 
-\begin_inset Formula $1$
-\end_inset
-
- for 
-\begin_inset Formula $log$
-\end_inset
-
-:
+.
+ Then,
 \begin_inset Formula 
 \begin{align*}
-H(S)\leq & \frac{1}{p+n}(-p\cdot1-n\cdot1)\\
-H(S)\leq & \frac{p+n}{p+n}\\
-H(S)\leq & 1
+B'(\frac{p}{p+n}) & =log(1-\frac{p}{p+n})-log(\frac{p}{p+n})\\
+ & =log(\frac{n}{p+n})-log(\frac{p}{p+n})\\
+ & =log(\frac{\frac{n}{p+n}}{\frac{p}{p+n}})\\
+ & =log(\frac{n}{p})=0
 \end{align*}
 
 \end_inset
 
+This shows that there exists an optima where 
+\begin_inset Formula \ensuremath{n=p}
 
-\begin_inset Newline newline
 \end_inset
 
-When 
-\begin_inset Formula $p=n$
-\end_inset
-
-:
+ and we can verify that this point is a maximum by 
 \begin_inset Formula 
 \begin{align*}
-H(S)= & B(\frac{p}{p+p})=B(0.5)\\
-= & -0.5\cdot log(0.5)-0.5\cdot log(0.5)\\
-= & -log(0.5)\\
-= & 1
+B''(\frac{p}{p+n}) & =\frac{1}{(\frac{p}{p+n}-1)\frac{p}{p+n}}\\
+\textnormal{Since \ensuremath{n=p},}\\
+ & =\frac{1}{(0.5-1)0.5}<0
 \end{align*}
 
 \end_inset
 
- 
+ Therefore, there exists a maximum when 
+\begin_inset Formula \ensuremath{n=p}
+
+\end_inset
+
+.
+ Note that in this scenario,
+\begin_inset Formula 
+\begin{align*}
+H(S) & =B(\frac{p}{p+p})=B(0.5)\\
+ & =-0.5\cdot log(0.5)-0.5\cdot log(0.5)\\
+ & =-log(0.5)\\
+ & =1
+\end{align*}
+
+\end_inset
+
+which shows that the equality is achieved under said constraint.
 \end_layout
 
 \end_deeper
