@@ -98,7 +98,7 @@ Then, let
  Then,
 \begin_inset Formula 
 \begin{align*}
-B'(\frac{p}{p+n}) & =log(1-\frac{p}{p+n})-log(\frac{p}{p+n})\\
+B^{\prime}(\frac{p}{p+n}) & =log(1-\frac{p}{p+n})-log(\frac{p}{p+n})\\
  & =log(\frac{n}{p+n})-log(\frac{p}{p+n})\\
  & =log(\frac{\frac{n}{p+n}}{\frac{p}{p+n}})\\
  & =log(\frac{n}{p})=0
@@ -114,7 +114,7 @@ This shows that there exists an optima where
  and we can verify that this point is a maximum by 
 \begin_inset Formula 
 \begin{align*}
-B''(\frac{p}{p+n}) & =\frac{1}{(\frac{p}{p+n}-1)\frac{p}{p+n}}\\
+B^{\prime\prime}(\frac{p}{p+n}) & =\frac{1}{(\frac{p}{p+n}-1)\frac{p}{p+n}}\\
 \textnormal{Since \ensuremath{n=p},}\\
  & =\frac{1}{(0.5-1)0.5}<0
 \end{align*}
@@ -139,6 +139,22 @@ H(S) & =B(\frac{p}{p+p})=B(0.5)\\
 \end_inset
 
 which shows that the equality is achieved under said constraint.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula 
+\begin{align*}
+\text{Gain}(S,X_{j})= & H(S)-\sum_{k}\frac{|S_{k}|}{|S|}H(S_{k})\\
+= & B(\frac{p}{p+n})-\sum_{k}\frac{p_{k}+n_{k}}{p+n}B(\frac{p_{k}}{p_{k}+n_{k}})\\
+\text{Gain}^{\prime}(S,X_{j})=\\
+\text{Gain}^{\prime\prime}(S,X_{j})= & \frac{1}{\frac{p}{p+n}\cdot(\frac{p}{p+n}-1)}-\sum_{k}\frac{|S_{k}|}{|S|}\cdot\frac{1}{\frac{p_{k}}{p_{k}+n_{k}}\cdot(\frac{p_{k}}{p_{k}+n_{k}}-1)}\\
+= & \frac{p+n}{p\cdot(\frac{-n}{p+n})}-\sum_{k}\frac{|S_{k}|}{|S|}\cdot\frac{p_{k}+n_{k}}{p_{k}\cdot(\frac{-n_{k}}{p_{k}+n_{k}})}\\
+= & -\frac{(p+n)^{2}}{np}-
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \end_deeper
@@ -351,51 +367,17 @@ Majority voting
 
 \begin_deeper
 \begin_layout Enumerate
-Suppose we have 
+Since the errors made by each hypothesis are independent, the error of the
+ ensemble algorithm is simply the sum of the probabilities of the combinations
+ of getting a majority multiplied by the probablity of those errors occuring.
+ If we have 
 \begin_inset Formula $K$
 \end_inset
 
- predictions 
-\begin_inset Formula $X_{k}$
-\end_inset
-
- which predict some true value 
-\begin_inset Formula $\mu$
-\end_inset
-
- with an error 
-\begin_inset Formula $\epsilon_{k}\sim N(0,\sigma^{2})$
-\end_inset
-
- so 
-\begin_inset Formula $X_{k}=\mu+\epsilon_{k}$
-\end_inset
-
-.
- Then,
+ hypotheses, this error is:
 \begin_inset Formula 
 \begin{align*}
-\overline{X}= & \frac{1}{k}\cdot\sum_{k}X_{k}\\
-\text{Var}(\overline{X})= & \text{Var}(\frac{1}{k}\cdot\sum_{k}X_{k})\\
-= & \frac{1}{k^{2}}\text{Var}(\sum_{k}X_{k})
-\end{align*}
-
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-Since the errors are independent, 
-\begin_inset Formula $\text{Var}(\sum_{k}X_{k})=\sum_{k}\text{Var}(X_{k})$
-\end_inset
-
-
-\begin_inset Formula 
-\begin{align*}
-\text{Var}(\overline{X})= & \frac{1}{k^{2}}\sum_{k}\text{Var}(X_{k})\\
-= & \frac{1}{k^{2}}\cdot k\sigma^{2}\\
-= & \frac{\sigma^{2}}{k}
+\text{Error(ensemble)}= & \sum_{i=\lfloor\frac{K}{2}\rfloor+1}^{K}{K \choose i}\cdot\epsilon^{i}\cdot(1-\epsilon)^{K-i}
 \end{align*}
 
 \end_inset
