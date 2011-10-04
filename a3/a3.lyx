@@ -555,11 +555,21 @@ Empirical loss decreases by 1
 
 \begin_layout Standard
 In all of the cases except one, empirical loss increases or stays the same.
- For the case when it can decrease (
+ For these, this proves that the split point between elements of different
+ Y-values are local minima.
+ 
+\begin_inset Newline newline
+\end_inset
+
+For the case when empirical loss can decrease (
 \begin_inset Formula $S_{2}$
 \end_inset
 
-(b)):
+(b)), consider what happens to 
+\begin_inset Formula $S_{1}$
+\end_inset
+
+:
 \end_layout
 
 \begin_layout Enumerate
