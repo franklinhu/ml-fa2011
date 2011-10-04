@@ -17,7 +17,7 @@ Setting this to 0 allows us to recognize that there exists a minimum where \(\fr
 
 \begin{equation*}
 \frac{\partial^2 Gain(S,X_j)}{\partial S_k^2} 
-= -\frac{|S_k|}{|S|} \frac{1}{(\frac{p_k}{p_k+n_k}-1)(\frac{p_k}{p_k+n_k})}
+= -\frac{|S_k|}{|S|} \frac{1}{(\frac{p_k}{p_k+n_k}-1)(\frac{p_k}{p_k+n_k})}, \forall k
 > 0
 \end{equation*}
 since \(\frac{p_k}{p_k+n_k} \leq 1 \). This shows that the function is convex with a global minimum greater than zero and thus strictly positive. Let us note that if all \(\frac{p_k}{p_k+n_k}\) are equal, then \(\sum_{k}\frac{|S_{k}|}{|S|}\cdot H(S_k)\) is equal to \(H(S)\) so \(Gain\) is 0.
