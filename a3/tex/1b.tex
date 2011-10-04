@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\begin{document}
+
+Given
+\begin{equation*}
+Gain(S,X_{j}) = H(S)-\sum_{k}\frac{|S_{k}|}{|S|}\cdot H(S_k)
+\end{equation*}
+we wish to find \(\frac{\partial^2 Gain(S,X_j)}{\partial S_k^2}\) in order to show that the function is convex. Then, we can argue that since \(Gain\) at the global minimum is positive and the function is convex, then \(Gain\) is strictly positive. So, 
+\begin{align*}
+Gain'(S,X_j)
+&= \frac{\partial}{\partial S_k} -\sum_k \frac{|S_k|}{S} H(S_k)
+&= -\frac{p_k}{p+n}(log(\frac{p_k}{p_k+n_k}) + log(1-\frac{p_k}{p_k+n_k})), \forall k
+\end{align*}
+Setting this to 0 allows us to recognize that there exists a minimum where \(\frac{p_k}{p_k+n_k} = 0.5\). We then realize that if (a) for \(k = 2\) where \(\frac{p_k}{p_k+n_k} = 0.5\) for all \(k\), then \(Gain\) is positive. and (b) where \(k > 2\) and one such \(\frac{p_{ki}}{p_{ki}+n_{ki}} = 0.5\), then \(Gain\) is positive since \(\sum_{k \neq ki}\frac{|S_{k}|}{|S|}\cdot H(S_k)\) is less than \(H(S)\). Then, we show convexity:
+
+\begin{equation*}
+\frac{\partial^2 Gain(S,X_j)}{\partial S_k^2} 
+= -\frac{|S_k|}{|S|} \frac{1}{(\frac{p_k}{p_k+n_k}-1)(\frac{p_k}{p_k+n_k})}
+> 0
+\end{equation*}
+since \(\frac{p_k}{p_k+n_k} \leq 1 \). This shows that the function is convex with a global minimum greater than zero and thus strictly positive. Let us note that if all \(\frac{p_k}{p_k+n_k}\) are equal, then \(\sum_{k}\frac{|S_{k}|}{|S|}\cdot H(S_k)\) is equal to \(H(S)\) so \(Gain\) is 0.
+\end{document}
