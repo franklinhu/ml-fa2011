@@ -147,60 +147,131 @@ which shows that the equality is achieved under said constraint.
 \end_layout
 
 \begin_layout Enumerate
-In event where the ratio 
-\begin_inset Formula $\frac{p_{k}}{p_{k}+n_{k}}$
+Given 
+\begin_inset Formula 
+\[
+Gain(S,X_{j})=H(S)-\sum_{k}\frac{|S_{k}|}{|S|}\cdot H(S_{k})
+\]
+
 \end_inset
 
- is the same for all 
-\begin_inset Formula $k$
+ we wish to find 
+\begin_inset Formula \ensuremath{\frac{\partial^{2}Gain(S,X_{j})}{\partial S_{k}^{2}}}
+
 \end_inset
 
- then the weighted sum would be equal to the overall entropy 
-\begin_inset Formula $H(S)$
+ in order to show that the function is convex.
+ Then, we can argue that since 
+\begin_inset Formula \ensuremath{Gain}
+
 \end_inset
 
-:
+ at the global minimum is positive and the function is convex, then 
+\begin_inset Formula \ensuremath{Gain}
+
+\end_inset
+
+ is strictly positive.
+ So, 
 \begin_inset Formula 
 \begin{align*}
-\text{Gain}(S,X_{j})= & H(S)-\sum_{k}\frac{|S_{k}|}{|S|}\cdot H(S)\\
-= & 0
+Gain'(S,X_{j}) & =\frac{\partial}{\partial S_{k}}-\sum_{k}\frac{|S_{k}|}{S}H(S_{k}) & =-\frac{p_{k}}{p+n}(log(\frac{p_{k}}{p_{k}+n_{k}})+log(1-\frac{p_{k}}{p_{k}+n_{k}})),\forall k
 \end{align*}
 
 \end_inset
 
-
-\begin_inset Newline newline
-\end_inset
-
-For all other ratios, the gain will be positive.
- Since 
-\begin_inset Formula $H(S)\leq1$
-\end_inset
-
-, for the gain to be positive:
-\begin_inset Formula 
-\begin{align*}
-0< & H(S)-\sum_{k}\frac{|S_{k}|}{|S|}\cdot H(S_{k})\\
-\sum_{k}\frac{|S_{k}|}{|S|}\cdot H(S_{k})< & H(S)\\
-\sum_{k}\frac{p_{k}+n_{k}}{p+n}\cdot\frac{}{}
-\end{align*}
-
-\end_inset
-
+ Setting this to 0 allows us to recognize that there exists a minimum where
  
-\begin_inset Formula 
-\begin{align*}
-\text{Gain}(S,X_{j})= & H(S)-\sum_{k}\frac{|S_{k}|}{|S|}H(S_{k})\\
-= & B(\frac{p}{p+n})-\sum_{k}\frac{p_{k}+n_{k}}{p+n}B(\frac{p_{k}}{p_{k}+n_{k}})\\
-\text{Gain}^{\prime}(S,X_{j})=\\
-\text{Gain}^{\prime\prime}(S,X_{j})= & \frac{1}{\frac{p}{p+n}\cdot(\frac{p}{p+n}-1)}-\sum_{k}\frac{|S_{k}|}{|S|}\cdot\frac{1}{\frac{p_{k}}{p_{k}+n_{k}}\cdot(\frac{p_{k}}{p_{k}+n_{k}}-1)}\\
-= & \frac{p+n}{p\cdot(\frac{-n}{p+n})}-\sum_{k}\frac{|S_{k}|}{|S|}\cdot\frac{p_{k}+n_{k}}{p_{k}\cdot(\frac{-n_{k}}{p_{k}+n_{k}})}\\
-= & -\frac{(p+n)^{2}}{np}-\sum_{k}\frac{p_{k}+n_{k}}{p+n}\cdot\frac{(p_{k}+n_{k})^{2}}{-n_{k}p_{k}}\\
-\end{align*}
+\begin_inset Formula \ensuremath{\frac{p_{k}}{p_{k}+n_{k}}=0.5}
 
 \end_inset
 
+.
+ We then realize that if (a) for 
+\begin_inset Formula \ensuremath{k=2}
 
+\end_inset
+
+ where 
+\begin_inset Formula \ensuremath{\frac{p_{k}}{p_{k}+n_{k}}=0.5}
+
+\end_inset
+
+ for all 
+\begin_inset Formula \ensuremath{k}
+
+\end_inset
+
+, then 
+\begin_inset Formula \ensuremath{Gain}
+
+\end_inset
+
+ is positive.
+ and (b) where 
+\begin_inset Formula \ensuremath{k>2}
+
+\end_inset
+
+ and one such 
+\begin_inset Formula \ensuremath{\frac{p_{ki}}{p_{ki}+n_{ki}}=0.5}
+
+\end_inset
+
+, then 
+\begin_inset Formula \ensuremath{Gain}
+
+\end_inset
+
+ is positive since 
+\begin_inset Formula \ensuremath{\sum_{k\neq ki}\frac{|S_{k}|}{|S|}\cdot H(S_{k})}
+
+\end_inset
+
+ is less than 
+\begin_inset Formula \ensuremath{H(S)}
+
+\end_inset
+
+.
+ Then, we show convexity:
+\begin_inset Formula 
+\[
+\frac{\partial^{2}Gain(S,X_{j})}{\partial S_{k}^{2}}=-\frac{|S_{k}|}{|S|}\frac{1}{(\frac{p_{k}}{p_{k}+n_{k}}-1)(\frac{p_{k}}{p_{k}+n_{k}})},\forall k>0
+\]
+
+\end_inset
+
+ since 
+\begin_inset Formula \ensuremath{\frac{p_{k}}{p_{k}+n_{k}}\leq1}
+
+\end_inset
+
+.
+ This shows that the function is convex with a global minimum greater than
+ zero and thus strictly positive.
+ Let us note that if all 
+\begin_inset Formula \ensuremath{\frac{p_{k}}{p_{k}+n_{k}}}
+
+\end_inset
+
+ are equal, then 
+\begin_inset Formula \ensuremath{\sum_{k}\frac{|S_{k}|}{|S|}\cdot H(S_{k})}
+
+\end_inset
+
+ is equal to 
+\begin_inset Formula \ensuremath{H(S)}
+
+\end_inset
+
+ so 
+\begin_inset Formula \ensuremath{Gain}
+
+\end_inset
+
+ is 0.
+ 
 \end_layout
 
 \end_deeper
