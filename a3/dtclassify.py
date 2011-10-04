@@ -3,7 +3,7 @@
 # Fall 2011
 
 from decision_tree import *
-from decision_tree_learn import Example
+from dt_util import *
 
 def classify(decision_tree, example):
   e = Example(example)

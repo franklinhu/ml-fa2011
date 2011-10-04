@@ -2,6 +2,8 @@
 # CS 194-10 Machine Learning
 # Assignment 3
 
+from collections import defaultdict
+
 # Wrapper class for training examples
 class Example:
   def __init__(self, datum):
