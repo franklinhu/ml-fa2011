@@ -682,6 +682,14 @@ The empirical loss changes cancel.
 This proves that our empirical loss minima occur at split points.
  The absolute empirical loss is the minimum among the local minima so therefore
  it must occur at a split point between elements of different Y-values.
+\begin_inset Newline newline
+\end_inset
+
+TL;DR Either a split point between elements with different Y-values is a
+ local minima, or if by moving the split point you can decrease the empirical
+ loss, you can continue moving this split point until you reach another
+ local minima at a split point between elements with different Y-values.
+ 
 \end_layout
 
 \end_deeper
@@ -716,14 +724,22 @@ If the independent assumption is removed, the error of the ensemble algorithm
 \end_inset
 
 .
- For example, consider the case when having 
-\begin_inset Formula $K=3,\epsilon=\frac{2}{10}$
+ For example, consider the case when 
+\begin_inset Formula $K=3$
 \end_inset
 
-.
- If te hypothesis are adversarial in attempting to make the overall algorithm
- produce more errors, they can orchestrate their answers in the following
- way (X's are incorrect results):
+ and each hypothesis makes 2 error per 10 guesses.
+ An adversarial set of hypotheses can budget one error for a legitimate
+ mistake and the next error for a coordinated mistake.
+ The latter is used when another hypothesis makes a mistake, and you 
+\begin_inset Quotes eld
+\end_inset
+
+support
+\begin_inset Quotes erd
+\end_inset
+
+ its error and derive a majority by using your second error.
 \begin_inset Newline newline
 \end_inset
 
