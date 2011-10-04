@@ -17,6 +17,11 @@ if __name__ == "__main__":
   input_file = sys.argv[1]
   decision_tree_file = sys.argv[2]
 
+  if decision_tree_file.startswith("bagged_"):
+    bagged = True
+  else:
+    bagged = False
+
   dtfile = open(decision_tree_file)
   dt = pickle.load(dtfile)
 
@@ -29,7 +34,10 @@ if __name__ == "__main__":
     if len(line) == 0:
       continue
     total += 1
-    output = dtclassify.classify(dt, line)
+    if bagged:
+      output = dtclassify.bagged_classify(dt, line)
+    else:
+      output = dtclassify.classify(dt, line)
     if output == line[PHASE_INDEX]:
       success += 1
 

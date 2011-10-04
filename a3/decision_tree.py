@@ -138,8 +138,10 @@ class bagged_decision_tree:
 
   def classify(self, example):
     predictions = [tree.classify(example) for tree in self.trees]
-    cls, count = dt_util.get_plurality(dt_util.get_goal_counts(
-                   predictions))
+    counts = defaultdict(int)
+    for p in predictions:
+      counts[p] += 1
+    cls, count = dt_util.get_plurality(counts)
     return cls
 
 
