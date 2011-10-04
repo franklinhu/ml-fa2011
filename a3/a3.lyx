@@ -405,8 +405,276 @@ mn & \geq mn+2m'n'-mn'-m'n\\
 
 \begin_layout Enumerate
 Splitting continuous attributes
+\begin_inset Newline newline
+\end_inset
+
+To prove that the optimal split point always comes between examples with
+ different Y-values, consider the following:
+\begin_inset Newline newline
+\end_inset
+
+Suppose we have a split point between two classes of examples.
+ If we move the split point to the left or to the right, we increase the
+ size of one set 
+\begin_inset Formula $S_{1}$
+\end_inset
+
+ and decrease the size of the other 
+\begin_inset Formula $S_{2}$
+\end_inset
+
+.
+ Call this element that was added to 
+\begin_inset Formula $S_{1}$
+\end_inset
+
+as 
+\begin_inset Formula $i_{1}$
+\end_inset
+
+ with class 
+\begin_inset Formula $c_{1}$
+\end_inset
+
+.
+ Consider the following cases (prior to moving 
+\begin_inset Formula $c_{1}$
+\end_inset
+
+):
 \end_layout
 
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $MAJORITY(S_{1})=c_{1}$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Empirical loss does not change
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $MAJORITY(S_{1})\neq c_{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $c_{1}$
+\end_inset
+
+ becomes the majority after 
+\begin_inset Formula $i_{1}$
+\end_inset
+
+is added
+\begin_inset Newline newline
+\end_inset
+
+Empirical loss does not change since there was a tie beforehand
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $c_{1}$
+\end_inset
+
+is not majority after 
+\begin_inset Formula $i_{1}$
+\end_inset
+
+is added
+\begin_inset Newline newline
+\end_inset
+
+Empirical loss increases by 1
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+At the same time, consider what happens to 
+\begin_inset Formula $S_{2}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $MAJORITY(S_{2})=c_{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $c_{1}$
+\end_inset
+
+ stays the majority after 
+\begin_inset Formula $i_{1}$
+\end_inset
+
+is removed
+\begin_inset Newline newline
+\end_inset
+
+Empirical loss does not change
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $c_{1}$
+\end_inset
+
+ is not longer the majority after 
+\begin_inset Formula $i_{1}$
+\end_inset
+
+ is removed
+\begin_inset Newline newline
+\end_inset
+
+Empirical loss increases by 1
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+\begin_inset Formula $MAJORITY(S_{2})\neq c_{1}$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Empirical loss decreases by 1
+\end_layout
+
+\begin_layout Standard
+In all of the cases except one, empirical loss increases or stays the same.
+ For the case when it can decrease (
+\begin_inset Formula $S_{2}$
+\end_inset
+
+(b)):
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $MAJORITY(S_{1})=c_{1}$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+We are moving the item into a set where it already of the majority, so the
+ empirical loss in 
+\begin_inset Formula $S_{1}$
+\end_inset
+
+ remains the same.
+ Consider the next element adjacent to 
+\begin_inset Formula $i_{1}$
+\end_inset
+
+that we shall call 
+\begin_inset Formula $i_{2}$
+\end_inset
+
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+If 
+\begin_inset Formula $i_{2}$
+\end_inset
+
+ is not of class 
+\begin_inset Formula $c_{1}$
+\end_inset
+
+ we have found another split point that has a lower empiricial loss than
+ the first one and is between element of different Y-values.
+\end_layout
+
+\begin_layout Enumerate
+If 
+\begin_inset Formula $i_{2}$
+\end_inset
+
+ is also of class 
+\begin_inset Formula $c_{1}$
+\end_inset
+
+, we can almost move it into 
+\begin_inset Formula $S_{1}$
+\end_inset
+
+, decreasing the overall empirical loss.
+ We continue to do this until we reach (i).
+ We will always reach (i) since 
+\begin_inset Formula $c_{1}$
+\end_inset
+
+ is not the majority class in 
+\begin_inset Formula $S_{2}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+\begin_inset Formula $MAJORITY(S_{1})\neq c_{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $c_{1}$
+\end_inset
+
+ becomes the majority after 
+\begin_inset Formula $i_{1}$
+\end_inset
+
+is added
+\begin_inset Newline newline
+\end_inset
+
+Same as (a) above.
+ We will eventually find another split point with a lower empirical loss.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $c_{1}$
+\end_inset
+
+is not majority after 
+\begin_inset Formula $i_{1}$
+\end_inset
+
+is added
+\begin_inset Newline newline
+\end_inset
+
+The empirical loss changes cancel.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+This proves that our empirical loss minima occur at split points.
+ The absolute empirical loss is the minimum among the local minima so therefore
+ it must occur at a split point between elements of different Y-values.
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
 Majority voting
 \end_layout
