@@ -3,7 +3,7 @@
 # Fall 2011
 # Assignment 4
 
-import a4
+import a4_munge
 
 if __name__ == "__main__":
   pass
