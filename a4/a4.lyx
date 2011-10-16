@@ -108,7 +108,7 @@ y_{n}
 \end_inset
 
  Assume that each neural node has its own set of weights 
-\begin_inset Formula $w_{i}$
+\begin_inset Formula ${\bf w_{i}}$
 \end_inset
 
  where 
@@ -142,48 +142,74 @@ h_{j}=c_{j}\cdot{\bf w_{j}\cdot x}
 \begin_inset Newline newline
 \end_inset
 
-Now, we can see that the output layer can simply be written in terms of
- the inputs without the hidden layer.
+Now, we can see that the output layer nodes can simply be written in terms
+ of the inputs without the hidden layer.
+ For a particular output node:
 \begin_inset Formula 
 \begin{align*}
-{\bf y}= & \left(\begin{array}{c}
-y_{1}\\
-y_{2}\\
-...\\
-y_{n}
-\end{array}\right)\\
-= & \left(\begin{array}{c}
-c_{k_{1}}\cdot{\bf w_{k_{1}}\cdot h}\\
-c_{k_{2}}\cdot{\bf w_{k_{2}}\cdot h}\\
-...\\
-c_{k_{n}}\cdot{\bf w_{k_{n}}\cdot h}
-\end{array}\right)\\
-= & \left(\begin{array}{c}
-c_{k_{1}}\cdot{\bf w_{k_{1}}\cdot}\left(\begin{array}{c}
+y_{k}= & c_{k}\cdot{\bf w_{k}\cdot h}\\
+= & c_{k}\cdot{\bf w_{k}\cdot}\left(\begin{array}{c}
 c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot x}\\
 c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot x}\\
 ...\\
 c_{j_{n}}\cdot{\bf w_{j_{n}}\cdot x}
 \end{array}\right)\\
-c_{k_{2}}\cdot{\bf w_{k_{2}}\cdot}\left(\begin{array}{c}
+= & c_{k}\cdot\left(\begin{array}{cccc}
+w_{k_{1}} & w_{k_{2}} & ... & w_{k_{n}}\end{array}\right)\left(\begin{array}{c}
 c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot x}\\
 c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot x}\\
 ...\\
 c_{j_{n}}\cdot{\bf w_{j_{n}}\cdot x}
 \end{array}\right)\\
-...\\
-c_{k_{n}}\cdot{\bf w_{k_{n}}\cdot}\left(\begin{array}{c}
-c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot x}\\
-c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot x}\\
-...\\
-c_{j_{n}}\cdot{\bf w_{j_{n}}\cdot x}
-\end{array}\right)
-\end{array}\right)
+= & c_{k}\sum_{i=1}^{n}w_{k_{i}}\cdot c_{j_{i}}\cdot{\bf w_{j_{i}}\cdot x}
 \end{align*}
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Enumerate
+For an arbitrary number of hidden nodes, the same computation can be done.
+ We demonstrate below with two hidden layers: 
+\begin_inset Formula ${\bf h_{m},h_{n}}$
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+y_{k}= & c_{k}\cdot{\bf w_{k}\cdot h_{m}}\\
+= & c_{k}\cdot{\bf w_{k}\cdot}\left(\begin{array}{c}
+c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot h_{m}}\\
+c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot h_{m}}\\
+...\\
+c_{j_{n}}\cdot{\bf w_{j_{n}}\cdot h_{m}}
+\end{array}\right)\\
+= & c_{k}\cdot\left(\begin{array}{cccc}
+w_{k_{1}} & w_{k_{2}} & ... & w_{k_{n}}\end{array}\right)\left(\begin{array}{c}
+c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot h_{m}}\\
+c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot h_{m}}\\
+...\\
+c_{j_{n}}\cdot{\bf w_{j_{n}}\cdot h_{m}}
+\end{array}\right)\\
+= & c_{k}\sum_{i=1}^{n}w_{k_{i}}\cdot c_{j_{i}}\cdot{\bf w_{j_{i}}\cdot h_{m}}\\
+= & c_{k}\sum_{i=1}^{n}w_{k_{i}}\cdot c_{j_{i}}\cdot\left(\begin{array}{cccc}
+w_{j_{1}} & w_{j_{2}} & ... & w_{j_{n}}\end{array}\right)\left(\begin{array}{c}
+c_{m_{1}}\cdot{\bf w_{m_{1}}\cdot h_{n}}\\
+c_{m_{2}}\cdot{\bf w_{m_{2}}\cdot h_{n}}\\
+...\\
+c_{m_{n}}\cdot{\bf w_{m_{n}}\cdot h_{n}}
+\end{array}\right)\\
+= & c_{k}\sum_{i=1}^{n}w_{k_{i}}\cdot c_{j_{i}}\cdot\left(\sum_{a=1}^{nFIXTHIS!!!}w_{j_{a}}\cdot c_{m_{a}}\cdot{\bf w_{m_{a}}\cdot h_{n}}\right)
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+This thus generalizes to any number of hidden layers: TODO
 \end_layout
 
 \end_deeper
