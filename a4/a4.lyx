@@ -163,20 +163,20 @@ c_{k_{1}}\cdot{\bf w_{k_{1}}\cdot}\left(\begin{array}{c}
 c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot x}\\
 c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot x}\\
 ...\\
-c_{j_{3}}\cdot{\bf w_{j_{3}}\cdot x}
+c_{j_{n}}\cdot{\bf w_{j_{n}}\cdot x}
 \end{array}\right)\\
 c_{k_{2}}\cdot{\bf w_{k_{2}}\cdot}\left(\begin{array}{c}
 c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot x}\\
 c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot x}\\
 ...\\
-c_{j_{3}}\cdot{\bf w_{j_{3}}\cdot x}
+c_{j_{n}}\cdot{\bf w_{j_{n}}\cdot x}
 \end{array}\right)\\
 ...\\
 c_{k_{n}}\cdot{\bf w_{k_{n}}\cdot}\left(\begin{array}{c}
 c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot x}\\
 c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot x}\\
 ...\\
-c_{j_{3}}\cdot{\bf w_{j_{3}}\cdot x}
+c_{j_{n}}\cdot{\bf w_{j_{n}}\cdot x}
 \end{array}\right)
 \end{array}\right)
 \end{align*}
