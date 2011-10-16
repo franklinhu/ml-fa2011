@@ -80,6 +80,113 @@ Assignment 4
 Linear neural networks
 \end_layout
 
+\begin_deeper
+\begin_layout Enumerate
+Suppose we have a three layer linear neural network with one input layer
+ 
+\begin_inset Formula ${\bf x}$
+\end_inset
+
+, one hidden layer 
+\begin_inset Formula ${\bf h}$
+\end_inset
+
+, and one output layer 
+\begin_inset Formula ${\bf y}$
+\end_inset
+
+.
+ Each layer can be expressed as a vector of the values of the nodes in that
+ layer.
+ For example, 
+\begin_inset Formula ${\bf y}=\left(\begin{array}{c}
+y_{1}\\
+y_{2}\\
+...\\
+y_{n}
+\end{array}\right).$
+\end_inset
+
+ Assume that each neural node has its own set of weights 
+\begin_inset Formula $w_{i}$
+\end_inset
+
+ where 
+\begin_inset Formula $i$
+\end_inset
+
+ is the node index.
+ We can express the value of the a particular output in terms of the hidden
+ layer:
+\begin_inset Formula 
+\[
+y_{k}=c_{k}\cdot{\bf w_{k}\cdot h}
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Similarly, we can express the value of each node in the hidden layer in
+ terms of the inputs.
+\begin_inset Formula 
+\[
+h_{j}=c_{j}\cdot{\bf w_{j}\cdot x}
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Now, we can see that the output layer can simply be written in terms of
+ the inputs without the hidden layer.
+\begin_inset Formula 
+\begin{align*}
+{\bf y}= & \left(\begin{array}{c}
+y_{1}\\
+y_{2}\\
+...\\
+y_{n}
+\end{array}\right)\\
+= & \left(\begin{array}{c}
+c_{k_{1}}\cdot{\bf w_{k_{1}}\cdot h}\\
+c_{k_{2}}\cdot{\bf w_{k_{2}}\cdot h}\\
+...\\
+c_{k_{n}}\cdot{\bf w_{k_{n}}\cdot h}
+\end{array}\right)\\
+= & \left(\begin{array}{c}
+c_{k_{1}}\cdot{\bf w_{k_{1}}\cdot}\left(\begin{array}{c}
+c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot x}\\
+c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot x}\\
+...\\
+c_{j_{3}}\cdot{\bf w_{j_{3}}\cdot x}
+\end{array}\right)\\
+c_{k_{2}}\cdot{\bf w_{k_{2}}\cdot}\left(\begin{array}{c}
+c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot x}\\
+c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot x}\\
+...\\
+c_{j_{3}}\cdot{\bf w_{j_{3}}\cdot x}
+\end{array}\right)\\
+...\\
+c_{k_{n}}\cdot{\bf w_{k_{n}}\cdot}\left(\begin{array}{c}
+c_{j_{1}}\cdot{\bf w_{j_{1}}\cdot x}\\
+c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot x}\\
+...\\
+c_{j_{3}}\cdot{\bf w_{j_{3}}\cdot x}
+\end{array}\right)
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
 ML estimation of exponential model
 \end_layout
