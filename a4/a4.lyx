@@ -213,6 +213,28 @@ c_{m_{n}}\cdot{\bf w_{m_{n}}\cdot h_{n}}
 This thus generalizes to any number of hidden layers: TODO
 \end_layout
 
+\begin_layout Enumerate
+For the case when 
+\begin_inset Formula $h\ll n$
+\end_inset
+
+, a neural net with the hidden layer will do 
+\begin_inset Formula $O(hn)$
+\end_inset
+
+ computations to find the linear combination of the weighted sum of inputs
+ where as without the hidden layer, as shown in (a), the output is only
+ dependent on 
+\begin_inset Formula $O(n)$
+\end_inset
+
+, so we save those 
+\begin_inset Formula $h-1$
+\end_inset
+
+ other computations over the inputs.
+\end_layout
+
 \end_deeper
 \begin_layout Enumerate
 ML estimation of exponential model
