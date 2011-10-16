@@ -161,7 +161,8 @@ c_{j_{2}}\cdot{\bf w_{j_{2}}\cdot x}\\
 ...\\
 c_{j_{n}}\cdot{\bf w_{j_{n}}\cdot x}
 \end{array}\right)\\
-= & c_{k}\sum_{i=1}^{n}w_{k_{i}}\cdot c_{j_{i}}\cdot{\bf w_{j_{i}}\cdot x}
+= & c_{k}\sum_{i=1}^{n}w_{k_{i}}\cdot c_{j_{i}}\cdot{\bf w_{j_{i}}\cdot x}\\
+= & c_{k}\left(\sum_{i=1}^{n}w_{k_{i}}\cdot c_{j_{i}}\cdot{\bf w_{j_{i}}}\right){\bf x}
 \end{align*}
 
 \end_inset
