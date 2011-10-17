@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\begin{document}
+
+Knowing 
+\begin{equation*}
+P(x) = \frac{1}{b}e^{-\frac{x}{b}}
+\end{equation*}
+(a)\\
+We write the likelihood function given \(x_i\) as
+\begin{align*}
+\mathcal{L}(b|x_1,\hdots,x_N) 
+&= \prod_{i = 1}^N \frac{1}{b}e^{-\frac{x}{b}}\\
+&= \left(\frac{1}{b}\right)^N \prod_{i = 1}^N e^{-\frac{x}{b}}\\
+&= \left(\frac{1}{b}\right)^N e^{\sum_{i=0}^N \frac{x_i}{b}}
+\end{align*}
+\\
+(b)\\
+We first find
+\begin{align*}
+log(\mathcal{L}) 
+&= log\left(\left(\frac{1}{b}\right)^N e^{\sum_{i=0}^N \frac{x_i}{b}}\right)\\
+&= log\left(\left(\frac{1}{b}\right)^N\right) + log\left(e^{\sum_{i=0}^N \frac{x_i}{b}}\right)\\
+&= n(log(1) - log(b)) + \sum_{i=0}^N \frac{x_i}{b}log(e)
+\end{align*}
+
+Then,
+\begin{align*}
+\frac{\partial log \mathcal{L}}{\partial b}
+&= \frac{\partial N(log(1) - log(b))}{\partial b} + \frac{\partial \sum_{i=0}^N \frac{x_i}{b}log(e)}{\partial b}\\
+&= -\frac{N}{b} + \frac{\partial \frac{N}{b}\sum_{i=0}^N x_i\cdot log(e)}{\partial b}\\
+&= -\frac{N}{b} - \frac{N}{b^2}\sum_{i=0}^N x_i\cdot log(e)\\
+&= -\frac{N}{b}\left(1-\frac{1}{b}\sum_{i=0}^N x_i log(e)\right)
+\end{align*}
+
+(c)\\
+We aim to maximize \(\mathcal{L}\) so,
+\begin{equation*}
+\frac{\partial \mathcal{L}}{\partial b} = -\frac{N}{b}\left(1-\frac{1}{b}\sum_{i=0}^N x_i log(e)\right) = 0
+\end{equation*}
+We can reassemble this as
+\begin{align*}
+-\frac{N}{b}\left(1-\frac{1}{b}log(e)\sum_{i=0}^N x_i\right)
+&= 0\\
+-N + \frac{N}{b}log(e)\sum_{i=0}^N x_i &= 0\\
+\frac{N}{b}log(e)\sum_{i=0}^N x_i &= N\\
+Nlog(e)\sum_{i=0}^N x_i &= Nb\\
+log(e)\sum_{i=0}^N x_i &= b
+\end{align*}
+
+\end{document}
