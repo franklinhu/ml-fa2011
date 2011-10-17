@@ -19,7 +19,7 @@ Assignment 4 \\
                     \bf{y}= \left( \begin{array}{c}
                     y_1 \\
                     y_2 \\
-                    \hdots \\
+                    \vdots \\
                     y_n \end{array} \right)
                 \end{equation}
                 Assume that each neural node has its own set of weights 
@@ -44,6 +44,7 @@ Assignment 4 \\
                             \left( \begin{array}{c}
                             {c_j}_1 \cdot \bf{{w_j}_1} \cdot \bf{x} \\
                             {c_j}_2 \cdot \bf{{w_j}_2} \cdot \bf{x} \\
+                            \vdots \\
                             {c_j}_n \cdot \bf{{w_j}_n} \cdot \bf{x}
                             \end{array} \right) \\
                         &= c_k \cdot 
@@ -53,6 +54,7 @@ Assignment 4 \\
                             \left( \begin{array}{c}
                                 {c_j}_1 \cdot \bf{{w_j}_1} \cdot \bf{x} \\
                                 {c_j}_2 \cdot \bf{{w_j}_2} \cdot \bf{x} \\
+                                \vdots \\
                                 {c_j}_n \cdot \bf{{w_j}_n} \cdot \bf{x}
                             \end{array} \right) \\
                         &= c_k \sum\limits_{i=1}^n {w_k}_i \cdot {c_j}_i 
