@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\begin{document}
+Franklin Hu, Sunil Pedapudi \\
+CS 194-10 Machine Learning \\
+Fall 2011 \\
+Assignment 4 \\
+
+\begin{enumerate}
+    \item Linear neural networks
+        \begin{enumerate}
+            \item 
+                Suppose we have a three layer neural network with one input
+                layer \(x\), one hidden layer \(h\), and one output layer 
+                \(y\). Each layer can be expressed as a vector of the 
+                values of the nodes in that layer. For example,
+                \begin{equation}
+                    \bf{y}= \left( \begin{array}{c}
+                    y_1 \\
+                    y_2 \\
+                    \hdots \\
+                    y_n \end{array} \right)
+                \end{equation}
+                Assume that each neural node has its own set of weights 
+                \(\bf{w_i}\) where \(i\) is the node index. We can express 
+                the value of a particular output in terms of the hidden 
+                layer:
+                \begin{equation}
+                    y_k= c_k \cdot \bf{w_k} \cdot \bf{h}
+                \end{equation}
+                Similarly, we can express the value of each node in the 
+                hidden layer in terms of the inputs.
+                \begin{equation}
+                    h_j= c_j \cdot \bf{w_j} \cdot \bf{x}
+                \end{equation}
+                Now, we can see that the output layer nodes can simply be 
+                written in terms of the inputs without the hidden layer.
+                For a particular output node:
+                \begin{align*}
+                    y_k
+                        &= c_k \cdot \bf{w_k} \cdot \bf{h} \\
+                        &= {c_k} \cdot \bf{w_k} \cdot 
+                            \left( \begin{array}{c}
+                            {c_j}_1 \cdot \bf{{w_j}_1} \cdot \bf{x} \\
+                            {c_j}_2 \cdot \bf{{w_j}_2} \cdot \bf{x} \\
+                            {c_j}_n \cdot \bf{{w_j}_n} \cdot \bf{x}
+                            \end{array} \right) \\
+                        &= c_k \cdot 
+                            \left( \begin{array}{cccc}
+                                {w_k}_1 & {w_k}_2 & \hdots & {w_k}_n
+                            \end{array} \right)
+                            \left( \begin{array}{c}
+                                {c_j}_1 \cdot \bf{{w_j}_1} \cdot \bf{x} \\
+                                {c_j}_2 \cdot \bf{{w_j}_2} \cdot \bf{x} \\
+                                {c_j}_n \cdot \bf{{w_j}_n} \cdot \bf{x}
+                            \end{array} \right) \\
+                        &= c_k \sum\limits_{i=1}^n {w_k}_i \cdot {c_j}_i 
+                            \cdot \bf{{w_j}_i} \cdot \bf{x} \\
+                        &= c_k \left( \sum\limits_{i=1}^n {w_k}_i 
+                            \cdot {c_j}_i \cdot \bf{{w_j}_i} \right) \bf{x}
+                \end{align*}
+        \end{enumerate}
+    \item ML estimation of exponential model
+    \item ML estimation of noisy-OR model
+\end{enumerate}
+
+\end{document}
