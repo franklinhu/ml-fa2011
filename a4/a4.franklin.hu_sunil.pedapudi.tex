@@ -94,8 +94,8 @@ Assignment 4 \\
                 We write the likelihood function given \(x_i\) as
                 \begin{align*}
                 \mathcal{L}(b|x_1,\hdots,x_N) 
-                &= \prod_{i = 1}^N \frac{1}{b}e^{-\frac{x}{b}}\\
-                &= \left(\frac{1}{b}\right)^N \prod_{i = 1}^N e^{-\frac{x}{b}}\\
+                &= \prod_{i = 1}^N \frac{1}{b}e^{-\frac{x_i}{b}}\\
+                &= \left(\frac{1}{b}\right)^N \prod_{i = 1}^N e^{-\frac{x_i}{b}}\\
                 &= \left(\frac{1}{b}\right)^N e^{\sum_{i=0}^N \frac{x_i}{b}}
                 \end{align*}
 
