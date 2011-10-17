@@ -1,3 +1,7 @@
+# Franklin Hu, Sunil Pedapudi
+# CS 194-10 Machine Learning
+# Fall 2011
+# Assignment 4
 import pickle
 import os
 
@@ -38,24 +42,24 @@ def munge_NTF(email_file,features):
     return output
 
 def _munge_frequency(email_file):
-  """
-  Counts the frequency of terms an email file
-  """
-  email = open(email_file, 'r')
-  freq = defaultdict(int)
-  for line in email:
-    tok = line.strip(" ").split(" ")
-    for t in tok:
-      freq[t] += 1
-  email.close()
+    """
+    Counts the frequency of terms an email file
+    """
+    email = open(email_file, 'r')
+    freq = defaultdict(int)
+    for line in email:
+        tok = line.strip(" ").split(" ")
+        for t in tok:
+            freq[t] += 1
+    email.close()
 
-  return freq
+    return freq
 
 def _get_features(features_file):
-  handle = open(features_file, 'r')
-  features = pickle.load(handle)
-  handle.close()
-  return features
+    handle = open(features_file, 'r')
+    features = pickle.load(handle)
+    handle.close()
+    return features
 
 def NBclassify_Boolean(example,model,cost_ratio):
     return 0
