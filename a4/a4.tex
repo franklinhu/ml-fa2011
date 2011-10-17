@@ -10,7 +10,7 @@ Assignment 4 \\
 \begin{enumerate}
     \item Linear neural networks
         \begin{enumerate}
-            \item 
+            \item % 1a
                 Suppose we have a three layer neural network with one input
                 layer \(x\), one hidden layer \(h\), and one output layer 
                 \(y\). Each layer can be expressed as a vector of the 
@@ -60,6 +60,17 @@ Assignment 4 \\
                         &= c_k \left( \sum\limits_{i=1}^n {w_k}_i 
                             \cdot {c_j}_i \cdot \bf{{w_j}_i} \right) \bf{x}
                 \end{align*}
+            \item % 1b
+                For an arbitrary number of hidden nodes, the same
+                computation can be done. We demonstrate below with two
+                hidden layers: \(h_m, h_n\)
+            \item % 1c
+                For the case when \(h \ll n\), a neural net with the hidden
+                layer will do \(O(hn)\) computations to find the linear
+                combination of the weighted sum of inputs whereas without
+                the hidden layer, as shown in (a), the output is only
+                dependent on \(x\). This computations is \(O(n)\), so we 
+                save those \(h-1\) other computations over the inputs.
         \end{enumerate}
     \item ML estimation of exponential model
     \item ML estimation of noisy-OR model
