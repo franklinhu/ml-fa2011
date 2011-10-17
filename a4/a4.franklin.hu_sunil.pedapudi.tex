@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{mathtools}
 \usepackage{amssymb}
+\usepackage{fullpage}
 \begin{document}
 Franklin Hu, Sunil Pedapudi \\
 CS 194-10 Machine Learning \\
@@ -93,13 +94,16 @@ Assignment 4 \\
             \item % 2a
                 We write the likelihood function given \(x_i\) as
                 \begin{align*}
-                \mathcal{L}(b|x_1,\hdots,x_N) 
+                \mathcal{L}(b) 
                 &= \prod_{i = 1}^N \frac{1}{b}e^{-\frac{x_i}{b}}\\
-                &= \left(\frac{1}{b}\right)^N \prod_{i = 1}^N e^{-\frac{x_i}{b}}\\
-                &= \left(\frac{1}{b}\right)^N e^{\sum_{i=0}^N \frac{x_i}{b}}
+                &= \left(\frac{1}{b}\right)^N \prod_{i=1}^N e^{-\frac{x_i}{b}}\\
+                &= \left(\frac{1}{b}\right)^N e^{\sum_{i=0}^N -\frac{x_i}{b}}\\
+                &= \left(\frac{1}{b}\right)^N exp(-\frac{1}{b}\sum_{i=0}^N x_i)\\
+                \textnormal{Let } \bar{x} &= \frac{1}{N}\sum_{i=1}^Nx_i,\\
+                \mathcal{L}(b) &= \left(\frac{1}{b}\right)^N exp(-\frac{1}{b}N\bar{x})
                 \end{align*}
 
-            \item % 2b
+            \item %pp 2b
                 We first find
                 \begin{align*}
                 log(\mathcal{L}) 
