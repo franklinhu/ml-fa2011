@@ -25,42 +25,52 @@ Assignment 4 \\
                 Assume that each neural node has its own set of weights 
                 \(\bf{w_i}\) where \(i\) is the node index. We can express 
                 the value of a particular output in terms of the hidden 
-                layer:
+                layer
                 \begin{equation}
-                    y_k= c_k \cdot \bf{w_k} \cdot \bf{h}
+                    y_k= c_{y_k} \cdot \bf{w_{y_k}} \cdot \bf{h}
                 \end{equation}
+                where \(c_{y_k}\) is the constant multiplier of \(y_k\),
+                \(w_{y_k}\) is the set of weights for \(y_k\), and \(h\)
+                is the vector of hidden nodes. \\
                 Similarly, we can express the value of each node in the 
                 hidden layer in terms of the inputs.
                 \begin{equation}
-                    h_j= c_j \cdot \bf{w_j} \cdot \bf{x}
+                    h_j= c_{h_j} \cdot \bf{w_{h_j}} \cdot \bf{x}
                 \end{equation}
                 Now, we can see that the output layer nodes can simply be 
                 written in terms of the inputs without the hidden layer.
                 For a particular output node:
                 \begin{align*}
                     y_k
-                        &= c_k \cdot \bf{w_k} \cdot \bf{h} \\
-                        &= {c_k} \cdot \bf{w_k} \cdot 
+                        &= c_{y_k} \cdot \bf{w_{y_k}} \cdot \bf{h} \\
+                        &= c_{y_k} \cdot \bf{w_{y_k}} \cdot
                             \left( \begin{array}{c}
-                            {c_j}_1 \cdot \bf{{w_j}_1} \cdot \bf{x} \\
-                            {c_j}_2 \cdot \bf{{w_j}_2} \cdot \bf{x} \\
+                            h_1 \\
+                            h_2 \\
                             \vdots \\
-                            {c_j}_n \cdot \bf{{w_j}_n} \cdot \bf{x}
+                            h_n 
                             \end{array} \right) \\
-                        &= c_k \cdot 
+                        &= c_{y_k} \cdot \bf{w_{y_k}} \cdot 
+                            \left( \begin{array}{c}
+                            {c_h}_1 \cdot \bf{w_{h_1}} \cdot \bf{x} \\
+                            {c_h}_2 \cdot \bf{w_{h_2}} \cdot \bf{x} \\
+                            \vdots \\
+                            {c_h}_n \cdot \bf{w_{h_n}} \cdot \bf{x}
+                            \end{array} \right) \\
+                        &= c_{y_k} \cdot 
                             \left( \begin{array}{cccc}
-                                {w_k}_1 & {w_k}_2 & \hdots & {w_k}_n
+                            w_{y_{k_1}} & w_{y_{k_2}} & \hdots & w_{y_{k_n}}
                             \end{array} \right)
                             \left( \begin{array}{c}
-                                {c_j}_1 \cdot \bf{{w_j}_1} \cdot \bf{x} \\
-                                {c_j}_2 \cdot \bf{{w_j}_2} \cdot \bf{x} \\
+                                c_{h_1} \cdot \bf{w_{h_1}} \cdot \bf{x} \\
+                                c_{h_2} \cdot \bf{w_{h_2}} \cdot \bf{x} \\
                                 \vdots \\
-                                {c_j}_n \cdot \bf{{w_j}_n} \cdot \bf{x}
+                                c_{h_n} \cdot \bf{w_{h_n}} \cdot \bf{x}
                             \end{array} \right) \\
-                        &= c_k \sum\limits_{i=1}^n {w_k}_i \cdot {c_j}_i 
-                            \cdot \bf{{w_j}_i} \cdot \bf{x} \\
-                        &= c_k \left( \sum\limits_{i=1}^n {w_k}_i 
-                            \cdot {c_j}_i \cdot \bf{{w_j}_i} \right) \bf{x}
+                        &= c_{y_k} \sum\limits_{i=1}^n {w_{y_k}}_i \cdot {c_h}_i 
+                            \cdot \bf{{w_h}_i} \cdot \bf{x} \\
+                        &= c_{y_k} \left( \sum\limits_{i=1}^n {w_{y_k}}_i 
+                            \cdot {c_h}_i \cdot \bf{{w_h}_i} \right) \bf{x}
                 \end{align*}
             \item % 1b
                 For an arbitrary number of hidden nodes, the same
