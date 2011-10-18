@@ -17,7 +17,7 @@ def munge_Boolean(email_file,features):
     features_file -- name of a file containing pickled list of tokens
     """
     features = _get_features(features_file)
-    freq = _munge_frequency(email_file)
+    freq, num_tokens = _munge_frequency(email_file)
     output = []
     for f in features:
     if freq[f] == 0
@@ -35,10 +35,10 @@ def munge_NTF(email_file,features):
     features_file -- name of a file containing pickled list of tokens
     """
     features = _get_features(features_file)
-    freq = _munge_frequency(email_file)
+    freq, num_tokens = _munge_frequency(email_file)
     output = []
     for f in features:
-    output.append(freq[f])
+        output.append(float(freq[f]) / num_tokens)
     return output
 
 def _munge_frequency(email_file):
@@ -47,13 +47,15 @@ def _munge_frequency(email_file):
     """
     email = open(email_file, 'r')
     freq = defaultdict(int)
+    num_tokens = 0
     for line in email:
         tok = line.strip(" ").split(" ")
+        num_tokens += len(tok)
         for t in tok:
             freq[t] += 1
     email.close()
 
-    return freq
+    return freq, num_tokens
 
 def _get_features(features_file):
     handle = open(features_file, 'r')
@@ -70,6 +72,8 @@ def NBclassify_NTF(example,model,cost_ratio):
 
 #########################################
 
+HAM = 0
+SPAM = 1
 
 def get_files(path):
     for f in os.listdir(path):
@@ -77,12 +81,41 @@ def get_files(path):
         if os.path.isfile( f ):
             yield f
 
+def add_lists(target, addition):
+    assert len(target) == len(addition)
+    for i in xrange(len(target)):
+        target[i] += addition[i]
 
 class NaiveBayesModel:
     
-    def __init__(self, features_file, model_file):
-        self.features = pickle.load(open(features_file,'rb'))
-        self.model = pickle.load(open(model_file,'rb'))
+    #def __init__(self, features_file, model_file):
+    #    self.features = pickle.load(open(features_file,'rb'))
+    #    self.model = pickle.load(open(model_file,'rb'))
+
+    def __init__(self, features_file):
+        self.features = pickle.load(open(features_file, 'rb'))
+        self.spam_counters = [0.0] * len(self.features)
+        self.total_counters = [0] * len(self.features)
+
+        self.spam_examples = 0.0
+        self.total_examples = 0
+
+    def train(self, example, cls):
+        add_lists(self.total_counters, example)
+        if cls == SPAM:
+            add_lists(self.spam_counters, example)
+
+    def spam_probability(self, example):
+        assert len(self.features) == len(example)
+        attribute_probabilities = self._attribute_probabilities()
+        return self.alpha * (self.spam_examples / self.total_examples) *
+                sum(attribute_probabilities)
+
+    def _attribute_probabilities(self):
+        sc = self.spam_counters
+        tc = self.total_counters
+        return [sc[i] / tc[i] if not tc[i] == 0 else 0
+                for i in xrange(len(sc))]
 
     def test(self, spam_dir, ham_dir, cost_ratio):
         N = 0
@@ -103,7 +136,7 @@ class NaiveBayesModel:
 
 
 class NB_Boolean(NaiveBayesModel):
-    
+
     def classify(self,example,cost_ratio):
         return NBclassify_Boolean(example,self.model,cost_ratio)
         
@@ -111,7 +144,16 @@ class NB_Boolean(NaiveBayesModel):
         return munge_Boolean(email_file,self.features)
 
 
-class NB_NTF(NaiveBayesModel):    
+class NB_NTF(NaiveBayesModel):
+
+    def __init__(self, features_file, b):
+        NaiveBayesModel.__init__(self, features_file)
+        self.b = b
+
+    def _attribute_probabilities(self):
+        attribute_probabilities = NaiveBayesModel._attribute_probabilities(
+                self)
+        return [exp_dist(self.b, x) for x in attribute_probabilities]
     
     def classify(self,example,cost_ratio):
         return NBclassify_NTF(example,self.model,cost_ratio)
