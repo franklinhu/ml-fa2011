@@ -16,28 +16,34 @@ Assignment 4 \\
                 layer \(x\), one hidden layer \(h\), and one output layer 
                 \(y\). Each layer can be expressed as a vector of the 
                 values of the nodes in that layer. For example,
-                \begin{equation}
+                \begin{equation*}
                     \bf{y}= \left( \begin{array}{c}
                     y_1 \\
                     y_2 \\
                     \vdots \\
                     y_n \end{array} \right)
-                \end{equation}
+                \end{equation*}
                 Assume that each neural node has its own set of weights 
                 \(\bf{w_i}\) where \(i\) is the node index. We can express 
                 the value of a particular output in terms of the hidden 
                 layer
-                \begin{equation}
+                \begin{equation*}
+                    y_k= g(\bf{h})
+                \end{equation*}
+                Since we are only considering linear activation functions,
+                we can write this equation in terms of a constant
+                multiplied by the weighted sum of inputs
+                \begin{equation*}
                     y_k= c_{y_k} \cdot \bf{w_{y_k}} \cdot \bf{h}
-                \end{equation}
+                \end{equation*}
                 where \(c_{y_k}\) is the constant multiplier of \(y_k\),
                 \(w_{y_k}\) is the set of weights for \(y_k\), and \(h\)
                 is the vector of hidden nodes. \\
                 Similarly, we can express the value of each node in the 
                 hidden layer in terms of the inputs.
-                \begin{equation}
+                \begin{equation*}
                     h_j= c_{h_j} \cdot \bf{w_{h_j}} \cdot \bf{x}
-                \end{equation}
+                \end{equation*}
                 Now, we can see that the output layer nodes can simply be 
                 written in terms of the inputs without the hidden layer.
                 For a particular output node:
@@ -58,21 +64,20 @@ Assignment 4 \\
                             \vdots \\
                             {c_h}_n \cdot \bf{w_{h_n}} \cdot \bf{x}
                             \end{array} \right) \\
-                        &= c_{y_k} \cdot 
-                            \left( \begin{array}{cccc}
-                            w_{y_{k_1}} & w_{y_{k_2}} & \hdots & w_{y_{k_n}}
-                            \end{array} \right)
-                            \left( \begin{array}{c}
-                                c_{h_1} \cdot \bf{w_{h_1}} \cdot \bf{x} \\
-                                c_{h_2} \cdot \bf{w_{h_2}} \cdot \bf{x} \\
-                                \vdots \\
-                                c_{h_n} \cdot \bf{w_{h_n}} \cdot \bf{x}
-                            \end{array} \right) \\
-                        &= c_{y_k} \sum\limits_{i=1}^n {w_{y_k}}_i \cdot {c_h}_i 
-                            \cdot \bf{{w_h}_i} \cdot \bf{x} \\
-                        &= c_{y_k} \left( \sum\limits_{i=1}^n {w_{y_k}}_i 
-                            \cdot {c_h}_i \cdot \bf{{w_h}_i} \right) \bf{x}
+                        &= c_{y_k} \cdot (\bf{w_{y_k}} \cdot \bf{c_h} \cdot
+                            I \cdot \bf{w_h} \cdot \bf{x}
                 \end{align*}
+                where \(c_h\) is a vector of the constant weight for each
+                hidden node, \(I\) is the identity matrix, and \(w_h\) is
+                a matrix of the weight vectors of the hidden nodes.
+                Thus we can define a new weight vector \(\bf{u_{y_k}}\) for
+                the output node \(y_k\)
+                \begin{equation*}
+                    {\bf{u_{y_k}}}= \bf{w_{y_k}} \cdot \bf{c_h} \cdot \bf{I}
+                    \cdot \bf{w_h}
+                \end{equation*}
+                We can thus simply compute the value of \(y_k\) in terms of
+                \(x\).
             \item % 1b
                 For an arbitrary number of hidden nodes, the same
                 computation can be done. We demonstrate below with two
