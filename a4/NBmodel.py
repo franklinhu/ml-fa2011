@@ -20,10 +20,10 @@ def munge_Boolean(email_file,features):
     freq, num_tokens = _munge_frequency(email_file)
     output = []
     for f in features:
-    if freq[f] == 0
-      output.append(0)
-    else:
-      output.append(1)
+        if freq[f] == 0:
+            output.append(0)
+        else:
+            output.append(1)
     return output
 
 def munge_NTF(email_file,features):
@@ -108,7 +108,7 @@ class NaiveBayesModel:
     def spam_probability(self, example):
         assert len(self.features) == len(example)
         attribute_probabilities = self._attribute_probabilities()
-        return self.alpha * (self.spam_examples / self.total_examples) *
+        return self.alpha * (self.spam_examples / self.total_examples) * \
                 sum(attribute_probabilities)
 
     def _attribute_probabilities(self):
