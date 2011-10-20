@@ -44,6 +44,9 @@ if __name__ == "__main__":
     train_dir(hamdir, NBmodel.HAM, bool_model, bool_features, ntf_model,
               ntf_features)
 
+    bool_features.finalize_training()
+    ntf_features.finalize_training()
+
     dump_obj(BOOL_MODEL_FILE, bool_model)
     dump_obj(NTF_MODEL_FILE, ntf_model)
 
