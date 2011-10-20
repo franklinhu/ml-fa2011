@@ -4,6 +4,7 @@
 # Assignment 4
 import pickle
 import os
+import numpy as np
 
 
 #########################################
@@ -81,10 +82,8 @@ def get_files(path):
         if os.path.isfile( f ):
             yield f
 
-def add_lists(target, addition):
-    assert len(target) == len(addition)
-    for i in xrange(len(target)):
-        target[i] += addition[i]
+def get_empty_feature_list(n):
+    return [0.0] * n
 
 class NaiveBayesModel:
     
@@ -92,18 +91,11 @@ class NaiveBayesModel:
     #    self.features = pickle.load(open(features_file,'rb'))
     #    self.model = pickle.load(open(model_file,'rb'))
 
-    def __init__(self, features_file):
-        self.features = pickle.load(open(features_file, 'rb'))
-        self.spam_counters = [0.0] * len(self.features)
-        self.total_counters = [0] * len(self.features)
-
-        self.spam_examples = 0.0
-        self.total_examples = 0
-
     def train(self, example, cls):
-        add_lists(self.total_counters, example)
-        if cls == SPAM:
-            add_lists(self.spam_counters, example)
+        raise Exception('UNIMPLEMENTED')
+
+    def finalize_training(self):
+        raise Exception('UNIMPLEMENTED')
 
     def spam_probability(self, example):
         assert len(self.features) == len(example)
@@ -137,6 +129,39 @@ class NaiveBayesModel:
 
 class NB_Boolean(NaiveBayesModel):
 
+    def __init__(self, features_file):
+        self.features = pickle.load(open(features_file, 'rb'))
+        num_features = len(self.features)
+
+        self.spam_partial = get_empty_feature_list(num_features)
+        self.spam_total = get_empty_feature_list(num_features)
+
+        self.ham_partial = get_empty_feature_list(num_features)
+        self.ham_total = get_empty_feature_list(num_features)
+    
+    def train(self, example, cls):
+        assert len(example) == len(self.features)
+        if cls == SPAM:
+            partial = self.spam_partial
+            total = self.spam_total
+        elif cls == HAM:
+            partial = self.ham_partial
+            total = self.ham_total
+        else:
+            raise Exception ('Non SPAM/HAM cls: %s' % cls)
+
+        for i in xrange(len(example)):
+            partial[i] += example[i]
+            total[i] += 1
+
+    def finalize_training(self):
+        self.spam_thetas = get_empty_feature_list(len(self.features))
+        self.ham_thetas = get_empty_feature_list(len(self.features))
+
+        for i in xrange(len(self.features)):
+            self.spam_thetas[i] = self.spam_partial[i] / self.spam_total[i]
+            self.ham_thetas[i] = self.ham_partial[i] / self.ham_total[i]
+
     def classify(self,example,cost_ratio):
         return NBclassify_Boolean(example,self.model,cost_ratio)
         
@@ -147,8 +172,39 @@ class NB_Boolean(NaiveBayesModel):
 class NB_NTF(NaiveBayesModel):
 
     def __init__(self, features_file, b):
-        NaiveBayesModel.__init__(self, features_file)
+        self.features =  pickle.load(open(features_file, 'rb'))
         self.b = b
+        self.reset_examples()
+
+    def train(self, example, cls):
+        assert len(example) == len(self.features)
+        if cls == SPAM:
+            examples = self.spam_examples
+        elif cls == HAM:
+            examples = self.ham_examples
+        else:
+            raise Exception('Non SPAM/HAM cls: %s' % cls)
+
+        for i in xrange(len(self.features)):
+            examples[i].append(example[i])
+
+    def finalize_training(self):
+        self.spam_mus = []
+        self.spam_variances = []
+
+        self.ham_mus = []
+        self.ham_variances = []
+
+        for i in xrange(len(self.features)):
+            self.spam_mus.append(np.mean(self.spam_examples[i]))
+            self.spam_variances.append(np.var(self.spam_examples[i]))
+
+            self.ham_mus.append(np.mean(self.ham_examples[i]))
+            self.ham_variances.append(np.var(self.ham_examples[i]))
+
+    def reset_examples(self):
+        self.spam_examples = [[]] * len(self.features)
+        self.ham_examples = [[]] * len(self.features)
 
     def _attribute_probabilities(self):
         attribute_probabilities = NaiveBayesModel._attribute_probabilities(
