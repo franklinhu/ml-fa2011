@@ -11,6 +11,7 @@ import time
 import NBmodel
 
 NUM_ARGS = 4
+NUM_RANDOM_FEATURES = 3000
 BOOL_MODEL_FILE = "Boolean.model"
 NTF_MODEL_FILE = "NTF.model"
 
@@ -46,7 +47,7 @@ def _write_features(features_file, spam_dir, ham_dir):
 
     features = [x[1] for x in freq.keys()]
     random.shuffle(features)
-    features = features[:2000]
+    features = features[:NUM_RANDOM_FEATURES]
     dump_obj(features_file, features)
     return features
 
@@ -72,14 +73,14 @@ if __name__ == "__main__":
     t = time.time()
 
     print "+ Begin SPAM"
-    train_dir(spamdir, NBmodel.SPAM, bool_model, bool_features_file, 
-              ntf_model, ntf_features_file)
+    train_dir(spamdir, NBmodel.SPAM, bool_model, bool_features, 
+              ntf_model, ntf_features)
     print "++ End SPAM %f" % (time.time() - t)
 
     t = time.time()
     print "+ Begin HAM"
-    train_dir(hamdir, NBmodel.HAM, bool_model, bool_features_file, 
-              ntf_model, ntf_features_file)
+    train_dir(hamdir, NBmodel.HAM, bool_model, bool_features,
+              ntf_model, ntf_features)
     print "+ End HAM %f" % (time.time() - t)
 
     t = time.time()
