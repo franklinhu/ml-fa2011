@@ -29,21 +29,20 @@ def dump_obj(filename, obj):
     handle.close()
 
 def _write_features(features_file, spam_dir, ham_dir):
+    def process_email(freq, filename, cls):
+        email = open(filename, 'r')
+        for line in email:
+            tok = line.rstrip("\n").rstrip("\r").strip(" ").split(" ")
+            for t in tok:
+                freq[(cls,t)] += 1
+        email.close()
+
     freq = defaultdict(int)
     for email_file in NBmodel.get_files(spam_dir):
-        email = open(email_file, 'r')
-        for line in email:
-            tok = line.strip(" ").split(" ")
-            for t in tok:
-                freq[('SPAM',t)] += 1
-        email.close()
+        process_email(freq, email_file, 'SPAM')
+
     for email_file in NBmodel.get_files(ham_dir):
-        email = open(email_file, 'r')
-        for line in email:
-            tok = line.strip(" ").split(" ")
-            for t in tok:
-                freq[('HAM',t)] += 1
-        email.close()
+        process_email(freq, email_file, 'HAM')
 
     features = [x[1] for x in freq.keys()]
     random.shuffle(features)
