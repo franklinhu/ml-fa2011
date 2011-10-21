@@ -141,18 +141,15 @@ class NaiveBayesModel:
 
         for i in xrange(len(self.features)):
             self.spam_thetas[i] = spam_sum[i] / spam_total[i]
-            self.spam_var[i] = spam_var[i] / spam_total[i]
+            self.spam_vars[i] = spam_var[i] / spam_total[i]
 
             self.ham_thetas[i] = ham_sum[i] / ham_total[i]
-            self.ham_var[i] = ham_var[i] / ham_total[i]
+            self.ham_vars[i] = ham_var[i] / ham_total[i]
 
         self.finalized = True
 
     #def train(self, example, cls):
     #    raise Exception('UNIMPLEMENTED')
-
-    def finalize_training(self):
-        raise Exception('UNIMPLEMENTED')
 
     def spam_probability(self, example):
         assert len(self.features) == len(example)
