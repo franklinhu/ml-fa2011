@@ -172,6 +172,62 @@ Assignment 4 \\
                 exception of the classification code to calculate the log
                 probabilities. \\
             \item % 4c
+                If classifying ham as spam is \(c\) times worse than 
+                classifying spam and ham and the model returns a
+                probability p that the message is spam, we can simply
+                calculate the expected value given that probability. \\
+                If the cost ratio is \(c\), we assign the following values:
+                \begin{align*}
+                    \text{Value}(Y=\text{SPAM}|\hat{Y}=\text{SPAM}) &= +1 \\
+                    \text{Value}(Y=\text{HAM}|\hat{Y}=\text{HAM}) &= +1 \\
+                    \text{Value}(Y=\text{SPAM}|\hat{Y}=\text{HAM}) &= -c \\
+                    \text{Value}(Y=\text{HAM}|\hat{Y}=\text{SPAM}) &= -1
+                \end{align*}
+                For correctly classifying an example, we give it value 
+                \(+1\). For incorrectly classifying spam as ham, assign
+                value \(-1\), and for incorrectly classifying ham as spam,
+                we give it the cost ratio value \(-c\). \\
+                For example, if classifying ham as spam is twice as bad
+                as classifying spam as ham, \(c=2\). \\
+                When the model returns a probability \(p\) that the example
+                is spam, we do the following:
+                \begin{itemize}
+                    \item
+                        If \(p>0.5\), we would normally classify this
+                        example as spam.
+                        \begin{align*}
+                            \mathbb{E}[\text{Value}] 
+                            &= \text{Value}(Y=\text{SPAM}|\hat{Y}=
+                                \text{SPAM}) \cdot p +
+                                \text{Value}(Y=\text{HAM}|\hat{Y}=
+                                \text{SPAM}) \cdot (1 - p) \\
+                            &= 1 \cdot p - c \cdot (1 - p) \\
+                            &= p - c + cp
+                        \end{align*}
+                        If the expected value is positive, then we go ahead
+                        and classify the item as SPAM, and otherwise HAM.
+                    \item
+                        If \(p<0.5\), we would normally classify this
+                        example as ham.
+                        \begin{align*}
+                            \mathbb{E}[\text{Value}] 
+                            &= \text{Value}(Y=\text{HAM}|\hat{Y}=
+                                \text{HAM}) \cdot (1 - p) +
+                                \text{Value}(Y=\text{SPAM}|\hat{Y}=
+                                \text{HAM}) \cdot p \\
+                            &= 1 \cdot (1 - p) - 1 \cdot p \\
+                            &= 1 - p - p \\
+                            &= 1 - 2p
+                        \end{align*}
+                        Since \(p<0.5\), this expected value is always
+                        positive, so we always classify HAM if the model
+                        says to.
+                    \item
+                        If \(p=0.5\), then we just look at the cost ratio.
+                        If the cost ratio is more than 1, we classify it as
+                        SPAM; if less than 1, HAM; and if equal to 1, we
+                        flip a fair coin.
+                \end{itemize}
             \item % 4d
                 In general, we calcuate the log probability ratio:
                 \begin{equation*}
