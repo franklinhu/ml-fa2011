@@ -65,7 +65,7 @@ Assignment 4 \\
                             {c_h}_n \cdot \bf{w_{h_n}} \cdot \bf{x}
                             \end{array} \right) \\
                         &= c_{y_k} \cdot (\bf{w_{y_k}} \cdot \bf{c_h} \cdot
-                            I \cdot \bf{w_h} \cdot \bf{x}
+                            I \cdot \bf{w_h}) \cdot \bf{x}
                 \end{align*}
                 where \(c_h\) is a vector of the constant weight for each
                 hidden node, \(I\) is the identity matrix, and \(w_h\) is
@@ -80,8 +80,25 @@ Assignment 4 \\
                 \(x\).
             \item % 1b
                 For an arbitrary number of hidden nodes, the same
-                computation can be done. We demonstrate below with two
-                hidden layers: \(h_m, h_n\)
+                computation can be done. Suppose we have \(h\) hidden layers
+                with \(\bf{h_1}\) having \(\bf{x}\) as inputs and \(\bf{y}\)
+                having \(\bf{h_n}\) as inputs. In this case, consider the 
+                sub-network of \(\bf{h_2}\), \(\bf{h_1}\), and \(\bf{x}\). 
+                Using the technique in part (a), we can write the expression
+                for \(\bf{h_2}\) in terms only of \(\bf{x}\).  The resulting
+                expression
+                \begin{equation*}
+                    {\bf{{h_2}_i}}= c_{h_2} \cdot \bf{u_{h_2}} \cdot \bf{x}
+                \end{equation*}
+                still has a linear activation function and therefore this
+                technique generalizes to the remaining hidden nodes. We
+                repeat this process for all the hidden nodes and can thus
+                write the expression for any output node \(y_k\)
+                \begin{equation*}
+                    y_k= c_{y_k} \cdot \bf{w_{y_k}} \cdot \left( 
+                         \prod\limits_{i=1}^h \bf{c_{h_i}} \cdot \bf{I} 
+                         \cdot \bf{w_{h_i}} \right) \cdot \bf{x}
+                \end{equation*}
             \item % 1c
                 For the case when \(h \ll n\), a neural net with the hidden
                 layer will do \(O(hn)\) computations to find the linear
