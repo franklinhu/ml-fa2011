@@ -67,7 +67,7 @@ if __name__ == "__main__":
     #ntf_features = pickle.load(open(ntf_features_file, 'rb'))
 
     bool_model = NBmodel.NB_Boolean(bool_features_file)
-    ntf_model = NBmodel.NB_NTF(bool_features_file, 0.1)
+    ntf_model = NBmodel.NB_NTF(bool_features_file)
 
     t = time.time()
 

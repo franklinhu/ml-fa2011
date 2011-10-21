@@ -148,18 +148,6 @@ class NaiveBayesModel:
         self.ham_data = None
         self.finalized = True
 
-    def spam_probability(self, example):
-        assert len(self.features) == len(example)
-        attribute_probabilities = self._attribute_probabilities()
-        return self.alpha * (self.spam_examples / self.total_examples) * \
-                sum(attribute_probabilities)
-
-    def _attribute_probabilities(self):
-        sc = self.spam_counters
-        tc = self.total_counters
-        return [sc[i] / tc[i] if not tc[i] == 0 else 0
-                for i in xrange(len(sc))]
-
     def test(self, spam_dir, ham_dir, cost_ratio):
         N = 0
         loss = 0.
@@ -213,15 +201,9 @@ class NB_Boolean(NaiveBayesModel):
 
 class NB_NTF(NaiveBayesModel):
 
-    def __init__(self, features_file, b):
+    def __init__(self, features_file):
         NaiveBayesModel.__init__(self, features_file)
-        self.b = b
 
-    def _attribute_probabilities(self):
-        attribute_probabilities = NaiveBayesModel._attribute_probabilities(
-                self)
-        return [exp_dist(self.b, x) for x in attribute_probabilities]
-    
     def classify(self,example,cost_ratio):
         return NBclassify_NTF(example,self.model,cost_ratio)
     
