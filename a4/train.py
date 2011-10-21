@@ -74,18 +74,23 @@ if __name__ == "__main__":
     print "+ Begin SPAM"
     train_dir(spamdir, NBmodel.SPAM, bool_model, bool_features_file, 
               ntf_model, ntf_features_file)
-    print "++ End SPAM"
+    print "++ End SPAM %f" % (time.time() - t)
 
+    t = time.time()
     print "+ Begin HAM"
     train_dir(hamdir, NBmodel.HAM, bool_model, bool_features_file, 
               ntf_model, ntf_features_file)
-    print "+ End HAM"
+    print "+ End HAM %f" % (time.time() - t)
 
+    t = time.time()
     print "+ Begin Boolean finalize"
     bool_model.finalize_training()
+    print "+ %f" % (time.time() - t)
 
+    t = time.time()
     print "+ Begin NTF finalize"
     ntf_model.finalize_training()
+    print "+ %f" % (time.time() - t)
     
     print "+ Dumping objects"
     dump_obj(BOOL_MODEL_FILE, bool_model)
