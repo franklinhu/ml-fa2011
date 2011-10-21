@@ -148,6 +148,25 @@ class NaiveBayesModel:
         self.ham_data = None
         self.finalized = True
 
+    def classify(self,example,cost_ratio):
+        if not self.finalized:
+            self.finalize_training()
+        ratio = self.get_log_ratio(example)
+        if ratio > 1:
+            return SPAM
+        elif ratio == 1:
+            return random.choice([SPAM, HAM])
+        else: # ratio < 1
+            return HAM
+        #return NBclassify_Boolean(example,self.model,cost_ratio)
+
+    def get_log_ratio(self, example):
+        return (math.log(self.spams) + \
+                self.get_log_probability(self.spam_thetas, example)) / \
+               (math.log(self.hams) + \
+                self.get_log_probability(self.ham_thetas, example))
+
+
     def test(self, spam_dir, ham_dir, cost_ratio):
         N = 0
         loss = 0.
@@ -168,24 +187,6 @@ class NaiveBayesModel:
 
 class NB_Boolean(NaiveBayesModel):
 
-    def classify(self,example,cost_ratio):
-        if not self.finalized:
-            self.finalize_training()
-        ratio = self.get_log_ratio(example)
-        if ratio > 1:
-            return SPAM
-        elif ratio == 1:
-            return random.choice([SPAM, HAM])
-        else: # ratio < 1
-            return HAM
-        #return NBclassify_Boolean(example,self.model,cost_ratio)
-
-    def get_log_ratio(self, example):
-        return (math.log(self.spams) + \
-                self.get_log_probability(self.spam_thetas, example)) / \
-               (math.log(self.hams) + \
-                self.get_log_probability(self.ham_thetas, example))
-
     def get_log_probability(self, theta_list, example):
         probabilities = []
         for i in xrange(len(theta_list)):
@@ -201,11 +202,17 @@ class NB_Boolean(NaiveBayesModel):
 
 class NB_NTF(NaiveBayesModel):
 
-    def __init__(self, features_file):
-        NaiveBayesModel.__init__(self, features_file)
+    def get_log_probability(self, theta_list, example):
+        probabilities = []
+        for i in xrange(len(theta_list)):
+            b = theta_list[i]
+            if b == 0:
+                continue
+            probabilities.append(-1 * math.log(b) - float(example[i]) / b)
+        return sum(probabilities)
 
-    def classify(self,example,cost_ratio):
-        return NBclassify_NTF(example,self.model,cost_ratio)
+    #def classify(self,example,cost_ratio):
+    #    return NBclassify_NTF(example,self.model,cost_ratio)
     
     def munge(self,email_file):
         return munge_NTF(email_file,self.features)
