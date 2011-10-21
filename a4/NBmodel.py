@@ -13,7 +13,7 @@ import numpy as np
 
 #########################################
   
-def munge_Boolean(email_file,features_file):
+def munge_Boolean(email_file,features):
     """
     Returns a vector representation of the email based on features
 
@@ -21,7 +21,6 @@ def munge_Boolean(email_file,features_file):
     email_file -- name of a preprocessed email file
     features_file -- name of a file containing pickled list of tokens
     """
-    features = _get_features(features_file)
     freq, num_tokens = _munge_frequency(email_file)
     output = []
     for f in features:
@@ -31,7 +30,7 @@ def munge_Boolean(email_file,features_file):
             output.append(1)
     return output
 
-def munge_NTF(email_file,features_file):
+def munge_NTF(email_file,features):
     """
     Returns a vector representation of the email based on features
 
@@ -39,7 +38,6 @@ def munge_NTF(email_file,features_file):
     email_file -- name of a preprocessed email file
     features_file -- name of a file containing pickled list of tokens
     """
-    features = _get_features(features_file)
     freq, num_tokens = _munge_frequency(email_file)
     output = []
     for f in features:
@@ -185,7 +183,7 @@ class NB_Boolean(NaiveBayesModel):
     def classify(self,example,cost_ratio):
         if not self.finalized:
             self.finalize_training()
-        ratio = get_log_ratio(example)
+        ratio = self.get_log_ratio(example)
         if ratio > 1:
             return SPAM
         elif ratio == 1:
@@ -201,9 +199,13 @@ class NB_Boolean(NaiveBayesModel):
                 self.get_log_probability(self.ham_thetas, example))
 
     def get_log_probability(self, theta_list, example):
-        return sum([example[i] * math.log(theta_list[i]) + \
-                    (1 - example[i]) * math.log(1 - theta_list[i]) \
-                    for i in xrange(len(theta_list))])
+        probabilities = []
+        for i in xrange(len(theta_list)):
+            if (theta_list[i] == 0) or (theta_list[i] == 1):
+                continue
+            probabilities.append(example[i] * math.log(theta_list[i]) + \
+                    (1 - example[i]) * math.log(1 - theta_list[i]))
+        return sum(probabilities)
         
     def munge(self,email_file):
         return munge_Boolean(email_file,self.features)
