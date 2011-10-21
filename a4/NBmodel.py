@@ -94,9 +94,62 @@ class NaiveBayesModel:
     #def __init__(self, features_file, model_file):
     #    self.features = pickle.load(open(features_file,'rb'))
     #    self.model = pickle.load(open(model_file,'rb'))
+    def __init__(self, features_file):
+        self.features = pickle.load(open(features_file, 'rb'))
+        n = len(self.features)
 
+        self.spam_data = (get_empty_feature_list(n), # partial sums
+                          get_empty_feature_list(n), # partial variances
+                          get_empty_feature_list(n)) # totals
+
+        self.ham_data = (get_empty_feature_list(n), # partial sums
+                          get_empty_feature_list(n), # partial variances
+                          get_empty_feature_list(n)) # totals
+
+        self.spams = 0.0
+        self.hams = 0.0
+        self.total = 0.0
+    
     def train(self, example, cls):
-        raise Exception('UNIMPLEMENTED')
+        assert len(example) == len(self.features)
+        if cls == SPAM:
+            partial_sum, partial_var, total = self.spam_data
+            self.spams += 1
+        elif cls == HAM:
+            partial_sum, partial_var, total = self.ham_data
+            self.hams += 1
+        else:
+            raise Exception ('Non SPAM/HAM cls: %s' % cls)
+
+        for i in xrange(len(example)):
+            partial_sum[i] += example[i]
+            partial_var[i] += example[i] ** 2
+            total[i] += 1
+
+        self.total += 1
+
+    def finalize_training(self):
+        n = len(self.features)
+        self.spam_thetas = get_empty_feature_list(n)
+        self.spam_vars = get_empty_feature_list(n)
+
+        self.ham_thetas = get_empty_feature_list(n)
+        self.ham_vars = get_empty_feature_list(n)
+
+        spam_sum, spam_var, spam_total = self.spam_data
+        ham_sum, ham_var, ham_total = self.ham_data
+
+        for i in xrange(len(self.features)):
+            self.spam_thetas[i] = spam_sum[i] / spam_total[i]
+            self.spam_var[i] = spam_var[i] / spam_total[i]
+
+            self.ham_thetas[i] = ham_sum[i] / ham_total[i]
+            self.ham_var[i] = ham_var[i] / ham_total[i]
+
+        self.finalized = True
+
+    #def train(self, example, cls):
+    #    raise Exception('UNIMPLEMENTED')
 
     def finalize_training(self):
         raise Exception('UNIMPLEMENTED')
@@ -133,49 +186,6 @@ class NaiveBayesModel:
 
 class NB_Boolean(NaiveBayesModel):
 
-    def __init__(self, features_file):
-        self.features = pickle.load(open(features_file, 'rb'))
-        num_features = len(self.features)
-
-        self.spam_partial = get_empty_feature_list(num_features)
-        self.spam_total = get_empty_feature_list(num_features)
-
-        self.ham_partial = get_empty_feature_list(num_features)
-        self.ham_total = get_empty_feature_list(num_features)
-
-        self.spams = 0.0
-        self.hams = 0.0
-        self.total = 0.0
-    
-    def train(self, example, cls):
-        assert len(example) == len(self.features)
-        if cls == SPAM:
-            partial = self.spam_partial
-            total = self.spam_total
-            self.spams += 1
-        elif cls == HAM:
-            partial = self.ham_partial
-            total = self.ham_total
-            self.hams += 1
-        else:
-            raise Exception ('Non SPAM/HAM cls: %s' % cls)
-
-        for i in xrange(len(example)):
-            partial[i] += example[i]
-            total[i] += 1
-
-        self.total += 1
-
-    def finalize_training(self):
-        self.spam_thetas = get_empty_feature_list(len(self.features))
-        self.ham_thetas = get_empty_feature_list(len(self.features))
-
-        for i in xrange(len(self.features)):
-            self.spam_thetas[i] = self.spam_partial[i] / self.spam_total[i]
-            self.ham_thetas[i] = self.ham_partial[i] / self.ham_total[i]
-
-        self.finalized = True
-
     def classify(self,example,cost_ratio):
         if not self.finalized:
             self.finalize_training()
@@ -206,39 +216,8 @@ class NB_Boolean(NaiveBayesModel):
 class NB_NTF(NaiveBayesModel):
 
     def __init__(self, features_file, b):
-        self.features =  pickle.load(open(features_file, 'rb'))
+        NaiveBayesModel.__init__(self, features_file)
         self.b = b
-        self.reset_examples()
-
-    def train(self, example, cls):
-        assert len(example) == len(self.features)
-        if cls == SPAM:
-            examples = self.spam_examples
-        elif cls == HAM:
-            examples = self.ham_examples
-        else:
-            raise Exception('Non SPAM/HAM cls: %s' % cls)
-
-        for i in xrange(len(self.features)):
-            examples[i].append(example[i])
-
-    def finalize_training(self):
-        self.spam_mus = []
-        self.spam_variances = []
-
-        self.ham_mus = []
-        self.ham_variances = []
-
-        for i in xrange(len(self.features)):
-            self.spam_mus.append(np.mean(self.spam_examples[i]))
-            self.spam_variances.append(np.var(self.spam_examples[i]))
-
-            self.ham_mus.append(np.mean(self.ham_examples[i]))
-            self.ham_variances.append(np.var(self.ham_examples[i]))
-
-    def reset_examples(self):
-        self.spam_examples = [[]] * len(self.features)
-        self.ham_examples = [[]] * len(self.features)
 
     def _attribute_probabilities(self):
         attribute_probabilities = NaiveBayesModel._attribute_probabilities(
