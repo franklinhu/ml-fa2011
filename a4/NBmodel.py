@@ -75,8 +75,8 @@ def NBclassify_NTF(example,model,cost_ratio):
 
 #########################################
 
-HAM = 0
-SPAM = 1
+HAM = 1
+SPAM = 0
 
 def get_files(path):
     for f in os.listdir(path):
@@ -173,13 +173,13 @@ class NaiveBayesModel:
         for f in get_files(spam_dir):
             N += 1
             classification = self.classify(self.munge(f),cost_ratio)
-            if not (classification==1):
+            if not (classification==SPAM):
                 loss += 1
     
         for f in get_files(ham_dir):
             N += 1
             classification = self.classify(self.munge(f),cost_ratio)
-            if not (classification==0):
+            if not (classification==HAM):
                 loss += cost_ratio
         
         print "Classifier average loss: %f" % (loss/N)
