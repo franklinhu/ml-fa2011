@@ -75,8 +75,8 @@ def NBclassify_NTF(example,model,cost_ratio):
 
 #########################################
 
-HAM = 1
-SPAM = 0
+HAM = 0
+SPAM = 1
 
 def get_files(path):
     for f in os.listdir(path):
@@ -153,11 +153,11 @@ class NaiveBayesModel:
             self.finalize_training()
         ratio = self.get_log_ratio(example)
         if ratio > 1:
-            return SPAM
+            return HAM
         elif ratio == 1:
             return random.choice([SPAM, HAM])
         else: # ratio < 1
-            return HAM
+            return SPAM
         #return NBclassify_Boolean(example,self.model,cost_ratio)
 
     def get_log_ratio(self, example):
