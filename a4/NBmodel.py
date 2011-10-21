@@ -2,6 +2,7 @@
 # CS 194-10 Machine Learning
 # Fall 2011
 # Assignment 4
+from collections import defaultdict
 import math
 import os
 import pickle
@@ -12,7 +13,7 @@ import numpy as np
 
 #########################################
   
-def munge_Boolean(email_file,features):
+def munge_Boolean(email_file,features_file):
     """
     Returns a vector representation of the email based on features
 
@@ -30,7 +31,7 @@ def munge_Boolean(email_file,features):
             output.append(1)
     return output
 
-def munge_NTF(email_file,features):
+def munge_NTF(email_file,features_file):
     """
     Returns a vector representation of the email based on features
 
