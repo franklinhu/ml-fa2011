@@ -52,7 +52,7 @@ def _munge_frequency(email_file):
     freq = defaultdict(int)
     num_tokens = 0
     for line in email:
-        tok = line.strip(" ").split(" ")
+        tok = line.rstrip("\n").rstrip("\r").strip(" ").split(" ")
         num_tokens += len(tok)
         for t in tok:
             freq[t] += 1
