@@ -2,8 +2,11 @@
 # CS 194-10 Machine Learning
 # Fall 2011
 # Assignment 4
-import pickle
+import math
 import os
+import pickle
+import random
+
 import numpy as np
 
 
@@ -138,21 +141,29 @@ class NB_Boolean(NaiveBayesModel):
 
         self.ham_partial = get_empty_feature_list(num_features)
         self.ham_total = get_empty_feature_list(num_features)
+
+        self.spams = 0.0
+        self.hams = 0.0
+        self.total = 0.0
     
     def train(self, example, cls):
         assert len(example) == len(self.features)
         if cls == SPAM:
             partial = self.spam_partial
             total = self.spam_total
+            self.spams += 1
         elif cls == HAM:
             partial = self.ham_partial
             total = self.ham_total
+            self.hams += 1
         else:
             raise Exception ('Non SPAM/HAM cls: %s' % cls)
 
         for i in xrange(len(example)):
             partial[i] += example[i]
             total[i] += 1
+
+        self.total += 1
 
     def finalize_training(self):
         self.spam_thetas = get_empty_feature_list(len(self.features))
@@ -162,8 +173,30 @@ class NB_Boolean(NaiveBayesModel):
             self.spam_thetas[i] = self.spam_partial[i] / self.spam_total[i]
             self.ham_thetas[i] = self.ham_partial[i] / self.ham_total[i]
 
+        self.finalized = True
+
     def classify(self,example,cost_ratio):
-        return NBclassify_Boolean(example,self.model,cost_ratio)
+        if not self.finalized:
+            self.finalize_training()
+        ratio = get_log_ratio(example)
+        if ratio > 1:
+            return SPAM
+        elif ratio == 1:
+            return random.choice([SPAM, HAM])
+        else: # ratio < 1
+            return HAM
+        #return NBclassify_Boolean(example,self.model,cost_ratio)
+
+    def get_log_ratio(self, example):
+        return (math.log(self.spams) + \
+                self.get_log_probability(self.spam_thetas, example)) / \
+               (math.log(self.hams) + \
+                self.get_log_probability(self.ham_thetas, example))
+
+    def get_log_probability(self, theta_list, example):
+        return sum([example[i] * math.log(theta_list[i]) + \
+                    (1 - example[i]) * math.log(1 - theta_list[i]) \
+                    for i in xrange(len(theta_list))])
         
     def munge(self,email_file):
         return munge_Boolean(email_file,self.features)
