@@ -146,10 +146,9 @@ class NaiveBayesModel:
             self.ham_thetas[i] = ham_sum[i] / ham_total[i]
             self.ham_vars[i] = ham_var[i] / ham_total[i]
 
+        self.spam_data = None
+        self.ham_data = None
         self.finalized = True
-
-    #def train(self, example, cls):
-    #    raise Exception('UNIMPLEMENTED')
 
     def spam_probability(self, example):
         assert len(self.features) == len(example)
