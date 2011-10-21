@@ -14,8 +14,8 @@ NTF_MODEL_FILE = "NTF.model"
 
 def train_dir(directory, cls, bool_model, bool_feat, ntf_model, ntf_feat):
     for f in NBmodel.get_files(directory):
-        bool_ex = NBmodel.munge_Boolean(f, bool_features)
-        ntf_ex = NBmodel.munge_NTF(f, ntf_features)
+        bool_ex = NBmodel.munge_Boolean(f, bool_feat)
+        ntf_ex = NBmodel.munge_NTF(f, ntf_feat)
 
         bool_model.train(bool_ex, cls)
         ntf_model.train(ntf_ex, cls)
@@ -42,7 +42,9 @@ def _write_features(features_file, spam_dir, ham_dir):
                 freq[('HAM',t)] += 1
         email.close()
 
-    dump_obj(features_file, freq)
+    features = [x[1] for x in freq.keys()]
+    dump_obj(features_file, features)
+    return features
 
 if __name__ == "__main__":
     if len(sys.argv) < NUM_ARGS + 1:
@@ -53,22 +55,24 @@ if __name__ == "__main__":
     bool_features_file = sys.argv[3]
     ntf_features_file = sys.argv[4]
 
-    _write_features(bool_features_file, spamdir, hamdir)
+    features = _write_features(bool_features_file, spamdir, hamdir)
+    bool_features = features
+    ntf_features = features
 
-    # bool_features = pickle.load(open(bool_features_file, 'rb'))
-    # ntf_features = pickle.load(open(ntf_features_file, 'rb'))
+    #bool_features = pickle.load(open(bool_features_file, 'rb'))
+    #ntf_features = pickle.load(open(ntf_features_file, 'rb'))
 
-    # bool_model = NBmodel.NB_Boolean()
-    # ntf_model = NBmodel.NB_NTF()
+    bool_model = NBmodel.NB_Boolean(bool_features_file)
+    ntf_model = NBmodel.NB_NTF(bool_features_file, 0.1)
 
-    # train_dir(spamdir, NBmodel.SPAM, bool_model, bool_features, ntf_model,
-    #           ntf_features)
-    # train_dir(hamdir, NBmodel.HAM, bool_model, bool_features, ntf_model,
-    #           ntf_features)
+    train_dir(spamdir, NBmodel.SPAM, bool_model, bool_features_file, 
+              ntf_model, ntf_features_file)
+    train_dir(hamdir, NBmodel.HAM, bool_model, bool_features_file, 
+              ntf_model, ntf_features_file)
 
-    # bool_features.finalize_training()
-    # ntf_features.finalize_training()
+    bool_model.finalize_training()
+    ntf_model.finalize_training()
 
-    # dump_obj(BOOL_MODEL_FILE, bool_model)
-    # dump_obj(NTF_MODEL_FILE, ntf_model)
+    dump_obj(BOOL_MODEL_FILE, bool_model)
+    dump_obj(NTF_MODEL_FILE, ntf_model)
 
