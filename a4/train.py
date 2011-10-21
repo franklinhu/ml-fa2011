@@ -3,6 +3,7 @@
 # Fall 2011
 # Assignment 4
 from collections import defaultdict
+import math
 import pickle
 import random
 import sys
@@ -11,7 +12,7 @@ import time
 import NBmodel
 
 NUM_ARGS = 4
-NUM_RANDOM_FEATURES = 3000
+NUM_RANDOM_FEATURES = 4000
 BOOL_MODEL_FILE = "Boolean.model"
 NTF_MODEL_FILE = "NTF.model"
 
@@ -45,8 +46,20 @@ def _write_features(features_file, spam_dir, ham_dir):
         process_email(freq, email_file, 'HAM')
 
     features = [x[1] for x in freq.keys()]
-    random.shuffle(features)
-    features = features[:NUM_RANDOM_FEATURES]
+    infogain = []
+    for f in features:
+        sfreq, sig = freq[('SPAM', f)], 0
+        hfreq, hig = freq[('HAM', f)], 0
+        if sfreq > 0:
+            sig = sfreq*math.log(sfreq)
+        if hfreq > 0:
+            hig = hfreq*math.log(hfreq)
+        ig = -1*(sig+hig)
+        infogain.append((ig, f))
+    infogain.sort()
+    features = [x[1] for x in infogain][:NUM_RANDOM_FEATURES]
+    # random.shuffle(features)
+    # features = features[:NUM_RANDOM_FEATURES]
     dump_obj(features_file, features)
     return features
 
