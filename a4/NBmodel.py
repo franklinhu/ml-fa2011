@@ -152,20 +152,18 @@ class NaiveBayesModel:
         if not self.finalized:
             self.finalize_training()
         ratio = self.get_log_ratio(example)
-        if ratio > 1:
+        if ratio > 0:
             return HAM
-        elif ratio == 1:
+        elif ratio == 0:
             return random.choice([SPAM, HAM])
-        else: # ratio < 1
+        else: # ratio < 0
             return SPAM
         #return NBclassify_Boolean(example,self.model,cost_ratio)
 
     def get_log_ratio(self, example):
-        return (math.log(self.spams) + \
-                self.get_log_probability(self.spam_thetas, example)) / \
-               (math.log(self.hams) + \
-                self.get_log_probability(self.ham_thetas, example))
-
+        return math.log(self.spams) - math.log(self.hams) + \
+                self.get_log_probability(self.spam_thetas, example) - \
+                self.get_log_probability(self.ham_thetas, example)
 
     def test(self, spam_dir, ham_dir, cost_ratio):
         N = 0
