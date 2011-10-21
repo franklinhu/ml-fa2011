@@ -158,7 +158,117 @@ Assignment 4 \\
                 \end{equation*}
         \end{enumerate}
 
-    \item ML estimation of noisy-OR model
+    \item ML estimation of noisy-OR model % 3
+    
+    \item Naive Bayes models for spam filtering % 4
+        \begin{enumerate}
+            \item % 4a
+            \item % 4b
+                We modified the skeleton code in NBmodel.py. We were not
+                sure what the point was to have each NaiveBayesModel have
+                a pointer to another model and just made this base class the
+                model used. Most of the training and classification code was
+                common between the Boolean and NTF subclasses with the
+                exception of the classification code to calculate the log
+                probabilities. \\
+                In general, we calcuate the log probability ratio:
+                \begin{equation*}
+                    \frac{P(Y=1|X)}{P(Y=0|X)} \rightarrow
+                    \text{log}\frac{P(Y=1|X)}{P(Y=0|X)} 
+                \end{equation*}
+                If the original ratio is greater than 1, then we classify
+                the example as spam. If it is less than 1, we classify it 
+                as ham. If it is equal to one, we flip a fair coin. \\
+                When we take the log, we simply adjust the value we compare
+                it to since \(log1=0\). \\
+                For Boolean features, our expression for the likelihood is
+                \begin{align*}
+                    P(Y=1|X)
+                        &= P(Y=1) \cdot P(X|Y=1) \\
+                        &= P(Y=1) \cdot \prod\limits_{i=1}^n P(x_i|Y=1) \\
+                        &= \alpha \theta_1 \prod\limits_{i=1}^n 
+                            {\theta_{1i}}^{x_i}(1-\theta_{1i})^{1-x_i}
+                \end{align*}
+                Since we assume that the attributes are independent, we can
+                turn \(P(X|Y=1)\) into a product of the individual
+                probabilities. \\
+                When we take the log ratio, we get
+                \begin{align*}
+                    \frac{P(Y=1|X)}{P(Y=0|X)}
+                        &= \frac
+                            {\alpha \theta_1 
+                                \prod\limits_{i=1}^n {\theta_{1i}}^{x_i}
+                                (1-\theta_{1i})^{1-x_i}}
+                            {\alpha \theta_0
+                                \prod\limits_{i=1}^n {\theta_{0i}}^{x_i}
+                                (1-\theta_{0i})^{1-x_i}} \\
+                        &= \frac
+                            {\theta_1 
+                                \prod\limits_{i=1}^n {\theta_{1i}}^{x_i}
+                                (1-\theta_{1i})^{1-x_i}}
+                            {\theta_0
+                                \prod\limits_{i=1}^n {\theta_{0i}}^{x_i}
+                                (1-\theta_{0i})^{1-x_i}} \\
+                    \text{log} \frac{P(Y=1|X)}{P(Y=0|X)}
+                        &= \text{log} \left( \theta_1 
+                                \prod\limits_{i=1}^n {\theta_{1i}}^{x_i}
+                                (1-\theta_{1i})^{1-x_i} \right) -
+                           \text{log} \left( \theta_0
+                                \prod\limits_{i=1}^n {\theta_{0i}}^{x_i}
+                                (1-\theta_{0i})^{1-x_i} \right) \\
+                        &= \text{log}\theta_1 - \text{log}\theta_0 + 
+                                \sum\limits_{i=1}^n 
+                                    x_i \cdot \text{log}\theta_{1i} + 
+                                    (1-x_i) \cdot \text{log}(1-\theta_{1i})
+                                    -
+                                \sum\limits_{i=1}^n 
+                                    x_i \cdot \text{log}\theta_{0i} -
+                                    (1-x_i) \cdot \text{log}(1-\theta_{0i})
+                \end{align*}
+                For NTF, we can make the same independence assumption and
+                derive a log probability ratio
+                \begin{align*}
+                    \frac{P(Y=1|X)}{P(Y=0|X)}
+                    &= \frac{P(Y=1) \cdot P(X|Y=1)}{P(Y=0) \cdot P(X|Y=0)}
+                        \\
+                    &= \frac
+                        {P(Y=1) \cdot \prod\limits_{i=1}^n P(x_i|Y=1}
+                        {P(Y=0) \cdot \prod\limits_{i=1}^n P(x_i|Y=0} \\
+                    &= \frac
+                        {\alpha \theta_1 \prod\limits_{i=1}^n
+                            \frac{1}{b_i} e^{-\frac{x_i}{b_i}}}
+                        {\alpha \theta_0 \prod\limits_{j=1}^n
+                            \frac{1}{b_j} e^{-\frac{x_j}{b_j}}} \\
+                    &= \frac
+                        {\theta_1 \prod\limits_{i=1}^n
+                            \frac{1}{b_i} e^{-\frac{x_i}{b_i}}}
+                        {\theta_0 \prod\limits_{j=1}^n
+                            \frac{1}{b_j} e^{-\frac{x_i}{b_j}}} \\
+                    \text{log} \frac{P(Y=1|X)}{P(Y=0|X)}
+                    &= \text{log} \frac
+                        {\theta_1 \prod\limits_{i=1}^n
+                            \frac{1}{b_i} e^{-\frac{x_i}{b_i}}}
+                        {\theta_0 \prod\limits_{j=1}^n
+                            \frac{1}{b_j} e^{-\frac{x_i}{b_j}}} \\
+                    &= \text{log} \left( \theta_1 \prod\limits_{i=1}^n
+                            \frac{1}{b_i} e^{-\frac{x_i}{b_i}} \right) -
+                        \text{log} \left( \theta_0 \prod\limits_{j=1}^n
+                            \frac{1}{b_j} e^{-\frac{x_i}{b_j}} \right) \\
+                    &= \text{log} \theta_1 - \text{log} \theta_0 +
+                        \sum\limits_{i=1}^n \text{log} \left( \frac{1}{b_i} 
+                            e^{-\frac{x_i}{b_i}} \right) -
+                        \sum\limits_{j=1}^n \text{log} \left( \frac{1}{b_j}
+                            e^{-\frac{x_i}{b_j}} \right) \\
+                    &=  \text{log} \theta_1 - \text{log} \theta_0 +
+                        \left( \sum\limits_{i=1}^n -\text{log} b_i - 
+                            \frac{x_i}{b_i} \right)
+                         - \left( \sum\limits_{j=1}^n - \text{log} b_j - 
+                            \frac{x_j}{b_j} \right)
+                \end{align*}
+                where \(b_i\) and \(b_j\) are the appropriate constants
+                calucated with the closed form solution in question 2 for
+                each feature.
+        \end{enumerate}
 \end{enumerate}
 
 \end{document}
