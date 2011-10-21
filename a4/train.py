@@ -4,7 +4,9 @@
 # Assignment 4
 from collections import defaultdict
 import pickle
+import random
 import sys
+import time
 
 import NBmodel
 
@@ -43,6 +45,8 @@ def _write_features(features_file, spam_dir, ham_dir):
         email.close()
 
     features = [x[1] for x in freq.keys()]
+    random.shuffle(features)
+    features = features[:2000]
     dump_obj(features_file, features)
     return features
 
@@ -65,14 +69,25 @@ if __name__ == "__main__":
     bool_model = NBmodel.NB_Boolean(bool_features_file)
     ntf_model = NBmodel.NB_NTF(bool_features_file, 0.1)
 
+    t = time.time()
+
+    print "+ Begin SPAM"
     train_dir(spamdir, NBmodel.SPAM, bool_model, bool_features_file, 
               ntf_model, ntf_features_file)
+    print "++ End SPAM"
+
+    print "+ Begin HAM"
     train_dir(hamdir, NBmodel.HAM, bool_model, bool_features_file, 
               ntf_model, ntf_features_file)
+    print "+ End HAM"
 
+    print "+ Begin Boolean finalize"
     bool_model.finalize_training()
-    ntf_model.finalize_training()
 
+    print "+ Begin NTF finalize"
+    ntf_model.finalize_training()
+    
+    print "+ Dumping objects"
     dump_obj(BOOL_MODEL_FILE, bool_model)
     dump_obj(NTF_MODEL_FILE, ntf_model)
 
