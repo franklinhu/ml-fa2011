@@ -29,27 +29,31 @@ def dump_obj(filename, obj):
     pickle.dump(obj, handle)
     handle.close()
 
-def _write_features(features_file, spam_dir, ham_dir):
+def _get_features_list(spam_dir, ham_dir):
     def process_email(freq, filename, cls):
         email = open(filename, 'r')
         for line in email:
             tok = line.rstrip("\n").rstrip("\r").strip(" ").split(" ")
             for t in tok:
-                freq[(cls,t)] += 1
+                freq[(cls,t)] = [freq[(cls,t)][0]+1, 
+                                 freq[(cls,t)][0]+float(1/len(tok))]
         email.close()
 
-    freq = defaultdict(int)
+    freq = defaultdict(lambda: list([0,0]))
     for email_file in NBmodel.get_files(spam_dir):
         process_email(freq, email_file, 'SPAM')
 
     for email_file in NBmodel.get_files(ham_dir):
         process_email(freq, email_file, 'HAM')
 
+    return freq
+def _write_features(features_file, spam_dir, ham_dir, borntf):
+    freq = _get_features_list(spam_dir, ham_dir)
     features = [x[1] for x in freq.keys()]
     infogain = []
     for f in features:
-        sfreq, sig = freq[('SPAM', f)], 0
-        hfreq, hig = freq[('HAM', f)], 0
+        sfreq, sig = freq[('SPAM', f)][borntf], 0
+        hfreq, hig = freq[('HAM', f)][borntf], 0
         if sfreq > 0:
             sig = sfreq*math.log(sfreq)
         if hfreq > 0:
@@ -63,6 +67,12 @@ def _write_features(features_file, spam_dir, ham_dir):
     dump_obj(features_file, features)
     return features
 
+def _write_bool_features(features_file, spam_dir, ham_dir):
+    return _write_features(features_file, spam_dir, ham_dir, 0)
+
+def _write_ntf_features(features_file, spam_dir, ham_dir):
+    return _write_features(features_file, spam_dir, ham_dir, 1)
+
 if __name__ == "__main__":
     if len(sys.argv) < NUM_ARGS + 1:
         print "Usage: train.py spamdir hamdir bool_features ntf_features"
@@ -72,9 +82,8 @@ if __name__ == "__main__":
     bool_features_file = sys.argv[3]
     ntf_features_file = sys.argv[4]
 
-    features = _write_features(bool_features_file, spamdir, hamdir)
-    bool_features = features
-    ntf_features = features
+    bool_features = _write_bool_features(bool_features_file, spamdir, hamdir)
+    ntf_features = _write_ntf_features(ntf_features_file, spamdir, hamdir)
 
     #bool_features = pickle.load(open(bool_features_file, 'rb'))
     #ntf_features = pickle.load(open(ntf_features_file, 'rb'))
