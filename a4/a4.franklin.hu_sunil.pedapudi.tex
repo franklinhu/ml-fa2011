@@ -326,6 +326,29 @@ Assignment 4 \\
                 where \(b_i\) and \(b_j\) are the appropriate constants
                 calucated with the closed form solution in question 2 for
                 each feature.
+            \item % 4e
+              We discuss two of the feature selection heuristics that were 
+              considered. First, we considered a \(\chi^2\) metric as
+              \begin{equation*}
+                \chi^2 = \sum_{i=1}^n \left(\frac{(n_{iSPAM} 
+                  - \mu_{iSPAM})^2}{\mu_{iSPAM}} +
+                \frac{(n_{iHAM} 
+                  - \mu_{iHAM})^2}{\mu_{iHAM}}\right)
+              \end{equation*}
+              Essentially, this is a metric comparing the class to a feature,
+              and we wished to show that if, for a given feature, 
+              \(\chi^2 > 3.84\), we can claim that with 95\% confidence, this
+              feature is strongly associated with spam or ham without 
+              coincidence. \\
+              Another approach considered was to utilize a simplified 
+              information gain as
+              \begin{equation*}
+                I_{gain} = -\sum_{i=0}^n FREQ_{spam}(i)log(FREQ_{spam}(i)) +
+                FREQ_{ham}(i)log(FREQ_{ham}(i))
+              \end{equation*}
+              For its simplicity, we used this metric of information gain where
+              we aimed to identify features that are strongly associated with
+              spam or ham. For its simplicity, we utilized this metric. 
         \end{enumerate}
 \end{enumerate}
 
