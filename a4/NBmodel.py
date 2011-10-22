@@ -7,6 +7,7 @@ import math
 import os
 import pickle
 import random
+import traceback
 
 import numpy as np
 
@@ -151,14 +152,30 @@ class NaiveBayesModel:
     def classify(self,example,cost_ratio):
         if not self.finalized:
             self.finalize_training()
-        ratio = self.get_log_ratio(example)
-        if ratio > 0:
+        log_ratio = self.get_log_ratio(example)
+        try:
+            ratio = math.e ** log_ratio
+        except OverflowError as e:
             return SPAM
-        elif ratio == 0:
-            return random.choice([SPAM, HAM])
-        else: # ratio < 0
+        p = ratio / (ratio + 1)
+        if p > 0.5:
+            expected = p - cost_ratio + (cost_ratio * p)
+            if expected > 0:
+                return SPAM
+            elif expected < 0:
+                return HAM
+            else: # expected == 0
+                return random.choice([SPAM, HAM])
+            return SPAM
+        elif ratio == 0.5:
+            if cost_ratio > 1:
+                return SPAM
+            elif cost_ratio < 1:
+                return HAM
+            else: # cost_ratio == 1
+                return random.choice([SPAM, HAM])
+        else: # ratio < 0.5
             return HAM
-        #return NBclassify_Boolean(example,self.model,cost_ratio)
 
     def get_log_ratio(self, example):
         return math.log(self.spams) - math.log(self.hams) + \
