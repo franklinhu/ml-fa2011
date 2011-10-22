@@ -83,7 +83,7 @@ if __name__ == "__main__":
     ntf_features_file = sys.argv[4]
 
     bool_features = _write_bool_features(bool_features_file, spamdir, hamdir)
-    ntf_features = _write_ntf_features(ntf_features_file, spamdir, hamdir)
+    ntf_features = bool_features
 
     #bool_features = pickle.load(open(bool_features_file, 'rb'))
     #ntf_features = pickle.load(open(ntf_features_file, 'rb'))
