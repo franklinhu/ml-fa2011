@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{mathtools}
+\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{fullpage}
 \begin{document}
@@ -10,6 +10,37 @@ Assignment 5 \\
 
 \begin{enumerate}
     \item Conjugate priors % 1
+        \begin{enumerate}
+            \item % 1a
+            \item % 1b
+                Given the geometric distribution
+                \begin{equation*}
+                    P(X_i=k|\theta)= (1-\theta)^{k-1} \cdot \theta
+                \end{equation*}
+                and the beta distribution
+                \begin{equation*}
+                    \beta(\theta|a,b)= \alpha \theta^{a-1} (1-\theta)^{b-1}
+                \end{equation*}
+                we prove that the beta distribution is the conjugate prior
+                for a likelihood with a geometric distribution.
+                \begin{align*}
+                    P(\theta|X)
+                    &= P(\theta) \cdot P(X|\theta) \\
+                    &= \alpha \cdot \theta^{a-1} \cdot (1-\theta)^{b-1} 
+                        \cdot (1-\theta)^{k-1} \cdot \theta \\
+                    &= \alpha \cdot \theta^{a} \cdot (1-\theta)^{b+k-2} \\
+                    &= \beta(\theta|a+1, b+k-1) 
+                \end{align*}
+                The posterior has the form of a beta distribution so
+                therefore the beta distribution is the conjugate prior for
+                the geometric distribution. \\
+                The update procedure for a beta posterior simply involves
+                updating the \(a\) and \(b\) parameters
+                \begin{align*}
+                    a_{N+1} &\leftarrow a_N + 1 \\
+                    b_{N+1} &\leftarrow b_N + k - 1
+                \end{align*}
+        \end{enumerate}
     \item Bayesian Naive Bayes % 2
     \item Logistic regression for credit scoring % 3
 \end{enumerate}
