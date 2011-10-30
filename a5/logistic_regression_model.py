@@ -1,3 +1,4 @@
+import random
 
 ALPHA = 0.5 # Stochastic gradient descent step size
 
