@@ -43,5 +43,51 @@ Assignment 5 \\
         \end{enumerate}
     \item Bayesian Naive Bayes % 2
     \item Logistic regression for credit scoring % 3
+        \begin{enumerate}
+            \item % 3a
+                The data structure we chose for logistic regression is
+                simply a class that keeps a set of weights for each of the
+                features, has an update method for updating the weights,
+                and draws predictions using the logit function
+                \begin{equation*}
+                    \text{Probability} = \frac{1}{1 + e^{-w^Tx}}
+                \end{equation*}
+            \item % 3b
+                The likelihood is
+                \begin{align*}
+                    L(w) 
+                        &= \frac{1}{1 + e^{-yw^Tx}} \\
+                    \text{log likelihood} 
+                        &= \text{log}\frac{1}{1 + e^{-yw^Tx}} \\
+                        &= -\text{log} (1 + e^{-yw^Tx}) \\
+                    \text{negative log likelihood}
+                        &= \text{log} (1 + e^{-yw^Tx})
+                \end{align*}
+                Now we compute the gradient of the negative log likelihood
+                \begin{align*}
+                    \nabla \text{log} (1 + e^{-yw^Tx})
+                        &= \nabla \text{log} \left( \frac{e^{yw^Tx} + 1}
+                            {e^{yw^Tx}} \right) \\
+                        &= \nabla \left( \text{log}(e^{yw^Tx} + 1) -
+                            \text{log}(e^{yw^Tx}) \right) \\
+                        &= \left( \frac{1}{e^{yw^Tx} + 1} \cdot e^{yw^Tx}
+                            \cdot -yx_i \right) - \left( 
+                            \frac{1}{e^{yw^Tx}} \cdot e^{yw^Tx} \cdot 
+                            -yx_i \right) \\
+                        &= yx_i - yx_i \cdot \frac{e^{yw^Tx}}
+                            {e^{yw^Tx}+1} \\
+                        &= yx_i - yx_i \cdot \left( \frac{e^{yw^Tx}+1}
+                            {e^{yw^Tx}} \right)^{-1} \\
+                        &= yx_i - yx_i \cdot (1 + e^{-yw^Tx})^{-1} \\
+                        &= yx_i \left( 1 - \frac{1}{1 + e^{-yw^Tx}} \right)
+                \end{align*}
+                Therefore our update rule is simply
+                \begin{align*}
+                    w_{i+1} 
+                        &= w_i + \alpha \cdot \nabla L \\
+                        &= w_i + \alpha \cdot yx_i \cdot \left( 1 - 
+                            \frac{1}{1 + e^{-yw^Tx}} \right)
+                \end{align*}
+        \end{enumerate}
 \end{enumerate}
 \end{document}
