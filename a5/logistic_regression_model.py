@@ -27,7 +27,7 @@ class LogisticRegressionModel:
         self.weights = new_weights
 
     def predict(self, example):
-        prob = self.logistic(example)
+        prob = self._logistic(example)
         if prob == 0.5:
             return random.choice([0,1])
         elif prob > 0.5:
@@ -38,9 +38,16 @@ class LogisticRegressionModel:
     def _gradient(self, w_i, x_i, logit_gradient_const):
         return (w_i ** 2) * x_i * logit_gradient_const
 
+    def _logistic(self, example):
+        return 1. / (1. + self._e_to_the(example))
+
     def _logistic_gradient_const(self, example):
-        e_to_the = e ** -(inner_product(self.weights, example))
+        e_to_the = self._e_to_the(example)
         return -1. * e_to_the / (1 + e_to_the) ** 2
+
+    def _e_to_the(self, example):
+        return e ** -(inner_product(self.weights, example))
+
 
     def _normalize_weights(self):
         pass
