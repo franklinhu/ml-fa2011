@@ -16,24 +16,24 @@ Assignment 5 \\
             \item % 1a
                 Let
                 \begin{align*}
-                    \textnormal{Likelihood:} \pr(x_1,\hdots,x_N) &=
-                        \prod_i^N\lambda\mathrm{exp}(-\lambda x_i)\\
-                    \textnormal{Prior:} \mathrm{gamma}(\lambda|\alpha,\beta) &=
+                    \textnormal{Likelihood:\ } \pr(x_1,\hdots,x_N) &=
+                        \prod_i^N\lambda\exp\left(-\lambda x_i\right)\\
+                    \textnormal{Prior:\ } \mathrm{gamma}(\lambda|\alpha,\beta) &=
                         \frac{\beta^\alpha}{\Gamma(\alpha)}\lambda^{\alpha-1}e^{-\beta\lambda}
                 \end{align*}
                 Then,
                 \begin{align*}
                     \textnormal{Posterior:}\\
                     \pr(\lambda|x_1,\hdots,x_N) &=
-                        \prod_i^N\lambda\mathrm{exp}(-\lambda x_i)\cdot
+                        \prod_i^N\lambda\exp\left(-\lambda x_i\right)\cdot
                         \frac{\beta^\alpha}{\Gamma(\alpha)}
                         \lambda^{\alpha-1}e^{-\beta\lambda}\\
-                    &=  \lambda exp(\sum_i^N -\lambda x_i)
+                    &=  \lambda \exp\left(\sum_i^N -\lambda x_i\right)
                         \lambda^{\alpha-1}e^{-\beta\lambda}
                         \frac{\beta^\alpha}{\Gamma(\alpha)}\\
-                    &=  \lambda^{\alpha+N-1}exp(\sum_i^N -\lambda x_i - \beta\lambda)
+                    &=  \lambda^{\alpha+N-1}\exp\left(\sum_i^N -\lambda x_i - \beta\lambda\right)
                         \frac{\beta^\alpha}{\Gamma(\alpha)}\\
-                    &=  \lambda^{\alpha+N-1}exp(-\lambda\sum_i^Nx_i + \beta)
+                    &=  \lambda^{\alpha+N-1}\exp\left(-\lambda\sum_i^Nx_i + \beta\right)
                         \frac{\beta^\alpha}{\Gamma(\alpha)}
                         \sim \textnormal{gamma}(\alpha+N,\beta+\sum_i^Nx_i)
                 \end{align*}
@@ -42,10 +42,10 @@ Assignment 5 \\
                 To find the prediction distribution,
                 \begin{align*}
                     \pr(x_N+1|x_1,\hdots,x_N) &= \frac{\beta^\alpha}{\Gamma(\alpha)}
-                        \int\lambda exp(-\lambda x_{N+1})
-                        \cdot\lambda^{\alpha+N-1}exp(-\lambda(\beta+\sum_i^{N}x_i) d\lambda\\
+                        \int\lambda \exp\left(-\lambda x_{N+1}\right)
+                        \cdot\lambda^{\alpha+N-1}\exp\left(-\lambda(\beta+\sum_i^{N}x_i)\right) d\lambda\\
                     &=  \frac{\beta^\alpha}{\Gamma(\alpha)} \int\lambda 
-                        \cdot\lambda^{\alpha+N-1}exp(-\lambda(\beta+\sum_i^{N+1}x_i) d\lambda\\
+                        \cdot\lambda^{\alpha+N-1}\exp\left(-\lambda(\beta+\sum_i^{N+1}x_i)\right) d\lambda\\
                     &=  \frac{\beta^\alpha}{\Gamma(\alpha)} \int\lambda 
                         \cdot P(\lambda|\alpha+N,\beta+\sum_i^{N+1}x_i) d\lambda
                \end{align*}                        
@@ -53,7 +53,7 @@ Assignment 5 \\
                     gamma function \(\sim \textnormal{gamma}(\lambda|\alpha+N, \beta+\sum_i^{N+1}x_i)\).
                     Therefore,
                \begin{equation*}
-                   \pr(x_N+1|x_1,\hdots,x_N) &= \frac{\alpha+N}{\beta+\sum_i^{N+1}x_i}
+                   \pr(x_N+1|x_1,\hdots,x_N) = \frac{\alpha+N}{\beta+\sum_i^{N+1}x_i}
                \end{equation*}                   
                     
             \item % 1b
