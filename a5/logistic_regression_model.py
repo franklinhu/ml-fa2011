@@ -12,7 +12,7 @@ class LogisticRegressionModel:
         self.num_features = num_features
         self.weights = [1] * num_features
 
-    def update_weights(self, example):
+    def update_weights(self, example, cls):
         new_weights = [0] * self.num_features
         w = self.weights
 
@@ -20,12 +20,10 @@ class LogisticRegressionModel:
         # -((w_i ** 2) * x_i * (e ** -(wx))) / (1 + (e ** -(wx))) ^ 2
         # Since only x_i * (w_i ** 2) is dependent on each weight/example
         # pair, we can compute the remaining portion just once
-        logit_gradient_const = self._logistic_gradient_const(example)
+        logit_grad_const = self._logistic_gradient_const(example)
 
         for i in xrange(self.num_features):
-            new_weights[i] = w[i] + ALPHA * self._gradient(w[i], example[i],
-                             logit_gradient_const)
-        self.weights = new_weights
+            w[i] += ALPHA * self.gradient(cls, example[i], logit_grad_const)
 
     def predict(self, example):
         prob = self._logistic(example)
@@ -36,19 +34,17 @@ class LogisticRegressionModel:
         else: # prob < 0.5
             return 0
 
-    def _gradient(self, w_i, x_i, logit_gradient_const):
-        return (w_i ** 2) * x_i * logit_gradient_const
+    def _gradient(self, cls, x_i, logit_gradient_const):
+        return cls * x_i * logit_gradient_const
 
-    def _logistic(self, example):
-        return 1. / (1. + self._e_to_the(example))
+    def _logistic(self, example, cls):
+        return self._g(-cls * inner_product(self.weights, example))
 
-    def _logistic_gradient_const(self, example):
-        e_to_the = self._e_to_the(example)
-        return -1. * e_to_the / (1 + e_to_the) ** 2
+    def _logistic_gradient_const(self, example, cls):
+        return 1. - self._logistic(example, cls)
 
-    def _e_to_the(self, example):
-        return e ** -(inner_product(self.weights, example))
-
+    def _g(self, z):
+        return 1. / (1 + e ** z)
 
     def _normalize_weights(self):
         pass
