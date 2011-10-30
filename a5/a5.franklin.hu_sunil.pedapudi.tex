@@ -8,10 +8,54 @@ CS 194-10 Machine Learning \\
 Fall 2011 \\
 Assignment 5 \\
 
+\newcommand{\pr}{\mathbb{P}}
+
 \begin{enumerate}
     \item Conjugate priors % 1
         \begin{enumerate}
             \item % 1a
+                Let
+                \begin{align*}
+                    \textnormal{Likelihood:} \pr(x_1,\hdots,x_N) &=
+                        \prod_i^N\lambda\mathrm{exp}(-\lambda x_i)\\
+                    \textnormal{Prior:} \mathrm{gamma}(\lambda|\alpha,\beta) &=
+                        \frac{\beta^\alpha}{\Gamma(\alpha)}\lambda^{\alpha-1}e^{-\beta\lambda}
+                \end{align*}
+                Then,
+                \begin{align*}
+                    \textnormal{Posterior:}\\
+                    \pr(\lambda|x_1,\hdots,x_N) &=
+                        \prod_i^N\lambda\mathrm{exp}(-\lambda x_i)\cdot
+                        \frac{\beta^\alpha}{\Gamma(\alpha)}
+                        \lambda^{\alpha-1}e^{-\beta\lambda}\\
+                    &=  \lambda exp(\sum_i^N -\lambda x_i)
+                        \lambda^{\alpha-1}e^{-\beta\lambda}
+                        \frac{\beta^\alpha}{\Gamma(\alpha)}\\
+                    &=  \lambda^{\alpha+N-1}exp(\sum_i^N -\lambda x_i - \beta\lambda)
+                        \frac{\beta^\alpha}{\Gamma(\alpha)}\\
+                    &=  \lambda^{\alpha+N-1}exp(-\lambda\sum_i^Nx_i + \beta)
+                        \frac{\beta^\alpha}{\Gamma(\alpha)}
+                        \sim \textnormal{gamma}(\alpha+N,\beta+\sum_i^Nx_i)
+                \end{align*}
+                Since the posterior also has a gamma distribution, we find the
+                updates parameters are of the form \(\alpha+N\),\(\beta+\sum_i^Nx_i\).
+                To find the prediction distribution,
+                \begin{align*}
+                    \pr(x_N+1|x_1,\hdots,x_N) &= \frac{\beta^\alpha}{\Gamma(\alpha)}
+                        \int\lambda exp(-\lambda x_{N+1})
+                        \cdot\lambda^{\alpha+N-1}exp(-\lambda(\beta+\sum_i^{N}x_i) d\lambda\\
+                    &=  \frac{\beta^\alpha}{\Gamma(\alpha)} \int\lambda 
+                        \cdot\lambda^{\alpha+N-1}exp(-\lambda(\beta+\sum_i^{N+1}x_i) d\lambda\\
+                    &=  \frac{\beta^\alpha}{\Gamma(\alpha)} \int\lambda 
+                        \cdot P(\lambda|\alpha+N,\beta+\sum_i^{N+1}x_i) d\lambda
+               \end{align*}                        
+                    We note that this describes the expectation for \(\lambda\) given a
+                    gamma function \(\sim \textnormal{gamma}(\lambda|\alpha+N, \beta+\sum_i^{N+1}x_i)\).
+                    Therefore,
+               \begin{equation*}
+                   \pr(x_N+1|x_1,\hdots,x_N) &= \frac{\alpha+N}{\beta+\sum_i^{N+1}x_i}
+               \end{equation*}                   
+                    
             \item % 1b
                 Given the geometric distribution
                 \begin{equation*}
