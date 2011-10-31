@@ -46,7 +46,7 @@
 \newcommand{\nametwo}[1]{\def \@nametwo {#1}}
 \nameone{}
 \nametwo{}
-\assignment
+\assignment{}
 \makeatother
 
 % title
