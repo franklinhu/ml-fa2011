@@ -84,6 +84,43 @@ Assignment 5 \\
                     a_{N+1} &\leftarrow a_N + 1 \\
                     b_{N+1} &\leftarrow b_N + k - 1
                 \end{align*}
+            \item % 1c
+              Given
+              \begin{equation*}
+                \textnormal{Likelihood:\ } \pr(\mathbf{X}|\theta)
+                \textnormal{Mixture prior:\ } \pr(\theta|\gamma_1,\hdots,\gamma_m)
+              \end{equation*}
+              We wish to find the posterior via
+              \begin{align*}
+                \pr(\theta|\mathbf{X}) &= \pr(\theta|\gamma_1,\hdots,\gamma_m)
+                \cdot \pr(\mathbf{X}|\theta)
+                &=  \sum^M_{m=1}w_m\pr(\theta|\gamma_m)\prod_i^N\pr(x_i|\theta)
+                &=  \sum^M_{m=1}w_m\pr(\theta|\gamma_m^+)
+              \end{align*}
+              This is to say that we can find a \(\gamma_m^+\) that renders
+              \(\pr(\theta|\gamma_m^+)\) equal to
+              \(\pr(\theta|\gamma_m)\prod_i^N\pr(x_i|\theta)\). The updates to
+              \(\gamma\) may be done iteratively as
+              \begin{align*}
+                \pr(\theta|\gamma_m)\prod_i^N\pr(x_i|\theta)
+                &=  \pr(\theta|\gamma_m)\pr(x_1|\theta)\hdots\pr(x_N|\theta)
+                &=  \pr(\theta|\gamma_m\prime)\pr(x_1|\theta)\hdots\pr(x_{N-1}|\theta)
+                &=  \pr(\theta|\gamma_m\prime\prime)\pr(x_1|\theta)\hdots\pr(x_{N-1}|\theta)
+                &\vdots
+                &= \pr(\theta|\gamma_m^+)
+              \end{align*}
+            \item % 1d
+              Given
+              \begin{equation*}
+                \textnormal{Mixture likelihood:\ } \sum_{i=1}^N w_i\pr(x_i | \theta_i))
+                \textnormal{Prior:\ } \pr(\theta_1,\hdots,\theta_N|\gamma)
+              \end{equation*}
+              We find the posterior via
+              \begin{align*}
+                \pr(\theta_1,\hdots,\theta_N|\mathbf{X})
+                &=  \sum_{i=1}^N w_i\pr(x_i | \theta_i)\cdot\pr(\theta_i|\gamma)
+                &=  \sum_{i=1}^N w_i\pr(x_i | \theta_i)\cdot\pr(\theta_i|\gamma)
+              \end{align*}   
         \end{enumerate}
     \item Bayesian Naive Bayes % 2
     \item Logistic regression for credit scoring % 3
