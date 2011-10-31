@@ -123,8 +123,11 @@ Assignment 5 \\
               \begin{align*}
                 \pr(\theta_1,\hdots,\theta_N|\mathbf{X})
                 &=  \sum_{i=1}^N w_i\pr(x_i | \theta_i)\cdot\pr(\theta_i|\gamma) \\
-                &=  \sum_{i=1}^N w_i\pr(x_i | \theta_i)\cdot\pr(\theta_i|\gamma)
-              \end{align*}   
+                &=  \sum_{i=1}^N w_i\pr(x_i | \theta_i^{\prime})\cdot\pr(\theta_i|\gamma^{\prime})
+              \end{align*}
+              We update the parameter \(\gamma\) indpendently per \(x_i\). In other words, to
+              find \(\gamma^{\prime}\), we invoke \(update(update(update(\gamma,x_1),x_2),\hdots,x_N)\).
+              
         \end{enumerate}
     \item Bayesian Naive Bayes % 2
         \begin{enumerate}
