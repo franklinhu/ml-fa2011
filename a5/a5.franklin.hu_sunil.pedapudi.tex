@@ -41,21 +41,20 @@ Assignment 5 \\
                 updates parameters are of the form \(\alpha+N\),\(\beta+\sum_i^Nx_i\).
                 To find the prediction distribution,
                 \begin{align*}
-                    \pr(x_N+1|x_1,\hdots,x_N) &= \frac{\beta^\alpha}{\Gamma(\alpha)}
+                    \pr(x_N+1|x_1,\hdots,x_N) &\propto \frac{\beta^\alpha}{\Gamma(\alpha)}
                         \int\lambda \exp\left(-\lambda x_{N+1}\right)
                         \cdot\lambda^{\alpha+N-1}\exp\left(-\lambda(\beta+\sum_i^{N}x_i)\right) d\lambda\\
-                    &=  \frac{\beta^\alpha}{\Gamma(\alpha)} \int\lambda 
+                    &\propto  \frac{\beta^\alpha}{\Gamma(\alpha)} \int\lambda 
                         \cdot\lambda^{\alpha+N-1}\exp\left(-\lambda(\beta+\sum_i^{N+1}x_i)\right) d\lambda\\
-                    &=  \frac{\beta^\alpha}{\Gamma(\alpha)} \int\lambda 
+                    &\propto  \frac{\beta^\alpha}{\Gamma(\alpha)} \int\lambda 
                         \cdot P(\lambda|\alpha+N,\beta+\sum_i^{N+1}x_i) d\lambda
                \end{align*}                        
                     We note that this describes the expectation for \(\lambda\) given a
                     gamma function \(\sim \textnormal{gamma}(\lambda|\alpha+N, \beta+\sum_i^{N+1}x_i)\).
                     Therefore,
                \begin{equation*}
-                   \pr(x_N+1|x_1,\hdots,x_N) = \frac{\alpha+N}{\beta+\sum_i^{N+1}x_i}
+                   \pr(x_N+1|x_1,\hdots,x_N) \propto \frac{\alpha+N}{\beta+\sum_i^{N+1}x_i}
                \end{equation*}                   
-                    
             \item % 1b
                 Given the geometric distribution
                 \begin{equation*}
