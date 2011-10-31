@@ -10,6 +10,7 @@ Fall 2011 \\
 Assignment 5 \\
 
 \newcommand{\pr}{\mathbb{P}}
+\newcommand{\tab}{\hspace*{2em}}
 
 \begin{enumerate}
     \item Conjugate priors % 1
@@ -150,10 +151,10 @@ Assignment 5 \\
                 \end{equation*}
                 We train across email samples to find the relevant \(\alpha_i,\beta_i\) by
                 \texttt{
-                  for each sample (x, y=class): \\
-                    for i = 1 to D: \\
-                      \(\alpha_{i,y}\) \(\leftarrow\) \(\alpha_{i,y}\) + 1 \\
-                      \(\beta_{i,y}\) \(\leftarrow\) \(\beta_{i,y}\) + \(x_i\)
+                  \tabfor each sample (x, y=class): \\
+                  \tab\tabfor i = 1 to D: \\
+                  \tab\tab\tab\(\alpha_{i,y}\) \(\leftarrow\) \(\alpha_{i,y}\) + 1 \\
+                  \tab\tab\tab\(\beta_{i,y}\) \(\leftarrow\) \(\beta_{i,y}\) + \(x_i\)
                 }   
             \item % 2b
         \end{enumerate}
