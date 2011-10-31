@@ -1,0 +1,42 @@
+\documentclass{ml}
+\nameone{Franklin Hu}
+\nametwo{Sunil Pedapudi}
+\course{CS 194-10 Machine Learning}
+\assignment{Assignment 5}
+
+\begin{document}
+\maketitle
+\newcommand{\pr}{\mathbb{P}}
+
+\begin{question}{Conjugate Priors}
+  \item % a
+    Let
+    \begin{align*}
+      \+{Likelihood:\ } \pr(x_1,\hdots,x_N) &=
+      \prod_i^N\lambda\exp\left(-\lambda x_i\right)\\
+      \+{Prior:\ } \mathrm{gamma}(\lambda|\alpha,\beta) &=
+      \frac{\beta^\alpha}{\Gamma(\alpha)}\lambda^{\alpha-1}e^{-\beta\lambda}
+    \end{align*}
+\end{question}
+
+\begin{question}{Bayesian Naive Bayes}
+  \part %a
+    Maximum likelihood learning chooses the hypothesis with the
+    greatest likelihood where as Bayesian learning computes
+    the weights over all hypotheses and uses a linear
+    combination of their outputs. \\
+    To use Bayesian learning, let us re-examine the computation
+    of \(\pr(x_i|class\).
+    \begin{equation*}
+      \pr(x_i|class)
+      =  \int \pr(x_i|\lambda_{i,class})\pr(\lambda_i|class) d\lambda_{i,class}
+    \end{equation*}
+  
+  \part % b
+    Using the implementation described above, we find error of approximately
+    28\% versus using maximum ilkelihood learning which rendered an error
+    of approximately 25\%. We find the Bayesian approach to provide worse
+    results due to implementation errors.
+\end{question}
+
+\end{document}
