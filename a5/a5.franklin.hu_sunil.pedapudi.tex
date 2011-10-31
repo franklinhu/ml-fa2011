@@ -152,10 +152,10 @@ Assignment 5 \\
                   \cdot\left(\frac{\beta_i^{\alpha_i}}{\Gamma(\alpha)}\lambda^{\alpha_i-1}
                   \exp(-\beta_i\lambda_i)\right) d\lambda_{i,class}
                 \end{equation*}
-                We train across email samples to find the relevant \(\alpha_i,\beta_i\) by
+                We train across email samples to find the relevant \(\alpha_i,\beta_i\) by \\
                 \texttt{
-                  \tabfor each sample (x, y=class): \\
-                  \tab\tabfor i = 1 to D: \\
+                  \tab for each sample (x, y=class): \\
+                  \tab\tab for i = 1 to D: \\
                   \tab\tab\tab\(\alpha_{i,y}\) \(\leftarrow\) \(\alpha_{i,y}\) + 1 \\
                   \tab\tab\tab\(\beta_{i,y}\) \(\leftarrow\) \(\beta_{i,y}\) + \(x_i\)
                 }   
