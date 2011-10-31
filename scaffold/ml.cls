@@ -59,7 +59,7 @@
     \vspace{0.5em}
     
     \begin{tabular}{c c}
-      \@nameone & \@nametwo
+      \textit{\@nameone} & \textit{\@nametwo}
     \end{tabular}\\
     \small\today
   \end{center}
