@@ -149,14 +149,12 @@ Assignment 5 \\
                   \exp(-\beta_i\lambda_i)\right) d\lambda_{i,class}
                 \end{equation*}
                 We train across email samples to find the relevant \(\alpha_i,\beta_i\) by
-                \begin{algorithmic}
-                  \FORALL{sample} (x, y=class):
-                    \FOR{i = 1 to D}:
-                      \(\alpha_{i,y}\) \gets \(\alpha_{i,y}\) + 1
-                      \(\geta_{i,y}\) \gets \(\beta_{i,y}\) + x_i
-                    \ENDFOR
-                  \ENDFOR
-                \end{algorithmic}      
+                \texttt{
+                  for each sample (x, y=class):
+                    for i = 1 to D:
+                      \(\alpha_{i,y}\) \(\leftarrow\) \(\alpha_{i,y}\) + 1
+                      \(\geta_{i,y}\) \(\leftarrow\) \(\beta_{i,y}\) + x_i
+                }   
             \item % 2b
         \end{enumerate}
     \item Logistic regression for credit scoring % 3
