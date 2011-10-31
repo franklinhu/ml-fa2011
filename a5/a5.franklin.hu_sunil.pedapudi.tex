@@ -136,7 +136,7 @@ Assignment 5 \\
                 of \(\pr(x_i|class\).
                 \begin{equation*}
                   \pr(x_i|class)
-                  &=  \int \pr(x_i|\lambda_{i,class})\pr(\lambda_i|class) d\lambda_{i,class}
+                  =  \int \pr(x_i|\lambda_{i,class})\pr(\lambda_i|class) d\lambda_{i,class}
                 \end{equation*}
                 We note that \(\pr(x_i|\lambda_{i,class})\) is an exponential distribution as
                 that is the likelihood that attribute \(x_i\) belongs to a certain classification
@@ -144,16 +144,16 @@ Assignment 5 \\
                 given a certain classification. This renders
                 \begin{equation*}
                   \pr(x_i|class)
-                  &=  \int \left(\lambda_{i,class}\exp\left(-\lambda_{i,class}x_i\right)\right)
+                  =  \int \left(\lambda_{i,class}\exp\left(-\lambda_{i,class}x_i\right)\right)
                   \cdot\left(\frac{\beta_i^{\alpha_i}}{\Gamma(\alpha)}\lambda^{\alpha_i-1}
                   \exp(-\beta_i\lambda_i)\right) d\lambda_{i,class}
                 \end{equation*}
                 We train across email samples to find the relevant \(\alpha_i,\beta_i\) by
                 \texttt{
-                  for each sample (x, y=class):
-                    for i = 1 to D:
-                      \(\alpha_{i,y}\) \(\leftarrow\) \(\alpha_{i,y}\) + 1
-                      \(\geta_{i,y}\) \(\leftarrow\) \(\beta_{i,y}\) + x_i
+                  for each sample (x, y=class): \\
+                    for i = 1 to D: \\
+                      \(\alpha_{i,y}\) \(\leftarrow\) \(\alpha_{i,y}\) + 1 \\
+                      \(\beta_{i,y}\) \(\leftarrow\) \(\beta_{i,y}\) + \(x_i\)
                 }   
             \item % 2b
         \end{enumerate}
