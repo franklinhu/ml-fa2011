@@ -131,7 +131,31 @@ Assignment 5 \\
                 greatest likelihood where as Bayesian learning computes
                 the weights over all hypotheses and uses a linear
                 combination of their outputs. \\
-                To use Bayesian learning 
+                To use Bayesian learning, let us re-examine the computation
+                of \(\pr(x_i|class\).
+                \begin{equation*}
+                  \pr(x_i|class)
+                  &=  \int \pr(x_i|\lambda_{i,class})\pr(\lambda_i|class) d\lambda_{i,class}
+                \end{equation*}
+                We note that \(\pr(x_i|\lambda_{i,class})\) is an exponential distribution as
+                that is the likelihood that attribute \(x_i\) belongs to a certain classification
+                while \(\pr(\lambda_i|class)\) follows a gamma distribution as that is the prior
+                given a certain classification. This renders
+                \begin{equation*}
+                  \pr(x_i|class)
+                  &=  \int \left(\lambda_{i,class}\exp\left(-\lambda_{i,class}x_i\right)\right)
+                  \cdot\left(\frac{\beta_i^{\alpha_i}}{\Gamma(\alpha)}\lambda^{\alpha_i-1}
+                  \exp(-\beta_i\lambda_i)\right) d\lambda_{i,class}
+                \end{equation*}
+                We train across email samples to find the relevant \(\alpha_i,\beta_i\) by
+                \begin{algorithmic}
+                  \FOR{each sample} (x, y=class):
+                    \FOR{i = 1 to D}:
+                      \(\alpha_{i,y}\) \gets \(\alpha_{i,y}\) + 1
+                      \(\geta_{i,y}\) \gets \(\beta_{i,y}\) + x_i
+                    \ENDFOR
+                  \ENDFOR
+                \end{algorithmic}      
             \item % 2b
         \end{enumerate}
     \item Logistic regression for credit scoring % 3
