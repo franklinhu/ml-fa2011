@@ -150,7 +150,7 @@ Assignment 5 \\
                 \end{equation*}
                 We train across email samples to find the relevant \(\alpha_i,\beta_i\) by
                 \begin{algorithmic}
-                  \FOR{each sample} (x, y=class):
+                  \FORALL{sample} (x, y=class):
                     \FOR{i = 1 to D}:
                       \(\alpha_{i,y}\) \gets \(\alpha_{i,y}\) + 1
                       \(\geta_{i,y}\) \gets \(\beta_{i,y}\) + x_i
