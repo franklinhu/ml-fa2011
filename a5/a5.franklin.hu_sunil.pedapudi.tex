@@ -93,9 +93,9 @@ Assignment 5 \\
               We wish to find the posterior via
               \begin{align*}
                 \pr(\theta|\mathbf{X}) &= \pr(\theta|\gamma_1,\hdots,\gamma_m)
-                \cdot \pr(\mathbf{X}|\theta)
-                &=  \sum^M_{m=1}w_m\pr(\theta|\gamma_m)\prod_i^N\pr(x_i|\theta)
-                &=  \sum^M_{m=1}w_m\pr(\theta|\gamma_m^+)
+                \cdot \pr(\mathbf{X}|\theta) \\
+                &=  \sum^M_{m=1}w_m\pr(\theta|\gamma_m)\prod_i^N\pr(x_i|\theta) \\
+                &=  \sum^M_{m=1}w_m\pr(\theta|\gamma_m^+) \\
               \end{align*}
               This is to say that we can find a \(\gamma_m^+\) that renders
               \(\pr(\theta|\gamma_m^+)\) equal to
@@ -103,11 +103,11 @@ Assignment 5 \\
               \(\gamma\) may be done iteratively as
               \begin{align*}
                 \pr(\theta|\gamma_m)\prod_i^N\pr(x_i|\theta)
-                &=  \pr(\theta|\gamma_m)\pr(x_1|\theta)\hdots\pr(x_N|\theta)
-                &=  \pr(\theta|\gamma_m\prime)\pr(x_1|\theta)\hdots\pr(x_{N-1}|\theta)
-                &=  \pr(\theta|\gamma_m\prime\prime)\pr(x_1|\theta)\hdots\pr(x_{N-1}|\theta)
-                &\vdots
-                &= \pr(\theta|\gamma_m^+)
+                &=  \pr(\theta|\gamma_m)\pr(x_1|\theta)\hdots\pr(x_N|\theta) \\
+                &=  \pr(\theta|\gamma_m\prime)\pr(x_1|\theta)\hdots\pr(x_{N-1}|\theta) \\
+                &=  \pr(\theta|\gamma_m\prime\prime)\pr(x_1|\theta)\hdots\pr(x_{N-1}|\theta) \\
+                &\vdots \\
+                &= \pr(\theta|\gamma_m^+) \\
               \end{align*}
             \item % 1d
               Given
@@ -118,7 +118,7 @@ Assignment 5 \\
               We find the posterior via
               \begin{align*}
                 \pr(\theta_1,\hdots,\theta_N|\mathbf{X})
-                &=  \sum_{i=1}^N w_i\pr(x_i | \theta_i)\cdot\pr(\theta_i|\gamma)
+                &=  \sum_{i=1}^N w_i\pr(x_i | \theta_i)\cdot\pr(\theta_i|\gamma) \\
                 &=  \sum_{i=1}^N w_i\pr(x_i | \theta_i)\cdot\pr(\theta_i|\gamma)
               \end{align*}   
         \end{enumerate}
