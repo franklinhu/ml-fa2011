@@ -28,8 +28,6 @@ K_NEAREST_CACHE = {}
 ## surface in degrees. loc1 and loc2 are pairs of longitude and latitude. E.g.
 ## int(dist_deg((10,0), (20, 0))) gives 10
 def dist(loc1, loc2):
-    loc1,loc2 = map(lambda x: tuple(x) if type(x) is not tuple else x,
-                    [loc1, loc2])
     if loc1 > loc2:
         tmp = loc1
         loc1 = loc2
@@ -142,7 +140,7 @@ if __name__ == "__main__":
         data.append(tuple(map(lambda x: float(x), line[0:2])))
 
     random.shuffle(data)
-    data = data[:10000]
+    data = data[:5000]
 
     # Find optimal k
     NUM_FOLDS = 20
@@ -164,7 +162,7 @@ if __name__ == "__main__":
                               densities)
             for j in xrange(len(densities)):
                 sum_likelihoods[j] += likelihoods[j]
-        print "k: %d %s" % (i, map(lambda x: x / \
+        print "k: %d %s" % (ks[i], map(lambda x: x / \
             cross_val.num_validation_examples(i), sum_likelihoods))
             
 
