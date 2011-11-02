@@ -164,7 +164,8 @@ if __name__ == "__main__":
                               densities)
             for j in xrange(len(densities)):
                 sum_likelihoods[j] += likelihoods[j]
-        print "k: %d %s" % (i, sum_likelihoods)
+        print "k: %d %s" % (i, map(lambda x: x / \
+            cross_val.num_validation_examples(i), sum_likelihoods))
             
 
 
