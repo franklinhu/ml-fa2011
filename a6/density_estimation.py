@@ -23,11 +23,14 @@ K_NEAREST_CACHE = {}
 ## surface in degrees. loc1 and loc2 are pairs of longitude and latitude. E.g.
 ## int(dist_deg((10,0), (20, 0))) gives 10
 def dist(loc1, loc2):
+    loc1,loc2 = map(lambda x: tuple(x) if type(x) is not tuple else x,
+                    [loc1, loc2])
     if loc1 > loc2:
         tmp = loc1
         loc1 = loc2
         loc2 = tmp
     key = (loc1, loc2)
+    print key
     if key not in DISTANCE_CACHE:
         DEG2RAD = np.pi / 180
         RAD2DEG = 180 / np.pi
@@ -40,7 +43,7 @@ def dist(loc1, loc2):
     return DISTANCE_CACHE[key]
 
 def dist_k(k, data, query_point):
-    k_nearest = k_nearest_neighbors(k, data, query_point):
+    k_nearest = k_nearest_neighbors(k, data, query_point)
     k_nearest.sort()
     return k_nearest[k-1]
 
@@ -66,7 +69,7 @@ def laplacian(d, b):
         KERNEL_CACHE[ratio] = math.e ** (-d/b)
     return KERNEL_CACHE[ratio]
 
-def kernel_density_base(kernel, distance, width, data, query_point):
+def kernel_density_base(kernel, distance, width, data, query_point, k):
     """
     Common function since 3/4 of the densities functions involve same code
 
@@ -78,19 +81,20 @@ def kernel_density_base(kernel, distance, width, data, query_point):
     data -- list of training data entries
     query_point -- the point in question (x)
     """
-    N = len(data)
-    kernel_sum = (sum([kernel(distance(query_point, x_i),
+    kernels = [kernel(distance(query_point, x_i),
                               width(k, data, x_i, query_point)) 
-                       for x_i in data]) / N)
-    return math.log(kernel_sum) - math.log(N)
+                       for x_i in data]
+    N = len(kernels)
+    return math.log(sum(kernels)) - math.log(N)
 
 def log_kernel_density_a(data, query_point, k):
     """
     Kernel density function as given by:
     P(x) = (1/N) * \sum\limits_{i=1}^N K_b(d(x,x_i))
     """
-    return kernel_density_base(laplacian, dist, lambda args*: WIDTH, 
-                               data, query_point)
+    return kernel_density_base(laplacian, dist, 
+                               lambda k,data,x_i,x: 5, 
+                               data, query_point, k)
 
 def log_kernel_density_b(data, query_point, k):
     """
@@ -108,9 +112,9 @@ def log_kernel_density_c(data, query_point, k):
     """
     return kernel_density_base(laplacian, dist,
                                lambda k,data,x_i,x: dist_k(k, data, x),
-                               data, query_point)
+                               data, query_point, k)
 
-def log_kernel_density_d():
+def log_kernel_density_d(data, query_point, k):
     """
     P(x) = (1/N) * \sum\limits_{i=1}^N K_{d_{ik}(x)}(d(x,x_i))
     same as (c) except the kernel width is the kth nearest neighbor from 
@@ -118,7 +122,7 @@ def log_kernel_density_d():
     """
     return kernel_density_base(laplacian, dist, 
                                lambda k,data,x_i,x: dist_k(k, data, x_i),
-                               data, query_point)
+                               data, query_point, k)
 
 if __name__ == "__main__":
     if len(sys.argv) < NUM_ARGS + 1:
@@ -126,23 +130,33 @@ if __name__ == "__main__":
         sys.exit(1)
     data_file = sys.argv[1]
     handle = open(data_file, 'r')
+    handle.readline()
     csv_file = csv.reader(handle)
     data = []
     for line in csv_file:
-        data.append(line)
+        data.append(map(lambda x: float(x), line[0:2]))
 
+    # Find optimal k
+    NUM_FOLDS = 20
     cross_val = cross_validation.CrossValidation(NUM_FOLDS, data)
     densities = [
         log_kernel_density_a,
         log_kernel_density_b,
         log_kernel_density_c,
         log_kernel_density_d]
+    ks = range(5, 5 + NUM_FOLDS)
     for i in xrange(NUM_FOLDS):
         CURRENT_FOLD = i
+
+        sum_likelihoods = [0] * len(densities)
         for v_ex in cross_val.validation_examples(i):
-            pass
-
-
+            likelihoods = map(lambda x: x(cross_val.training_examples(i),
+                                          v_ex, ks[i]),
+                              densities)
+            for j in xrange(len(densities)):
+                sum_likelihoods[j] += likelihoods[j]
+        print "k: %d %s" % (i, sum_likelihoods)
+            
 
 
 
