@@ -3,7 +3,9 @@
 # Fall 2011
 # Assignment 6
 import csv
+import heapq
 import math
+import random
 import sys
 
 import numpy as np
@@ -13,6 +15,9 @@ import cross_validation
 NUM_ARGS = 1
 NUM_FOLDS = 5
 CURRENT_FOLD = None
+
+DEG2RAD = np.pi / 180
+RAD2DEG = 180 / np.pi
 
 # Cache the following since computations are expensive
 DISTANCE_CACHE = {}
@@ -30,10 +35,7 @@ def dist(loc1, loc2):
         loc1 = loc2
         loc2 = tmp
     key = (loc1, loc2)
-    print key
     if key not in DISTANCE_CACHE:
-        DEG2RAD = np.pi / 180
-        RAD2DEG = 180 / np.pi
         lon1, lat1 = loc1
         lon2, lat2 = loc2
         DISTANCE_CACHE[key] = np.arccos(
@@ -51,11 +53,10 @@ def k_nearest_neighbors(k, data, query_point):
     """
     Find the k closest points to the query_point, in no particular order
     """
-    assert len(data) > k
     key = (query_point, CURRENT_FOLD)
     if key not in K_NEAREST_CACHE:
         h = []
-        for d in data:
+        for d in data(CURRENT_FOLD):
             distance = dist(query_point, d)
             if len(h) < k:
                 heapq.heappush(h, -distance)
@@ -69,7 +70,7 @@ def laplacian(d, b):
         KERNEL_CACHE[ratio] = math.e ** (-d/b)
     return KERNEL_CACHE[ratio]
 
-def kernel_density_base(kernel, distance, width, data, query_point, k):
+def kernel_density_base(kernel, distance, width, data, query_point, k, N):
     """
     Common function since 3/4 of the densities functions involve same code
 
@@ -83,28 +84,32 @@ def kernel_density_base(kernel, distance, width, data, query_point, k):
     """
     kernels = [kernel(distance(query_point, x_i),
                               width(k, data, x_i, query_point)) 
-                       for x_i in data]
-    N = len(kernels)
-    return math.log(sum(kernels)) - math.log(N)
+                       for x_i in data(CURRENT_FOLD)]
+    kernel_sum = sum(kernels)
+    try:
+        retVal = math.log(kernel_sum) - math.log(N)
+    except ValueError as e:
+        print kernel_sum, N, len(kernels)
+        raise Exception(e)
+    return retVal
 
-def log_kernel_density_a(data, query_point, k):
+def log_kernel_density_a(data, query_point, k, N):
     """
     Kernel density function as given by:
     P(x) = (1/N) * \sum\limits_{i=1}^N K_b(d(x,x_i))
     """
     return kernel_density_base(laplacian, dist, 
                                lambda k,data,x_i,x: 5, 
-                               data, query_point, k)
+                               data, query_point, k, N)
 
-def log_kernel_density_b(data, query_point, k):
+def log_kernel_density_b(data, query_point, k, N):
     """
     P(x) = k / (2N * d_k(x))
     where d_k(x) is the distance from x to the kth nearest neighbor of x
     """
-    N = len(data)
-    return math.log(k) - math.log(2 * N * dist_k(data, query_point))
+    return math.log(k) - math.log(2 * N * dist_k(k, data, query_point))
 
-def log_kernel_density_c(data, query_point, k):
+def log_kernel_density_c(data, query_point, k, N):
     """
     P(x) = (1/N) * \sum\limits_{i=1}^N K_{d_k(x)}(d(x,x_i))
     same as (a) except the kernel width is determined by the kth
@@ -112,9 +117,9 @@ def log_kernel_density_c(data, query_point, k):
     """
     return kernel_density_base(laplacian, dist,
                                lambda k,data,x_i,x: dist_k(k, data, x),
-                               data, query_point, k)
+                               data, query_point, k, N)
 
-def log_kernel_density_d(data, query_point, k):
+def log_kernel_density_d(data, query_point, k, N):
     """
     P(x) = (1/N) * \sum\limits_{i=1}^N K_{d_{ik}(x)}(d(x,x_i))
     same as (c) except the kernel width is the kth nearest neighbor from 
@@ -122,7 +127,7 @@ def log_kernel_density_d(data, query_point, k):
     """
     return kernel_density_base(laplacian, dist, 
                                lambda k,data,x_i,x: dist_k(k, data, x_i),
-                               data, query_point, k)
+                               data, query_point, k, N)
 
 if __name__ == "__main__":
     if len(sys.argv) < NUM_ARGS + 1:
@@ -134,7 +139,10 @@ if __name__ == "__main__":
     csv_file = csv.reader(handle)
     data = []
     for line in csv_file:
-        data.append(map(lambda x: float(x), line[0:2]))
+        data.append(tuple(map(lambda x: float(x), line[0:2])))
+
+    random.shuffle(data)
+    data = data[:10000]
 
     # Find optimal k
     NUM_FOLDS = 20
@@ -150,8 +158,9 @@ if __name__ == "__main__":
 
         sum_likelihoods = [0] * len(densities)
         for v_ex in cross_val.validation_examples(i):
-            likelihoods = map(lambda x: x(cross_val.training_examples(i),
-                                          v_ex, ks[i]),
+            N = cross_val.num_training_examples(i)
+            likelihoods = map(lambda x: x(cross_val.training_examples,
+                                          v_ex, ks[i], N),
                               densities)
             for j in xrange(len(densities)):
                 sum_likelihoods[j] += likelihoods[j]
