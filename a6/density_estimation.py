@@ -3,11 +3,13 @@
 # Fall 2011
 # Assignment 6
 import csv
+import gc
 import heapq
 import math
 import random
 import sys
 
+from guppy import hpy # REMOVE THIS BEFORE TURNING IN
 import numpy as np
 
 import cross_validation
@@ -36,10 +38,13 @@ def dist(loc1, loc2):
     if key not in DISTANCE_CACHE:
         lon1, lat1 = loc1
         lon2, lat2 = loc2
-        DISTANCE_CACHE[key] = np.arccos(
-                        np.sin(lat1 * DEG2RAD) * np.sin(lat2 * DEG2RAD)
-                        + np.cos(lat1 * DEG2RAD) * np.cos(lat2 * DEG2RAD)
-                        * np.cos((lon2 - lon1) * DEG2RAD)) * RAD2DEG
+        tmp = math.sin(lat1 * DEG2RAD) * math.sin(lat2 * DEG2RAD) \
+                      + math.cos(lat1 * DEG2RAD) * math.cos(lat2 * DEG2RAD)\
+                      * math.cos((lon2 - lon1) * DEG2RAD)
+        # Floating point rounding issues for tmp = 1.0000000000...1
+        # cause domain error when taking arccos, so we clamp it between -1,1
+        tmp = min(max(tmp, -1), 1)
+        DISTANCE_CACHE[key] = math.acos(tmp) * RAD2DEG
     return DISTANCE_CACHE[key]
 
 def dist_k(k, data, query_point):
@@ -150,9 +155,12 @@ if __name__ == "__main__":
         log_kernel_density_b,
         log_kernel_density_c,
         log_kernel_density_d]
-    ks = range(5, 5 + NUM_FOLDS)
+    ks = range(6, 6 + NUM_FOLDS)
+    h = hpy()
+    min_likelihoods = [float("inf")] * len(densities)
     for i in xrange(NUM_FOLDS):
         CURRENT_FOLD = i
+        print h.heap()
 
         sum_likelihoods = [0] * len(densities)
         for v_ex in cross_val.validation_examples(i):
@@ -162,8 +170,15 @@ if __name__ == "__main__":
                               densities)
             for j in xrange(len(densities)):
                 sum_likelihoods[j] += likelihoods[j]
-        print "k: %d %s" % (ks[i], map(lambda x: x / \
-            cross_val.num_validation_examples(i), sum_likelihoods))
+
+        sum_likelihoods = map(lambda x: x / \
+            cross_val.num_validation_examples(i), sum_likelihoods)
+        for i in xrange(len(sum_likelihoods)):
+            min_likelihoods[i] = min(sum_likelihoods[i], min_likelihoods[i])
+        print "Sum: ", sum_likelihoods
+        print "Min: ", min_likelihoods
+
+        gc.collect()
             
 
 
