@@ -2,14 +2,13 @@
 # CS 194-10 Machine Learning
 # Fall 2011
 # Assignment 6
+import collections
 import csv
-import gc
 import heapq
 import math
 import random
 import sys
 
-from guppy import hpy # REMOVE THIS BEFORE TURNING IN
 import numpy as np
 
 import cross_validation
@@ -22,9 +21,8 @@ DEG2RAD = np.pi / 180
 RAD2DEG = 180 / np.pi
 
 # Cache the following since computations are expensive
-DISTANCE_CACHE = {}
-KERNEL_CACHE = {}
-K_NEAREST_CACHE = {}
+DISTANCE_CACHE = collections.OrderedDict()
+KERNEL_CACHE = collections.OrderedDict()
 
 ## Calculates the great circle distance between two point on the earth's
 ## surface in degrees. loc1 and loc2 are pairs of longitude and latitude. E.g.
@@ -36,6 +34,11 @@ def dist(loc1, loc2):
         loc2 = tmp
     key = (loc1, loc2)
     if key not in DISTANCE_CACHE:
+        # Check the size and evict 1/4 of the dict if size > 8 000 000
+        if len(DISTANCE_CACHE) > 8000000:
+            for i in xrange(len(DISTANCE_CACHE)/4):
+                DISTANCE_CACHE.popitem(last=False)
+
         lon1, lat1 = loc1
         lon2, lat2 = loc2
         tmp = math.sin(lat1 * DEG2RAD) * math.sin(lat2 * DEG2RAD) \
@@ -44,8 +47,14 @@ def dist(loc1, loc2):
         # Floating point rounding issues for tmp = 1.0000000000...1
         # cause domain error when taking arccos, so we clamp it between -1,1
         tmp = min(max(tmp, -1), 1)
-        DISTANCE_CACHE[key] = math.acos(tmp) * RAD2DEG
-    return DISTANCE_CACHE[key]
+        retVal = math.acos(tmp) * RAD2DEG
+        DISTANCE_CACHE[key] = retVal
+
+    else:
+        retVal = DISTANCE_CACHE[key]
+        del DISTANCE_CACHE[key]
+        DISTANCE_CACHE[key] = retVal
+    return retVal
 
 def dist_k(k, data, query_point):
     k_nearest = k_nearest_neighbors(k, data, query_point)
@@ -56,22 +65,22 @@ def k_nearest_neighbors(k, data, query_point):
     """
     Find the k closest points to the query_point, in no particular order
     """
-    key = (query_point, CURRENT_FOLD)
-    if key not in K_NEAREST_CACHE:
-        h = []
-        for d in data(CURRENT_FOLD):
-            distance = dist(query_point, d)
-            if len(h) < k:
-                heapq.heappush(h, -distance)
-            heapq.heappushpop(h, -distance)
-        K_NEAREST_CACHE[key] = map(lambda x: -x, h)
-    return K_NEAREST_CACHE[key]
+    h = []
+    for d in data(CURRENT_FOLD):
+        distance = dist(query_point, d)
+        if len(h) < k:
+            heapq.heappush(h, -distance)
+        heapq.heappushpop(h, -distance)
+    return map(lambda x: -x, h)
 
 def laplacian(d, b):
+    return math.e ** (-d/b)
+    """
     ratio = -d/b
     if ratio not in KERNEL_CACHE:
         KERNEL_CACHE[ratio] = math.e ** (-d/b)
     return KERNEL_CACHE[ratio]
+    """
 
 def kernel_density_base(kernel, distance, width, data, query_point, k, N):
     """
@@ -141,13 +150,16 @@ if __name__ == "__main__":
     handle.readline()
     csv_file = csv.reader(handle)
     data = []
+    LON = -73.125
+    DELTA = 15
     for line in csv_file:
-        data.append(tuple(map(lambda x: float(x), line[0:2])))
+        l = tuple(map(lambda x: float(x), line[0:2]))
+        data.append(l)
 
     random.shuffle(data)
-    data = data[:5000]
 
     # Find optimal k
+    """
     NUM_FOLDS = 20
     cross_val = cross_validation.CrossValidation(NUM_FOLDS, data)
     densities = [
@@ -156,12 +168,9 @@ if __name__ == "__main__":
         log_kernel_density_c,
         log_kernel_density_d]
     ks = range(6, 6 + NUM_FOLDS)
-    h = hpy()
     min_likelihoods = [float("inf")] * len(densities)
     for i in xrange(NUM_FOLDS):
         CURRENT_FOLD = i
-        print h.heap()
-
         sum_likelihoods = [0] * len(densities)
         for v_ex in cross_val.validation_examples(i):
             N = cross_val.num_training_examples(i)
@@ -177,9 +186,32 @@ if __name__ == "__main__":
             min_likelihoods[i] = min(sum_likelihoods[i], min_likelihoods[i])
         print "Sum: ", sum_likelihoods
         print "Min: ", min_likelihoods
+    """
 
-        gc.collect()
-            
+    # use k = 8
+    k = 15
+    NUM_FOLDS = 5
+    cv = cross_validation.CrossValidation(NUM_FOLDS, data)
+    densities = [
+        log_kernel_density_a#,
+        #log_kernel_density_b,
+        #log_kernel_density_c,
+        #log_kernel_density_d
+        ]
+    for i in xrange(NUM_FOLDS):
+        CURRENT_FOLD = i
+        sum_likelihoods = [0] * len(densities)
+        for v_ex in cv.validation_examples(i):
+            N = cv.num_training_examples(i)
+            log_likelihoods = map(lambda x: x(cv.training_examples,
+                                          v_ex, k, N),
+                              densities)
+            likelihoods = map(lambda x: math.e ** x, log_likelihoods)
+            for j in xrange(len(densities)):
+                sum_likelihoods[j] += likelihoods[j]
 
-
+        num_validation = cv.num_validation_examples(i)
+        sum_likelihoods = map(lambda x: x / num_validation, sum_likelihoods)
+        print i, sum_likelihoods
+        print len(DISTANCE_CACHE.keys())
 
