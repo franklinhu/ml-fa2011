@@ -13,7 +13,7 @@ import numpy as np
 
 import cross_validation
 
-NUM_ARGS = 1
+NUM_ARGS = 2
 NUM_FOLDS = 5
 CURRENT_FOLD = None
 
@@ -23,6 +23,7 @@ RAD2DEG = 180 / np.pi
 # Cache the following since computations are expensive
 DISTANCE_CACHE = collections.OrderedDict()
 KERNEL_CACHE = collections.OrderedDict()
+KTH_NEAREST_CACHE = collections.OrderedDict()
 
 ## Calculates the great circle distance between two point on the earth's
 ## surface in degrees. loc1 and loc2 are pairs of longitude and latitude. E.g.
@@ -74,13 +75,13 @@ def k_nearest_neighbors(k, data, query_point):
     return map(lambda x: -x, h)
 
 def laplacian(d, b):
-    return math.e ** (-d/b)
-    """
+    #return math.e ** (-d/b)
+    #"""
     ratio = -d/b
     if ratio not in KERNEL_CACHE:
         KERNEL_CACHE[ratio] = math.e ** (-d/b)
     return KERNEL_CACHE[ratio]
-    """
+    #"""
 
 def kernel_density_base(kernel, distance, width, data, query_point, k, N):
     """
@@ -94,16 +95,11 @@ def kernel_density_base(kernel, distance, width, data, query_point, k, N):
     data -- list of training data entries
     query_point -- the point in question (x)
     """
-    kernels = [kernel(distance(query_point, x_i),
+    total = 0
+    for x_i in data(CURRENT_FOLD):
+        total += kernel(distance(query_point, x_i),
                               width(k, data, x_i, query_point)) 
-                       for x_i in data(CURRENT_FOLD)]
-    kernel_sum = sum(kernels)
-    try:
-        retVal = math.log(kernel_sum) - math.log(N)
-    except ValueError as e:
-        print kernel_sum, N, len(kernels)
-        raise Exception(e)
-    return retVal
+    return math.log(total) - math.log(N)
 
 def log_kernel_density_a(data, query_point, k, N):
     """
@@ -111,7 +107,7 @@ def log_kernel_density_a(data, query_point, k, N):
     P(x) = (1/N) * \sum\limits_{i=1}^N K_b(d(x,x_i))
     """
     return kernel_density_base(laplacian, dist, 
-                               lambda k,data,x_i,x: 5, 
+                               lambda k,data,x_i,x: 500, 
                                data, query_point, k, N)
 
 def log_kernel_density_b(data, query_point, k, N):
@@ -136,27 +132,57 @@ def log_kernel_density_d(data, query_point, k, N):
     P(x) = (1/N) * \sum\limits_{i=1}^N K_{d_{ik}(x)}(d(x,x_i))
     same as (c) except the kernel width is the kth nearest neighbor from 
     each x_i to its kth nearest neighbor, rather than from x
+
+    Since this kernel width doesn't depend on the query_point, it can be
+    cached and then used for each query_point in the validation set
     """
-    return kernel_density_base(laplacian, dist, 
-                               lambda k,data,x_i,x: dist_k(k, data, x_i),
-                               data, query_point, k, N)
+    total = 0
+    for x_i in data(CURRENT_FOLD):
+        key = (x_i, CURRENT_FOLD)
+        if key not in KTH_NEAREST_CACHE:
+            KTH_NEAREST_CACHE[key] = dist_k(k, data, x_i)
+
+        total += laplacian(dist(query_point, x_i),
+                           KTH_NEAREST_CACHE[key])
+    return math.log(total) - math.log(N)
+    #return kernel_density_base(laplacian, dist, 
+    #                           lambda k,data,x_i,x: dist_k(k, data, x_i),
+    #                           data, query_point, k, N)
+
+DENSITIES = {
+    "a": log_kernel_density_a,
+    "b": log_kernel_density_b,
+    "c": log_kernel_density_c,
+    "d": log_kernel_density_d
+}
 
 if __name__ == "__main__":
     if len(sys.argv) < NUM_ARGS + 1:
-        print "Usage: density_estimation.py data_file"
+        print "USAGE: $ python density_estimation.py data_file " \
+              "kernel_density"
+        print "\tdata_file      -- input csv file"
+        print "\tkernel_density -- kernel density to use (a,b,c,d)"
         sys.exit(1)
+
     data_file = sys.argv[1]
+    if sys.argv[2] in DENSITIES:
+        kernel_density = DENSITIES[sys.argv[2]]
+    else:
+        raise Exception('No such kernel density. Choices: (a,b,c,d)')
+
     handle = open(data_file, 'r')
     handle.readline()
     csv_file = csv.reader(handle)
     data = []
+
     LON = -73.125
     DELTA = 15
     for line in csv_file:
         l = tuple(map(lambda x: float(x), line[0:2]))
-        data.append(l)
+        if abs(l[0] - LON) < DELTA:
+            data.append(l)
 
-    random.shuffle(data)
+    print len(data)
 
     # Find optimal k
     """
@@ -188,30 +214,29 @@ if __name__ == "__main__":
         print "Min: ", min_likelihoods
     """
 
-    # use k = 8
-    k = 15
+    print "Beginning cross validation of likelihoods"
+    k = 1000
+    print k
     NUM_FOLDS = 5
-    cv = cross_validation.CrossValidation(NUM_FOLDS, data)
-    densities = [
-        log_kernel_density_a#,
-        #log_kernel_density_b,
-        #log_kernel_density_c,
-        #log_kernel_density_d
-        ]
+    data = data[:7000]
+    random.shuffle(data)
+    cv = cross_validation.CrossValidation(NUM_FOLDS, data[:7000])
     for i in xrange(NUM_FOLDS):
         CURRENT_FOLD = i
-        sum_likelihoods = [0] * len(densities)
+        print "Current fold: %d" % i
+        sum_likelihood = 0 # [0] * len(densities)
+        counter = 0
         for v_ex in cv.validation_examples(i):
+            counter += 1
             N = cv.num_training_examples(i)
-            log_likelihoods = map(lambda x: x(cv.training_examples,
-                                          v_ex, k, N),
-                              densities)
-            likelihoods = map(lambda x: math.e ** x, log_likelihoods)
-            for j in xrange(len(densities)):
-                sum_likelihoods[j] += likelihoods[j]
+            log_likelihood = kernel_density(cv.training_examples,
+                                          v_ex, k, N)
+            likelihood = math.e ** log_likelihood
 
+            sum_likelihood += likelihood
+            print sum_likelihood / counter
+            
         num_validation = cv.num_validation_examples(i)
-        sum_likelihoods = map(lambda x: x / num_validation, sum_likelihoods)
-        print i, sum_likelihoods
-        print len(DISTANCE_CACHE.keys())
+        sum_likelihood = sum_likelihood / num_validation
+        print i, sum_likelihood
 
