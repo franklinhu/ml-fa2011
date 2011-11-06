@@ -15,11 +15,21 @@ class CrossValidation:
             random.shuffle(self.data)
 
     def validation_examples(self, fold_num):
+        """
+        Returns a generator that gives the validation examples for a
+        particular fold
+
+        fold_num -- Fold number in range of [0, self.num_folds-1]
+        """
         start,stop = self._validation_index_range(fold_num)
         for i in xrange(start, stop):
             yield self.data[i]
 
     def training_examples(self, fold_num):
+        """
+        Returns a generator that gives the training examples for a 
+        particular fold
+        """
         start,stop = self._validation_index_range(fold_num)
         for i in xrange(len(self.data)):
             if i >= start and i < stop:
@@ -27,9 +37,15 @@ class CrossValidation:
             yield self.data[i]
 
     def num_training_examples(self, fold_num):
+        """
+        Returns the number of training examples in a particular fold
+        """
         return len(self.data) - self.num_validation_examples(fold_num)
 
     def num_validation_examples(self, fold_num):
+        """
+        Returns the number of validation examples in a particular fold
+        """
         start,stop = self._validation_index_range(fold_num)
         return stop - start
 
