@@ -22,40 +22,21 @@ DEG2RAD = np.pi / 180
 RAD2DEG = 180 / np.pi
 
 # Cache the following since computations are expensive
-DISTANCE_CACHE = collections.OrderedDict()
 KTH_NEAREST_CACHE = collections.OrderedDict()
 
 ## Calculates the great circle distance between two point on the earth's
 ## surface in degrees. loc1 and loc2 are pairs of longitude and latitude. E.g.
 ## int(dist_deg((10,0), (20, 0))) gives 10
 def dist(loc1, loc2):
-    if loc1 > loc2:
-        tmp = loc1
-        loc1 = loc2
-        loc2 = tmp
-    key = (loc1, loc2)
-    if key not in DISTANCE_CACHE:
-        # Check the size and evict 1/4 of the dict if size > 8 000 000
-        if len(DISTANCE_CACHE) > 8000000:
-            for i in xrange(len(DISTANCE_CACHE)/4):
-                DISTANCE_CACHE.popitem(last=False)
-
-        lon1, lat1 = loc1
-        lon2, lat2 = loc2
-        tmp = math.sin(lat1 * DEG2RAD) * math.sin(lat2 * DEG2RAD) \
-                      + math.cos(lat1 * DEG2RAD) * math.cos(lat2 * DEG2RAD)\
-                      * math.cos((lon2 - lon1) * DEG2RAD)
-        # Floating point rounding issues for tmp = 1.0000000000...1
-        # cause domain error when taking arccos, so we clamp it between -1,1
-        tmp = min(max(tmp, -1), 1)
-        retVal = math.acos(tmp) * RAD2DEG
-        DISTANCE_CACHE[key] = retVal
-
-    else:
-        retVal = DISTANCE_CACHE[key]
-        del DISTANCE_CACHE[key]
-        DISTANCE_CACHE[key] = retVal
-    return retVal
+    lon1, lat1 = loc1
+    lon2, lat2 = loc2
+    tmp = math.sin(lat1 * DEG2RAD) * math.sin(lat2 * DEG2RAD) \
+                  + math.cos(lat1 * DEG2RAD) * math.cos(lat2 * DEG2RAD)\
+                  * math.cos((lon2 - lon1) * DEG2RAD)
+    # Floating point rounding issues for tmp = 1.0000000000...1
+    # cause domain error when taking arccos, so we clamp it between -1,1
+    tmp = min(max(tmp, -1), 1)
+    return math.acos(tmp) * RAD2DEG
 
 def dist_k(k, data, query_point):
     k_nearest = k_nearest_neighbors(k, data, query_point)
@@ -210,9 +191,9 @@ if __name__ == "__main__":
     k = 100
     print k
     NUM_FOLDS = 5
-    data = data[:7000]
-    random.shuffle(data)
-    cv = cross_validation.CrossValidation(NUM_FOLDS, data[:7000])
+    #data = data[:7000]
+    #random.shuffle(data)
+    cv = cross_validation.CrossValidation(NUM_FOLDS, data[:7000], True)
     for i in xrange(NUM_FOLDS):
         CURRENT_FOLD = i
         print "Current fold: %d" % i
