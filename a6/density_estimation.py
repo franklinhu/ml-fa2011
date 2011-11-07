@@ -107,7 +107,7 @@ def log_kernel_density_a(data, query_point, k, N):
     P(x) = (1/N) * \sum\limits_{i=1}^N K_b(d(x,x_i))
     """
     return kernel_density_base(laplacian, dist, 
-                               lambda k,data,x_i,x: 500, 
+                               lambda k,data,x_i,x: 5000, 
                                data, query_point, k, N)
 
 def log_kernel_density_b(data, query_point, k, N):
@@ -215,7 +215,7 @@ if __name__ == "__main__":
     """
 
     print "Beginning cross validation of likelihoods"
-    k = 1000
+    k = 100
     print k
     NUM_FOLDS = 5
     data = data[:7000]
@@ -231,12 +231,10 @@ if __name__ == "__main__":
             N = cv.num_training_examples(i)
             log_likelihood = kernel_density(cv.training_examples,
                                           v_ex, k, N)
-            likelihood = math.e ** log_likelihood
+            #likelihood = math.e ** log_likelihood
 
-            sum_likelihood += likelihood
-            print sum_likelihood / counter
+            sum_likelihood += log_likelihood
+            # print log_likelihood, sum_likelihood
             
-        num_validation = cv.num_validation_examples(i)
-        sum_likelihood = sum_likelihood / num_validation
         print i, sum_likelihood
 
