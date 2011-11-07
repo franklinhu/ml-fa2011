@@ -10,16 +10,14 @@ import random
 import sys
 import time
 
-import numpy as np
-
 import cross_validation
 
 NUM_ARGS = 2
 NUM_FOLDS = 5
 CURRENT_FOLD = None
 
-DEG2RAD = np.pi / 180
-RAD2DEG = 180 / np.pi
+DEG2RAD = math.pi / 180
+RAD2DEG = 180 / math.pi
 
 # Cache the following since computations are expensive
 KTH_NEAREST_CACHE = collections.OrderedDict()
