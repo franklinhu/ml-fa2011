@@ -68,10 +68,10 @@ def _get_features(features_file):
     return features
 
 def NBclassify_Boolean(example,model,cost_ratio):
-    return 0
+    return model.classify(example, cost_ratio)
 
 def NBclassify_NTF(example,model,cost_ratio):
-    return 0
+    return model.classify(example, cost_ratio)
 
 
 #########################################
