@@ -8,6 +8,7 @@ import heapq
 import math
 import random
 import sys
+import time
 
 import numpy as np
 
@@ -22,7 +23,6 @@ RAD2DEG = 180 / np.pi
 
 # Cache the following since computations are expensive
 DISTANCE_CACHE = collections.OrderedDict()
-KERNEL_CACHE = collections.OrderedDict()
 KTH_NEAREST_CACHE = collections.OrderedDict()
 
 ## Calculates the great circle distance between two point on the earth's
@@ -74,16 +74,7 @@ def k_nearest_neighbors(k, data, query_point):
         heapq.heappushpop(h, -distance)
     return map(lambda x: -x, h)
 
-def laplacian(d, b):
-    #return math.e ** (-d/b)
-    #"""
-    ratio = -d/b
-    if ratio not in KERNEL_CACHE:
-        KERNEL_CACHE[ratio] = math.e ** (-d/b)
-    return KERNEL_CACHE[ratio]
-    #"""
-
-def kernel_density_base(kernel, distance, width, data, query_point, k, N):
+def kernel_density_base(distance, width, data, query_point, k, N):
     """
     Common function since 3/4 of the densities functions involve same code
 
@@ -97,17 +88,16 @@ def kernel_density_base(kernel, distance, width, data, query_point, k, N):
     """
     total = 0
     for x_i in data(CURRENT_FOLD):
-        total += kernel(distance(query_point, x_i),
-                              width(k, data, x_i, query_point)) 
-    return math.log(total) - math.log(N)
+        total += distance(query_point, x_i) / width(k, data, x_i, 
+                                                    query_point)
+    return -total / N
 
 def log_kernel_density_a(data, query_point, k, N):
     """
     Kernel density function as given by:
     P(x) = (1/N) * \sum\limits_{i=1}^N K_b(d(x,x_i))
     """
-    return kernel_density_base(laplacian, dist, 
-                               lambda k,data,x_i,x: 5000, 
+    return kernel_density_base(dist, lambda k,data,x_i,x: 5000, 
                                data, query_point, k, N)
 
 def log_kernel_density_b(data, query_point, k, N):
@@ -123,7 +113,7 @@ def log_kernel_density_c(data, query_point, k, N):
     same as (a) except the kernel width is determined by the kth
     nearest neighbor distance
     """
-    return kernel_density_base(laplacian, dist,
+    return kernel_density_base(dist,
                                lambda k,data,x_i,x: dist_k(k, data, x),
                                data, query_point, k, N)
 
@@ -136,18 +126,20 @@ def log_kernel_density_d(data, query_point, k, N):
     Since this kernel width doesn't depend on the query_point, it can be
     cached and then used for each query_point in the validation set
     """
+    """
     total = 0
     for x_i in data(CURRENT_FOLD):
         key = (x_i, CURRENT_FOLD)
         if key not in KTH_NEAREST_CACHE:
             KTH_NEAREST_CACHE[key] = dist_k(k, data, x_i)
 
-        total += laplacian(dist(query_point, x_i),
+        total += kernel_density_base(dist,(query_point, x_i),
                            KTH_NEAREST_CACHE[key])
     return math.log(total) - math.log(N)
-    #return kernel_density_base(laplacian, dist, 
-    #                           lambda k,data,x_i,x: dist_k(k, data, x_i),
-    #                           data, query_point, k, N)
+    """
+    return kernel_density_base(dist, 
+                               lambda k,data,x_i,x: dist_k(k, data, x_i),
+                               data, query_point, k, N)
 
 DENSITIES = {
     "a": log_kernel_density_a,
@@ -226,6 +218,7 @@ if __name__ == "__main__":
         print "Current fold: %d" % i
         sum_likelihood = 0 # [0] * len(densities)
         counter = 0
+        t = time.time()
         for v_ex in cv.validation_examples(i):
             counter += 1
             N = cv.num_training_examples(i)
@@ -236,5 +229,6 @@ if __name__ == "__main__":
             sum_likelihood += log_likelihood
             # print log_likelihood, sum_likelihood
             
-        print i, sum_likelihood
+        print "Fold %d, likelihood: %f, time: %f" % (i, sum_likelihood,
+            time.time() - t)
 
