@@ -10,7 +10,47 @@
 
 \begin{question}{Density estimation in one dimension} % 1
   \part % a
+  Given
+  \begin{equation*}
+    \hat{P}(x) = \frac{1}{N}\sum_{i=1}^NK_b(d(x,x_i))
+  \end{equation*}
+  we wish to show that
+  \begin{equation*}
+    \int \frac{1}{N}\sum_{i=1}^NK_b(d(x,x_i))\,dx = 1
+  \end{equation*}
+  Let us acknowledge that integrating with respect to \(x\) will exercise
+  all values across the range of \(d(x,x_i)\) which, in turn, exercises the
+  range of \(K_b\). Therefore, we simplify the integrand to be \(K_b(z)\)
+  where \(z= d(x,x_i)\) and integrate with respect to \(z\).
+  We then evaluate
+  \begin{align*}
+    \int \frac{1}{N}\sum_{i=1}^NK_b(z)\,dz 
+    &= \frac{1}{N} \int \sum_{i=1}^NK_b(z)\,dz\\
+    &= \frac{1}{N} \sum_{i=1}^N \int K_b(z)\,dz\\
+    &= \frac{1}{N} \sum_{i=1}^N 1\\
+    &= 1
+  \end{align*}
   \part % b
+  We assume that \(N=1\) for the sake of this exercise and work with
+  \begin{equation*}
+    \hat{P}(x) = \frac{1}{2d_k(x)}
+  \end{equation*}
+  We wish to show
+  \begin{equation*}
+    \int \frac{1}{2d_k(x)}\,dx \neq 1
+  \end{equation*}
+  Like in part a, we observe that integrating with respect to \(x\) will
+  exercise the range of \(d_k(x)\), so we substitute \(z\) in place of
+  \(d_k(x)\) and thus find
+  \begin{align*}
+    \int \frac{1}{2z}\,dz \\
+    &= \frac{1}{2} \int \frac{1}{z}\,dz\\
+    &= \frac{1}{2} log(z)|_{-\infty}^{\infty}\\
+    &\neq 1
+  \end{align*}
+  since \(log(z)|_{-\inf}^{\inf}\) is divergent. Since this component of the
+  integrand persists regardless of the value of \(N\), we can generalize that
+  this function is not a proper density.
   \part % c
   \part % d
 \end{question} % 1
