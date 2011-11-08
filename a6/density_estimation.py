@@ -15,6 +15,7 @@ import cross_validation
 NUM_ARGS = 2
 NUM_FOLDS = 5
 CURRENT_FOLD = None
+WIDTH = 19
 
 DEG2RAD = math.pi / 180
 RAD2DEG = 180 / math.pi
@@ -67,8 +68,8 @@ def kernel_density_base(distance, width, data, query_point, k, N):
     """
     total = 0
     for x_i in data(CURRENT_FOLD):
-        total += distance(query_point, x_i) / width(k, data, x_i, 
-                                                    query_point)
+        w = width(k, data, x_i, query_point)
+        total += distance(query_point, x_i) / w + math.log(w)
     return -total / N
 
 def log_kernel_density_a(data, query_point, k, N):
@@ -76,7 +77,7 @@ def log_kernel_density_a(data, query_point, k, N):
     Kernel density function as given by:
     P(x) = (1/N) * \sum\limits_{i=1}^N K_b(d(x,x_i))
     """
-    return kernel_density_base(dist, lambda k,data,x_i,x: 5000, 
+    return kernel_density_base(dist, lambda k,data,x_i,x: WIDTH, 
                                data, query_point, k, N)
 
 def log_kernel_density_b(data, query_point, k, N):
@@ -105,20 +106,14 @@ def log_kernel_density_d(data, query_point, k, N):
     Since this kernel width doesn't depend on the query_point, it can be
     cached and then used for each query_point in the validation set
     """
-    """
     total = 0
     for x_i in data(CURRENT_FOLD):
         key = (x_i, CURRENT_FOLD)
         if key not in KTH_NEAREST_CACHE:
             KTH_NEAREST_CACHE[key] = dist_k(k, data, x_i)
-
-        total += kernel_density_base(dist,(query_point, x_i),
-                           KTH_NEAREST_CACHE[key])
-    return math.log(total) - math.log(N)
-    """
-    return kernel_density_base(dist, 
-                               lambda k,data,x_i,x: dist_k(k, data, x_i),
-                               data, query_point, k, N)
+        w = KTH_NEAREST_CACHE[key]
+        total += dist(query_point, x_i) / w + math.log(w)
+    return -total / N
 
 DENSITIES = {
     "a": log_kernel_density_a,
@@ -150,63 +145,48 @@ if __name__ == "__main__":
     DELTA = 15
     for line in csv_file:
         l = tuple(map(lambda x: float(x), line[0:2]))
-        if abs(l[0] - LON) < DELTA:
-            data.append(l)
+        #if abs(l[0] - LON) < DELTA:
+        data.append(l)
 
     print len(data)
 
-    # Find optimal k
-    """
-    NUM_FOLDS = 20
-    cross_val = cross_validation.CrossValidation(NUM_FOLDS, data)
-    densities = [
-        log_kernel_density_a,
-        log_kernel_density_b,
-        log_kernel_density_c,
-        log_kernel_density_d]
-    ks = range(6, 6 + NUM_FOLDS)
-    min_likelihoods = [float("inf")] * len(densities)
-    for i in xrange(NUM_FOLDS):
-        CURRENT_FOLD = i
-        sum_likelihoods = [0] * len(densities)
-        for v_ex in cross_val.validation_examples(i):
-            N = cross_val.num_training_examples(i)
-            likelihoods = map(lambda x: x(cross_val.training_examples,
-                                          v_ex, ks[i], N),
-                              densities)
-            for j in xrange(len(densities)):
-                sum_likelihoods[j] += likelihoods[j]
-
-        sum_likelihoods = map(lambda x: x / \
-            cross_val.num_validation_examples(i), sum_likelihoods)
-        for i in xrange(len(sum_likelihoods)):
-            min_likelihoods[i] = min(sum_likelihoods[i], min_likelihoods[i])
-        print "Sum: ", sum_likelihoods
-        print "Min: ", min_likelihoods
-    """
+    # Find optimal width for (a)
+    if kernel_density == log_kernel_density_a:
+        print "Finding optimal width for (a)"
+        widths = range(15, 35)
+        NUM_FOLDS = 20
+        cv = cross_validation.CrossValidation(NUM_FOLDS, data, True)
+        for i in xrange(NUM_FOLDS):
+            WIDTH = widths[i]
+            CURRENT_FOLD = i
+            sum_likelihood = 0
+            t = time.time()
+            for v_ex in cv.validation_examples(i):
+                N = cv.num_training_examples(i)
+                log_likelihood = kernel_density(cv.training_examples, 
+                                                v_ex, 1, N)
+                sum_likelihood += log_likelihood
+            print "Fold %d, width: %d, likelihood: %f, time: %f" % (i, 
+                WIDTH, sum_likelihood, time.time() - t)
 
     print "Beginning cross validation of likelihoods"
-    k = 100
+    k = 6000
     print k
     NUM_FOLDS = 5
     #data = data[:7000]
     #random.shuffle(data)
-    cv = cross_validation.CrossValidation(NUM_FOLDS, data[:7000], True)
+    cv = cross_validation.CrossValidation(NUM_FOLDS, data, True)
     for i in xrange(NUM_FOLDS):
         CURRENT_FOLD = i
         print "Current fold: %d" % i
         sum_likelihood = 0 # [0] * len(densities)
-        counter = 0
         t = time.time()
         for v_ex in cv.validation_examples(i):
-            counter += 1
             N = cv.num_training_examples(i)
             log_likelihood = kernel_density(cv.training_examples,
                                           v_ex, k, N)
-            #likelihood = math.e ** log_likelihood
 
             sum_likelihood += log_likelihood
-            # print log_likelihood, sum_likelihood
             
         print "Fold %d, likelihood: %f, time: %f" % (i, sum_likelihood,
             time.time() - t)
