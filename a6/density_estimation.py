@@ -54,7 +54,7 @@ def k_nearest_neighbors(k, data, query_point):
         heapq.heappushpop(h, -distance)
     return map(lambda x: -x, h)
 
-def kernel_density_base(distance, width, data, query_point, k, N):
+def kernel_density_base(distance, width, data, query_point, k, N, fold_num):
     """
     Common function since 3/4 of the densities functions involve same code
 
@@ -67,18 +67,18 @@ def kernel_density_base(distance, width, data, query_point, k, N):
     query_point -- the point in question (x)
     """
     total = 0
-    for x_i in data(CURRENT_FOLD):
+    for x_i in data(fold_num):
         w = width(k, data, x_i, query_point)
         total += distance(query_point, x_i) / w + math.log(w)
     return -total / N
 
-def log_kernel_density_a(data, query_point, k, N):
+def log_kernel_density_a(data, query_point, k, N, fold_num):
     """
     Kernel density function as given by:
     P(x) = (1/N) * \sum\limits_{i=1}^N K_b(d(x,x_i))
     """
     return kernel_density_base(dist, lambda k,data,x_i,x: WIDTH, 
-                               data, query_point, k, N)
+                               data, query_point, k, N, fold_num)
 
 def log_kernel_density_b(data, query_point, k, N):
     """
@@ -87,7 +87,7 @@ def log_kernel_density_b(data, query_point, k, N):
     """
     return math.log(k) - math.log(2 * N * dist_k(k, data, query_point))
 
-def log_kernel_density_c(data, query_point, k, N):
+def log_kernel_density_c(data, query_point, k, N, fold_num):
     """
     P(x) = (1/N) * \sum\limits_{i=1}^N K_{d_k(x)}(d(x,x_i))
     same as (a) except the kernel width is determined by the kth
@@ -95,9 +95,9 @@ def log_kernel_density_c(data, query_point, k, N):
     """
     return kernel_density_base(dist,
                                lambda k,data,x_i,x: dist_k(k, data, x),
-                               data, query_point, k, N)
+                               data, query_point, k, N, fold_num)
 
-def log_kernel_density_d(data, query_point, k, N):
+def log_kernel_density_d(data, query_point, k, N, fold_num):
     """
     P(x) = (1/N) * \sum\limits_{i=1}^N K_{d_{ik}(x)}(d(x,x_i))
     same as (c) except the kernel width is the kth nearest neighbor from 
@@ -107,7 +107,7 @@ def log_kernel_density_d(data, query_point, k, N):
     cached and then used for each query_point in the validation set
     """
     total = 0
-    for x_i in data(CURRENT_FOLD):
+    for x_i in data(fold_num):
         key = (x_i, CURRENT_FOLD)
         if key not in KTH_NEAREST_CACHE:
             KTH_NEAREST_CACHE[key] = dist_k(k, data, x_i)
@@ -145,8 +145,8 @@ if __name__ == "__main__":
     DELTA = 15
     for line in csv_file:
         l = tuple(map(lambda x: float(x), line[0:2]))
-        #if abs(l[0] - LON) < DELTA:
-        data.append(l)
+        if abs(l[0] - LON) < DELTA:
+            data.append(l)
 
     print len(data)
 
@@ -164,13 +164,13 @@ if __name__ == "__main__":
             for v_ex in cv.validation_examples(i):
                 N = cv.num_training_examples(i)
                 log_likelihood = kernel_density(cv.training_examples, 
-                                                v_ex, 1, N)
+                                                v_ex, 1, N, CURRENT_FOLD)
                 sum_likelihood += log_likelihood
             print "Fold %d, width: %d, likelihood: %f, time: %f" % (i, 
                 WIDTH, sum_likelihood, time.time() - t)
 
     print "Beginning cross validation of likelihoods"
-    k = 6000
+    k = 100
     print k
     NUM_FOLDS = 5
     #data = data[:7000]
@@ -184,10 +184,10 @@ if __name__ == "__main__":
         for v_ex in cv.validation_examples(i):
             N = cv.num_training_examples(i)
             log_likelihood = kernel_density(cv.training_examples,
-                                          v_ex, k, N)
+                                          v_ex, k, N, CURRENT_FOLD)
 
             sum_likelihood += log_likelihood
             
         print "Fold %d, likelihood: %f, time: %f" % (i, sum_likelihood,
-            time.time() - t)
+                time.time() - t)
 
