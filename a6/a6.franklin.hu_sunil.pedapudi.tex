@@ -85,7 +85,7 @@
         &= \log \left( \frac{1}{N} \sum\limits_{i=1}^N
            K_b(d(x,x_i)) \right) \\
         &= \log \left( \frac{1}{N} \sum\limits_{i=1}^N
-           \exp\left(-\frac{d(x,x_i)}{b}\right) \right)
+           \frac{1}{b} \exp\left(-\frac{d(x,x_i)}{b}\right) \right)
     \end{align*}
     Using Jensen's inequality: Given \(\sum_j \lambda_j=1\), 
     \(\lambda_j>0\), and a concave function \(f\):
