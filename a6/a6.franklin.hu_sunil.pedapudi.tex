@@ -19,7 +19,7 @@
     \int \frac{1}{N}\sum_{i=1}^NK_b(d(x,x_i))\,dx = 1
   \end{equation*}
   Let us acknowledge that integrating with respect to \(x\) will exercise
-  all values across the range of \(d(x,x_i)\) which, in turn, exercises the
+  all values across the domain of \(d(x,x_i)\) which, in turn, exercises the
   range of \(K_b\). Therefore, we simplify the integrand to be \(K_b(z)\)
   where \(z= d(x,x_i)\) and integrate with respect to \(z\).
   We then evaluate
@@ -52,11 +52,40 @@
   integrand persists regardless of the value of \(N\), we can generalize that
   this function is not a proper density.
   \part % c
+  Given,
+  \begin{align*}
+    \hat{P}(x) &= \frac{1}{N}\sum_{i=1}^N K_{d_k(x)}(d(x,x_i))
+    &= \frac{1}{N}\sum_{i=1}^N ae^{-\frac{x-x_i}{2(d(x,x_i))}}
+  \end{align*}
+  it is evident that 
+  \begin{equation*}
+    \frac{1}{N} \int \sum_{i=1}^N ae^{-\frac{x-x_i}{2(d(x,x_i))}}\,dx \neq 1
+  \end{equation*}
+  because \(ae^{-\frac{x-x_i}{2(d(x,x_i))}}\) fails to describe a proper
+  Gaussian function since \(\sigma\) constantly varies across \(x\). 
   \part % d
+  Let us first recognize that
+  \begin{equation*}
+    \frac{1}{N} \int \sum_{i=1}^N K_{d_{ik}}(d(x,x_i)) = 1
+  \end{equation*}
+  since \(d_{ik}\) is constant with respect to \(x_i\) so integrating with
+  respect to \(x\) renders a sum of integrals of \(N\) kernels. Normalizing
+  this sum shows that this is indeed a proper kernel density function. It
+  differs from \(k\)-NN density estimator in that data points that are 
+  isolated (i.e. its nearest neighbors are far away) are given little
+  preference in calculating the likelihood of a query point.
+  
 \end{question} % 1
 
 \begin{question}{EM} % 2
-  \part[]
+  \part % a
+  Essentially, if there were only two attributes, then EM will try to 
+  classify the candy per attribute pairs into Bag 1 or Bag 2 with 
+  some \(\theta\) rather than attempt to retrieve the original
+  distribution. 
+
+  \part % b
+  
 \end{question} % 2
 
 \begin{question}{Density estimation for seismic data} % 3
