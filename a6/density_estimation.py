@@ -12,7 +12,7 @@ import time
 
 import cross_validation
 
-NUM_ARGS = 2
+NUM_ARGS = 3
 NUM_FOLDS = 5
 CURRENT_FOLD = None
 WIDTH = 19
@@ -69,8 +69,10 @@ def kernel_density_base(distance, width, data, query_point, k, N, fold_num):
     total = 0
     for x_i in data(fold_num):
         w = width(k, data, x_i, query_point)
-        total += distance(query_point, x_i) / w + math.log(w)
-    return -total / N
+        total += (math.e ** (-distance(query_point, x_i) / w)) / w
+        #total += distance(query_point, x_i) / w + math.log(w)
+    #return -total / N
+    return math.log(total) - math.log(N)
 
 def log_kernel_density_a(data, query_point, k, N, fold_num):
     """
@@ -80,7 +82,7 @@ def log_kernel_density_a(data, query_point, k, N, fold_num):
     return kernel_density_base(dist, lambda k,data,x_i,x: WIDTH, 
                                data, query_point, k, N, fold_num)
 
-def log_kernel_density_b(data, query_point, k, N):
+def log_kernel_density_b(data, query_point, k, N, fold_num):
     """
     P(x) = k / (2N * d_k(x))
     where d_k(x) is the distance from x to the kth nearest neighbor of x
@@ -125,9 +127,10 @@ DENSITIES = {
 if __name__ == "__main__":
     if len(sys.argv) < NUM_ARGS + 1:
         print "USAGE: $ python density_estimation.py data_file " \
-              "kernel_density"
+              "kernel_density k"
         print "\tdata_file      -- input csv file"
         print "\tkernel_density -- kernel density to use (a,b,c,d)"
+        print "\tk              -- k value for k-NN"
         sys.exit(1)
 
     data_file = sys.argv[1]
@@ -135,6 +138,8 @@ if __name__ == "__main__":
         kernel_density = DENSITIES[sys.argv[2]]
     else:
         raise Exception('No such kernel density. Choices: (a,b,c,d)')
+
+    k = int(sys.argv[3])
 
     handle = open(data_file, 'r')
     handle.readline()
@@ -152,34 +157,37 @@ if __name__ == "__main__":
 
     # Find optimal width for (a)
     if kernel_density == log_kernel_density_a:
-        print "Finding optimal width for (a)"
-        widths = range(15, 35)
-        NUM_FOLDS = 20
-        cv = cross_validation.CrossValidation(NUM_FOLDS, data, True)
-        for i in xrange(NUM_FOLDS):
-            WIDTH = widths[i]
-            CURRENT_FOLD = i
-            sum_likelihood = 0
-            t = time.time()
-            for v_ex in cv.validation_examples(i):
-                N = cv.num_training_examples(i)
-                log_likelihood = kernel_density(cv.training_examples, 
-                                                v_ex, 1, N, CURRENT_FOLD)
-                sum_likelihood += log_likelihood
-            print "Fold %d, width: %d, likelihood: %f, time: %f" % (i, 
-                WIDTH, sum_likelihood, time.time() - t)
+        try:
+            print "Finding optimal width for (a)"
+            widths = range(15, 35)
+            NUM_FOLDS = 20
+            cv = cross_validation.CrossValidation(NUM_FOLDS, data, True)
+            for i in xrange(NUM_FOLDS):
+                WIDTH = widths[i]
+                CURRENT_FOLD = i
+                sum_likelihood = 0
+                t = time.time()
+                for v_ex in cv.validation_examples(i):
+                    N = cv.num_training_examples(i)
+                    log_likelihood = kernel_density(cv.training_examples, 
+                                                    v_ex, 1, N, CURRENT_FOLD)
+                    sum_likelihood += log_likelihood
+                print "Fold %d, width: %d, likelihood: %f, time: %f" % (i, 
+                    WIDTH, sum_likelihood, time.time() - t)
+        except KeyboardInterrupt:
+            print "Aborting optimal width for (a)"
+            print "Continuing"
 
     print "Beginning cross validation of likelihoods"
-    k = 100
     print k
     NUM_FOLDS = 5
-    #data = data[:7000]
-    #random.shuffle(data)
+    random.shuffle(data)
+    data = data[:7000]
     cv = cross_validation.CrossValidation(NUM_FOLDS, data, True)
     for i in xrange(NUM_FOLDS):
         CURRENT_FOLD = i
         print "Current fold: %d" % i
-        sum_likelihood = 0 # [0] * len(densities)
+        sum_likelihood = 0 
         t = time.time()
         for v_ex in cv.validation_examples(i):
             N = cv.num_training_examples(i)
