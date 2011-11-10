@@ -17,7 +17,7 @@ def kernel_log_likelihood(example, fold_num, data, N):
                                                    fold_num)
 
 def uniform_log_likelihood(example):
-    return math.log(1. / (2 * math.pi))
+    return math.log(1. / (2 * (180 ** 2)))
 
 def _usage():
     return "Usage: python density_mixture.py data_file"
