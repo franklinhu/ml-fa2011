@@ -121,11 +121,43 @@
       \hat{P}(x) &= \frac{k}{2Nd_k(k)} \\
       \log{\hat{P}(x)} &= \log{k} - \log{2Nd_k(k)}
     \end{align*}
+    Experimentally, we found it was infeasible to run it over a large
+    portion of the data set. We decided to filter the data to only use
+    examples that were within 15 degrees longitude of the Nazca plate 
+    (near Chile) in South America since that area had pretty dense 
+    data. This limited the size of the set of approximately 14000 
+    examples. \\
+    For kernel density (a), we found that the optimal width for a
+    Laplacian kernel was \textbf{19}. \\
+    Since kernel densities (b) and (c) are not proper densities,
+    we found that by increasing the \(k\) value, the likelihoods
+    would continue to decrease, so there is not optimal \(k\) value. \\
+    For kernel density (d), despite it being a proper density, our 
+    experiments did not converge (behaved the same as parts b and c).
+    We think this may be due to programming error.
   \part % b
-    \item
-  \part % c
-    \item
+    We found the uniform density over the entire Earth to be
+    \begin{equation*}
+      P(x) = \frac{1}{2\pi^2} = \frac{1}{2 \cdot (180)^2}
+    \end{equation*}
+    This is a proper density since it integrates to \(1\) over all
+    longitudes and latitudes. Let \(\theta_{\text{lat}}\) be the
+    latitude and \(\theta_{\text{lon}}\) be the longitude. Longitudes
+    range from \(-180^\circ\) to \(180^\circ\), while latitudes
+    range from \(-90^\circ\) to \(90^\circ\).
+    \begin{align*}
+      \int\limits_{-180}^{180} \int\limits_{-90}^{90} \frac{1}{2(180)^2}
+      \mathrm{d}\theta_{\text{lat}} \mathrm{d}\theta_{\text{lon}}
+      &= \frac{1}{2(180)^2} \cdot (90 - (-90)) \cdot (180 - (-180)) \\
+      &= \frac{1}{2(180)^2} \cdot (180) \cdot (360) \\
+      &= 1
+    \end{align*}
+    We chose to use kernel density (a) since the other kernels did not
+    converge. Our kernel density (a) gave consistent results whose
+    likelihoods were higher than the uniform density (log-likelihood
+    of \(-5\) compared to \(-11\) for the uniform density). This gave 
+    us a weight of 1 for kernel density (a) and 0 for the uniform
+    density
 \end{question}
-
 \end{document}
  
