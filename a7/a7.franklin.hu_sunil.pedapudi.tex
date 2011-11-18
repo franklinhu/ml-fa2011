@@ -1,0 +1,50 @@
+\documentclass{ml}
+\nameone{Franklin Hu}
+\nametwo{Sunil Pedapudi}
+\course{CS 194-10 Machine Learning}
+\assignment{Assignment 7}
+
+\begin{document}
+\maketitle
+\newcommand{\pr}{\mathbb{P}}
+
+\begin{question}{Russell \& Norvig 14.7} % 1
+    \part % a
+\end{question} % 1
+
+\begin{question}{Exponential Family} % 2 
+    \part % a
+\end{question} % 2
+
+\begin{question}{EM with discrete variables} % 3
+    \part % a
+\end{question} % 3
+
+\begin{question}{Learning with continuous variables} % 4
+    \part % a
+        Given \(N\) i.i.d. observations of \((X,\textbf{Y},Z)\) that we
+        call \(E_1, \hdots, E_N\):
+        \begin{align*}
+            P(E_1, \hdots, E_N)
+            &= \prod \limits_{i=1}^N P(E_i) \\
+            &= \prod \limits_{i=1}^N P(X_i,\textbf{Y}_i,Z_i) \\
+            &= \prod \limits_{i=1}^N P(X_i) \cdot P(\textbf{Y}_i|X_i) \cdot 
+                P(Z_i|X_i,\textbf{Y}_i) \\
+            &= \prod \limits_{i=1}^N P(X_i) \cdot P(\textbf{Y}_i|X_i) \cdot 
+                P(Z_i|\textbf{Y}_i) \\
+            \log P(E_1, \hdots, E_N)
+            &= \sum \limits_{i=1}^N P(X_i) \cdot P(\textbf{Y}_i|X_i) \cdot
+                P(Z_i|\textbf{Y}_i) \\
+            &= \sum \limits_{i=1}^N \sum \limits_{k} P(X_i=k) \cdot
+                P(\textbf{Y}_i|X_i=k) \cdot P(Z_i|\textbf{Y}_i) \\
+            &= \sum \limits_{i=1}^N (0.5 \cdot P(\textbf{Y}_i|X_i=-1)
+                \cdot P(Z_i|\textbf{Y}_i)) + (0.5 \cdot 
+                P(\textbf{Y}_i|X_i=1) \cdot P(Z_i|\textbf{Y}_i))
+        \end{align*}
+\end{question} % 4
+
+\begin{question}{Bayes Net Inference with BayesianLab} % 5
+    \part % a
+\end{question} % 5
+\end{document}
+ 
