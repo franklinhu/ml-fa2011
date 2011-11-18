@@ -28,18 +28,19 @@
             P(E_1, \hdots, E_N)
             &= \prod \limits_{i=1}^N P(E_i) \\
             &= \prod \limits_{i=1}^N P(X_i,\textbf{Y}_i,Z_i) \\
-            &= \prod \limits_{i=1}^N P(X_i) \cdot P(\textbf{Y}_i|X_i) \cdot 
-                P(Z_i|X_i,\textbf{Y}_i) \\
-            &= \prod \limits_{i=1}^N P(X_i) \cdot P(\textbf{Y}_i|X_i) \cdot 
-                P(Z_i|\textbf{Y}_i) \\
+            &= \prod \limits_{i=1}^N P(X_i) \cdot P(\textbf{Y}_i|X_i) 
+                \cdot P(Z_i|X_i,\textbf{Y}_i) \\
+            &= \prod \limits_{i=1}^N P(X_i) \cdot P(\textbf{Y}_i|X_i) 
+                \cdot P(Z_i|\textbf{Y}_i) \\
             \log P(E_1, \hdots, E_N)
-            &= \sum \limits_{i=1}^N P(X_i) \cdot P(\textbf{Y}_i|X_i) \cdot
-                P(Z_i|\textbf{Y}_i) \\
-            &= \sum \limits_{i=1}^N \sum \limits_{k} P(X_i=k) \cdot
-                P(\textbf{Y}_i|X_i=k) \cdot P(Z_i|\textbf{Y}_i) \\
-            &= \sum \limits_{i=1}^N (0.5 \cdot P(\textbf{Y}_i|X_i=-1)
-                \cdot P(Z_i|\textbf{Y}_i)) + (0.5 \cdot 
-                P(\textbf{Y}_i|X_i=1) \cdot P(Z_i|\textbf{Y}_i))
+            &= \sum \limits_{i=1}^N \log P(X_i) + \log 
+                P(\textbf{Y}_i|X_i) + \log P(Z_i|\textbf{Y}_i) \\
+            &= \sum \limits_{i=1}^N \sum \limits_{k} \log P(X_i=k) +
+                \log P(\textbf{Y}_i|X_i=k) + \log P(Z_i|\textbf{Y}_i) \\
+            &= \sum \limits_{i=1}^N (\log (0.5) + \log 
+                P(\textbf{Y}_i|X_i=-1) + \log P(Z_i|\textbf{Y}_i)) +  \\
+                (\log (0.5) + \log P(\textbf{Y}_i|X_i=1) + \log
+                P(Z_i|\textbf{Y}_i))
         \end{align*}
 \end{question} % 4
 
