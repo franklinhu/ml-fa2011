@@ -22,25 +22,53 @@
 
 \begin{question}{Learning with continuous variables} % 4
     \part % a
+        Since \(P(Y_j|X=k)\sim N(\mu_{jk},\sigma^2)\), each element
+        of the \(\textbf{Y}\) vector is independent so we can write
+        the likelihood of the entire vector as a product of the
+        likelihood of its elements. The log-likelihood similarly
+        turns into a sum.
+       \begin{align*}
+            P(\textbf{Y}|X=k)
+            &= \prod\limits_{j=1}^D P(Y_j|X=k) \\
+            \log P(\textbf{Y}|X=k)
+            &= \sum\limits_{j=1}^D \log P(Y_j|X=k)
+        \end{align*}
         Given \(N\) i.i.d. observations of \((X,\textbf{Y},Z)\) that we
-        call \(E_1, \hdots, E_N\):
+        call \(E_1, \hdots, E_N\), and \(\textbf{w}=\langle w_1, \hdots,
+        w_D \rangle\):
         \begin{align*}
             P(E_1, \hdots, E_N)
-            &= \prod \limits_{i=1}^N P(E_i) \\
-            &= \prod \limits_{i=1}^N P(X_i,\textbf{Y}_i,Z_i) \\
-            &= \prod \limits_{i=1}^N P(X_i) \cdot P(\textbf{Y}_i|X_i) 
-                \cdot P(Z_i|X_i,\textbf{Y}_i) \\
-            &= \prod \limits_{i=1}^N P(X_i) \cdot P(\textbf{Y}_i|X_i) 
-                \cdot P(Z_i|\textbf{Y}_i) \\
+            &= \prod\limits_{i=1}^N P(E_i) \\
+            &= \prod\limits_{i=1}^N P(X_i=x_i,\textbf{Y}_i=\textbf{y}_i,
+                Z_i=z_i) \\
+            &= \prod\limits_{i=1}^N P(X_i=x_i) \cdot 
+                P(\textbf{Y}_i=\textbf{y}_i|X_i=x_i) \cdot 
+                P(Z_i=z_i|X_i=x_i,\textbf{Y}_i=\textbf{y}_i) \\
+            &= \prod\limits_{i=1}^N P(X_i=x_i) \cdot 
+                P(\textbf{Y}_i=y_i|X_i=x_i) \cdot 
+                P(Z_i=z_i|\textbf{Y}_i=\textbf{y}_i) \\
             \log P(E_1, \hdots, E_N)
-            &= \sum \limits_{i=1}^N \log P(X_i) + \log 
-                P(\textbf{Y}_i|X_i) + \log P(Z_i|\textbf{Y}_i) \\
-            &= \sum \limits_{i=1}^N \sum \limits_{k} \log P(X_i=k) +
-                \log P(\textbf{Y}_i|X_i=k) + \log P(Z_i|\textbf{Y}_i) \\
-            &= \sum \limits_{i=1}^N (\log (0.5) + \log 
-                P(\textbf{Y}_i|X_i=-1) + \log P(Z_i|\textbf{Y}_i)) +  \\
-                (\log (0.5) + \log P(\textbf{Y}_i|X_i=1) + \log
-                P(Z_i|\textbf{Y}_i))
+            &= \sum\limits_{i=1}^N \log P(X_i=x_i) + \log 
+                P(\textbf{Y}_i=\textbf{y}_i|X_i=x_i) + \log 
+                P(Z_i=z_i|\textbf{Y}_i=\textbf{y}_i) \\
+            &= \sum\limits_{i=1}^N \log (0.5) + \left(
+                \sum\limits_{j=1}^D \log P(Y_j=y_j|X_i=x_i) \right) + \log 
+                P(Z_i=z|\textbf{Y}_i=\textbf{y}_i) \\
+            &= \sum\limits_{i=1}^N -\log(2) + \left(
+                \sum\limits_{j=1}^D \log \left( 
+                \frac{1}{\sigma\sqrt{2\pi}} 
+                \exp{\left(\frac{\mu_{j{x_i}}-y_j}{\sigma}\right)^2}
+                \right) \right) +
+                \log \left( \frac{1}{1+\exp \left(-z_i \textbf{w}^T
+                \textbf{y}\right)} \right) \\
+            &= -N\log(2) + \sum\limits_{i=1}^N \sum \limits_{j=1}^D
+                \left( \left( \frac{\mu_{j{x_i}}-y_j}{\sigma}\right)^2 -
+                \log (\sigma\sqrt{2\pi})\right) - 
+                \log(1+\exp(-z_i\textbf{w}^T\textbf{y})) \\
+            &= -N(\log(2) + D\log(\sigma\sqrt{2\pi})) +
+                \sum\limits_{i=1}^N \sum\limits_{j=1}^D \left(
+                \frac{\mu_{jx_i}-y_j}{\sigma} \right)^2 - \log
+                (1+\exp(-z_i\textbf{w}^T\textbf{y}))
         \end{align*}
 \end{question} % 4
 
