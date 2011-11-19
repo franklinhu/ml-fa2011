@@ -70,6 +70,22 @@
                 \frac{\mu_{jx_i}-y_j}{\sigma} \right)^2 - \log
                 (1+\exp(-z_i\textbf{w}^T\textbf{y}))
         \end{align*}
+        To find the first derivative of the likelihood w.r.t. the
+        unknown parameters:
+        \begin{align*}
+            \frac{\partial}{\partial\sigma}\log \mathcal{L}
+            &= -ND\cdot \frac{1}{\sigma\sqrt{2\pi}} \sqrt{2\pi} +
+                \sum\limits_{i=1}^N \sum\limits_{j=1}^D -2 \left(
+                \frac{(\mu_{jx_i}-y_j)^2}{\sigma^3} \right) \\
+            &= -\frac{ND}{\sigma} + \frac{2}{\sigma^3} 
+                \sum\limits_{i=1}^N \sum\limits_{j=1}^D
+                (\mu_{jx_i}-y_j)^2 \\
+            \frac{\partial}{\partial\mu_{jx_i}} \log \mathcal{L}
+            &= \sum\limits_{i=1}^N \sum\limits_{j=1}^D
+                \frac{2}{\sigma^2} (\mu_{jx_i}-y_j) \\
+            &= \frac{2}{\sigma^2} \sum\limits_{i=1}^N
+                \sum\limits_{j=1}^D \mu_{jx_i}-y_j
+        \end{align*}
 \end{question} % 4
 
 \begin{question}{Bayes Net Inference with BayesianLab} % 5
