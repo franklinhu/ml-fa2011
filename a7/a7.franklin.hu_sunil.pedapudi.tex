@@ -192,6 +192,52 @@
 
 \begin{question}{EM with discrete variables} % 3
     \part % a
+        Since the values for \(X\) are fully observable, we can see
+        that \(P(X=0)=P(X=1)=1/2\). \\
+        We disregard the rows with missing data and come up with the 
+        following hidden conditional probabilities: \\
+        \begin{align*}
+            P(Y=1) = \theta_{Y} &= 1/2 \\
+            P(Y=1|X=0) = \theta_{X_0} &= 1/2 \\
+            P(Y=1|X=1) = \theta_{X_1} &= 1/2 \\
+            P(Z=1|Y=0) = \theta_{Y_0} &= 1/2 \\
+            P(Z=1|Y=1) = \theta_{Y_1} &= 1/2
+        \end{align*}
+        Let \(a\) be the hidden variable in the \(Z\) column, and \(b\)
+        be the variable in the \(Y\) column. We can now derive the
+        expressions for the expected values of \(a\) and \(b\) based
+        on the \(\theta\) values.
+        \begin{align*}
+            \mathcal{E}(a)
+            &= 0 \cdot P(Z=0|X=0,Y=0) + 1 \cdot P(Z=1|X=0,Y=0) \\
+            &= P(Z=1|Y=0) \\
+            &= \theta_{Y_0} \\
+            \mathcal{E}(b)
+            &= 0 \cdot P(Y=0|X=1,Z=1) + 1 \cdot P(Y=1|X=1,Z=1) \\
+            &= P(Y=1|X=1,Z=1) \\
+            &= \frac{P(X=1,Y=1,Z=1)}{P(X=1,Z=1)} \\
+            &= \frac{P(X=1) \cdot P(Y=1|X=1) \cdot P(Z=1|Y=1)}{\sum\limits_y P(X=1,Z=1|Y=y)\cdot P(Y=y)} \\
+            &= \frac{0.5 \cdot \theta_{X_1} \cdot \theta_{Y_1}}{\sum\limits_y P(X=1|Y=y) \cdot P(Z=1|Y=y) \cdot P(Y=y)} \\
+            &= \frac{0.5 \cdot \theta_{X_1} \cdot \theta_{Y_1}}{\sum\limits_y \frac{P(Y=y|X=1)}{P(Y=y)} \cdot P(Z=1|Y=y) \cdot P(Y=y)}  \\
+            &= \frac{0.5 \cdot \theta_{X_1} \cdot \theta_{Y_1}}{\sum\limits_y P(Y=y|X=1) \cdot P(Z=1|Y=y)} \\
+            &= \frac{0.5 \cdot \theta_{X_1} \cdot \theta_{Y_1}}{P(Y=0|X=1) \cdot P(Z=1|Y=0) + P(Y=1|X=1) \cdot P(Z=1|Y=1)} \\
+            &= \frac{0.5 \cdot \theta_{X_1} \cdot \theta_{Y_1}}{(1-\theta_{X_1}) \cdot \theta_{Y_0} + \theta_{X_1} \cdot \theta_{Y_1}}
+        \end{align*}
+        If we compute the expected values of \(a\) and \(b\) with out
+        initial parameters, we obtain:
+        \begin{align*}
+            \mathcal{E}(a) &= 1/2 \\
+            \mathcal{E}(b) &= 1/2
+        \end{align*}
+        We fill these values into the data table and recalculate our
+        \(\theta\) values to find:
+        \begin{align*}
+            \theta_{X_0} &= 1/3 \\
+            \theta_{X_1} &= 1/2 \\
+            \theta_{Y_0} &= 4/7 \\
+            \theta_{Y_1} &= 4/7 
+        \end{align*}
+    \part % b
 \end{question} % 3
 
 \begin{question}{Learning with continuous variables} % 4
