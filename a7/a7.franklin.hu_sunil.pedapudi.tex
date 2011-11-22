@@ -92,9 +92,9 @@
     Given the form
     \begin{equation*}
       p(x) = h(x)exp{\theta^TT(x) - A(\theta)}
-    \end{equation}
+    \end{equation*}
     We can express
-    \begin{enumerate}
+    \begin{enumerate}[(i)]
       \item
         \begin{align*}
           Normal(\mu,1)
@@ -116,25 +116,78 @@
         \end{equation*}
         by choosing
         \begin{align*}
-          h(x) &= p^k
-          T(x) &= ln(1-p)
-          \theta &= 1-x
-          A(\theta) = 0
+          h(x) &= p^k\\
+          T(x) &= ln(1-p)\\
+          \theta &= 1-x\\
+          A(\theta) &= 0
         \end{align*}
         which recovers the original form of Bernoulli(\(p\))
 
       \item
         \begin{equation*}
-          Categorical(p_1,\hdots,p_k) = \mult^n_{i=1}p_i^(x_i)
+          Categorical(p_1,\hdots,p_k) = \prod^n_{i=1}p_i^(x_i)
         \end{equation*}
         by choosing
         \begin{align*}
-          h(x) = 1
-          \theta^T = \textnormal{1-of-K encoded vector}
-          T(x) = \sum_{i=1}^Kp_i
-          A(\theta) = 0
+          h(x) &= 1\\
+          \theta^T &= \textnormal{1-of-K encoded vector}\\
+          T(x) &= \sum_{i=1}^Kp_i\\
+          A(\theta) &= 0
         \end{align*}
     \end{enumerate}
+
+    \part % b
+    Let us first note that \(\pr(X = x,T(x) = t)\) is simply a function of \(x\)
+    since \(T(x)\) is a function of \(x\). We assume that \(\theta\) is given in
+    all scenarios.
+    Then,
+    \begin{align*}
+      \(\pr(X = x, T(x) = t)
+      &= \pr(X = x)\pr(T(x) = t)\\
+    \end{align*}
+    We then note that we can express
+    \begin{align*}
+      \(\pr(X = x, T(x) = t) &= f(x, t) = f(x)\\
+      f(x, t) &= f(x)g(t)
+    \end{align*}
+    We intend to show the following.
+    \begin{align*}
+      f(t)
+      &= \sum_{x s.t. T(x) = t} f(x,t)
+      &= \sum_{x s.t. T(x) = t} f(x)
+      &= \sum_{x s.t. T(x) = t} f(x)g(t)
+      &= g(t)\sum_{x s.t. T(x) = t} f(x)
+    \end{align*}
+    Knowing this, we can find the conditional probability distribution
+    \begin{align*}
+      \pr(x|t)
+      &= \frac{f(x,t)}{f(t)}
+      &= \frac{f(x)/f(t)}
+      &= \frac{f(x)g(t)}{g(t)\sum_{x s.t. T(x) = t} f(x)}
+      &= \frac{f(x)}{\sum_{x s.t. T(x) = t} f(x)}
+    \end{align*}
+    We observe that this function is dependent on x and not t, and can therefore
+    conclude that the estimate is reliant on only \(T(x)\).
+    \part % c
+    From (a), we see that
+    \begin{equation*}
+      A(\theta) = \frac{\mu^2}{2}
+    \end{equation*}
+    Knowing
+    \begin{align*}
+      E[X = T(x)]
+      &= E[X = x]
+      &= \mu
+    \end{align*}
+    we show
+    \begin{align*}
+      \frac{\partial}{\partial\theta} A(\theta)
+      &= \frac{\partial}{\partial\theta} A(\theta)\\
+      \textnormal{Since \(\theta = \mu\)},\\
+      &= \frac{\partial}{\partial\mu} A(\mu)\\
+      &= \frac{\partial}{\partial\mu} \frac{\mu^2}{2}
+      &= \mu &= E[T(x)]
+    \end{align*}
 \end{question} % 2
 
 \begin{question}{EM with discrete variables} % 3
