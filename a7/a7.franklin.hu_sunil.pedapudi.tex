@@ -1,4 +1,5 @@
 \documentclass{ml}
+\usepackage{graphicx}
 \nameone{Franklin Hu}
 \nametwo{Sunil Pedapudi}
 \course{CS 194-10 Machine Learning}
@@ -10,6 +11,80 @@
 
 \begin{question}{Russell \& Norvig 14.7} % 1
     \part % a
+        Diagram augmented with \(IcyWeather\) and \(StarterMotor\) \\
+        \includegraphics[scale=0.4]{1a.jpg}
+    \part % b
+        \begin{tabular}{l || c | c | c}
+            x & P(Battery = x) & P(IcyWeather = x) & P(Gas = x)\\
+            \hline
+            true  & 0.8 & 0.4 & 0.9 \\
+        \end{tabular}
+
+        \begin{tabular}{l || c}
+            b & P(Radio = true \(|\) Battery = b) \\
+            \hline
+            true & 0.9 \\
+            false & 0.0 
+        \end{tabular}
+
+        \begin{tabular}{l | l || c}
+            b & i & P(StarterMotor = true \(|\) Battery = b, IcyWeather = i) \\
+            \hline
+            true & true & 0.6 \\
+            true & false & 0.9 \\
+            false & true  & 0.01 \\
+            false & false & 0.1
+        \end{tabular}
+
+        \begin{tabular}{l || c}
+            s & P(Ignition = true \(|\) StarterMotor = s) \\
+            \hline
+            true & 0.99 \\
+            false & 0.0
+        \end{tabular}
+
+        \begin{tabular}{l | l || c}
+            i & g & P(Starts = true \(|\) Ignition = i, Gas = g) \\
+            \hline
+            true & true & 0.99 \\
+            true & false & 0.0 \\
+            false & true & 0.0 \\
+            false & false & 0.0
+        \end{tabular}
+
+        \begin{tabular}{l || c}
+            s & P(Moves = true \(|\) Starts = s) \\
+            \hline
+            true & 0.95
+        \end{tabular}
+    \part % c
+        The joint probability distribution table for eight Boolean nodes
+        would contain \(2^8=256\) independent values.
+    \part % d
+        The network tables for the diagram in (a) has: \\
+        \begin{tabular}{c | c | c | c}
+            NumParents & Node & Values per Node & Total \\
+            \hline
+            0 & 3 & 1 & 3 \\
+            1 & 3 & 2 & 6 \\
+            2 & 2 & 4 & 8
+        \end{tabular} \\
+        If we sum the right most column, we find that we have a total
+        of \(17\) independent probability values in our Bayesian Network.
+    \part % e
+        The noisy-AND distribution can be thought of as a node in a
+        Bayes Net that is true if some noisy combination of all its
+        parents is also true. We can consider the \(Starts\) node
+        as a noisy-AND since a car would require all of the parent 
+        components to be functioning correctly for the car to start. \\
+        The following equation may be a suitable noisy-AND distribution
+        \begin{equation*}
+            P(X=true|U_1,\hdots,U_D)=\prod\limits_{j=1}^D p_j
+        \end{equation*}
+        where \(U_1,\hdots,U_D\) are the parents of \(X\). By taking the
+        product of the probabilities of the parents, the node \(X\)
+        only has a high probability of being \(true\) if all the 
+        parents also have a high probability.
 \end{question} % 1
 
 \begin{question}{Exponential Family} % 2 
@@ -176,6 +251,19 @@
             \item MedCostBayesian
         \end{itemize}
     \part % f
+        \begin{itemize}
+            \item Bayesian: -1750.32254596
+            \item Decision Tree: -1479.56362897
+        \end{itemize}
+        We obtained these numbers by summing the log-likelihoods of
+        the three outputs (PropCost, MedCost, and ILiCost) over all
+        examples.
+        \begin{equation*}
+            \sum\limits_{a \in A} LL(PropCost) + LL(MedCost) + LL(ILiCost)
+            + \sum\limits_{b \in B} LL(PropCost) + LL(MedCost) + LL(ILiCost)
+        \end{equation*}
+        Where \(A\) and \(B\) are the two halves of the 2-fold cross-
+        validation.
 \end{question} % 5
 \end{document}
  

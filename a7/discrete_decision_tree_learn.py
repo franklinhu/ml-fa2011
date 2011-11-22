@@ -56,7 +56,7 @@ def get_best_attribute(attributes, examples):
   best_attr = None
   for a in attributes:
       gain, attr = get_attribute_info_gain(a, examples)
-      if gain > best_gain:
+      if gain < best_gain:
           best_gain = gain
           best_attr = a
 
@@ -169,9 +169,10 @@ if __name__ == "__main__":
 
   # Cross validate the likelihood of the other sets
   set1_likelihoods = sum(map(lambda ex: log_likelihood(ex, set1_trees), 
-                             set2)) / len(set2)
+                             set2))
   set2_likelihoods = sum(map(lambda ex: log_likelihood(ex, set2_trees),
-                             set1)) / len(set1)
+                             set1))
   print set1_likelihoods
   print set2_likelihoods
+  print "Overall sum: %s" % (set1_likelihoods + set2_likelihoods)
 
