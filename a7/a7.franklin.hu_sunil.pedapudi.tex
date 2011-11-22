@@ -203,6 +203,7 @@
             P(Z=1|Y=0) = \theta_{Y_0} &= 1/2 \\
             P(Z=1|Y=1) = \theta_{Y_1} &= 1/2
         \end{align*}
+    \part % b
         Let \(a\) be the hidden variable in the \(Z\) column, and \(b\)
         be the variable in the \(Y\) column. We can now derive the
         expressions for the expected values of \(a\) and \(b\) based
@@ -227,17 +228,41 @@
         initial parameters, we obtain:
         \begin{align*}
             \mathcal{E}(a) &= 1/2 \\
-            \mathcal{E}(b) &= 1/2
+            \mathcal{E}(b) &= 1/4
         \end{align*}
+        
         We fill these values into the data table and recalculate our
         \(\theta\) values to find:
         \begin{align*}
             \theta_{X_0} &= 1/3 \\
             \theta_{X_1} &= 1/2 \\
-            \theta_{Y_0} &= 4/7 \\
-            \theta_{Y_1} &= 4/7 
+            \theta_{Y_0} &= 2/3 \\
+            \theta_{Y_1} &= 8/9 
         \end{align*}
-    \part % b
+
+        Iteration 2:
+        \begin{align*}
+            \mathcal{E}(a) &= 2/3 \\
+            \mathcal{E}(b) &= 2/7 \\
+            &\Downarrow \\
+            \theta_{X_0} &= 1/3 \\
+            \theta_{X_1} &= 3/7 \\
+            \theta_{Y_0} &= 28/39 \\
+            \theta_{Y_1} &= 7/8
+        \end{align*}
+
+        Iteration 3:
+        \begin{align*}
+            \mathcal{E}(a) &= 28/39 \\
+            \mathcal{E}(b) &= 117/490 \\
+            &\Downarrow \\
+            \theta_{X_0} &= 1/3 \\
+            \theta_{X_1} &= 3/7 \\
+            \theta_{Y_0} &= 28/39 \\
+            \theta_{Y_1} &= 7/8
+        \end{align*}
+
+        Should converge in less than 10 iterations
     \part % c
     
     Without loss of generality, no. The number of iterations can increase depending
