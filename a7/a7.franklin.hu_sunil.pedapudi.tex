@@ -153,9 +153,9 @@
     We intend to show the following.
     \begin{align*}
       f(t)
-      &= \sum_{x s.t. T(x) = t} f(x,t)
-      &= \sum_{x s.t. T(x) = t} f(x)
-      &= \sum_{x s.t. T(x) = t} f(x)g(t)
+      &= \sum_{x s.t. T(x) = t} f(x,t)\\
+      &= \sum_{x s.t. T(x) = t} f(x)\\
+      &= \sum_{x s.t. T(x) = t} f(x)g(t)\\
       &= g(t)\sum_{x s.t. T(x) = t} f(x)
     \end{align*}
     Knowing this, we can find the conditional probability distribution
@@ -176,7 +176,7 @@
     Knowing
     \begin{align*}
       E[X = T(x)]
-      &= E[X = x]
+      &= E[X = x]\\
       &= \mu
     \end{align*}
     we show
@@ -185,7 +185,7 @@
       &= \frac{\partial}{\partial\theta} A(\theta)\\
       \textnormal{Since \(\theta = \mu\)},\\
       &= \frac{\partial}{\partial\mu} A(\mu)\\
-      &= \frac{\partial}{\partial\mu} \frac{\mu^2}{2}
+      &= \frac{\partial}{\partial\mu} \frac{\mu^2}{2}\\
       &= \mu &= E[T(x)]
     \end{align*}
 \end{question} % 2
