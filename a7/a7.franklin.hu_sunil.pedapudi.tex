@@ -142,12 +142,12 @@
     all scenarios.
     Then,
     \begin{align*}
-      \(\pr(X = x, T(x) = t)
-      &= \pr(X = x)\pr(T(x) = t)\\
+      \pr(X = x, T(x) = t)
+      &= \pr(X = x)\pr(T(x) = t)
     \end{align*}
     We then note that we can express
     \begin{align*}
-      \(\pr(X = x, T(x) = t) &= f(x, t) = f(x)\\
+      \pr(X = x, T(x) = t) &= f(x, t) = f(x)\\
       f(x, t) &= f(x)g(t)
     \end{align*}
     We intend to show the following.
@@ -161,9 +161,9 @@
     Knowing this, we can find the conditional probability distribution
     \begin{align*}
       \pr(x|t)
-      &= \frac{f(x,t)}{f(t)}
-      &= \frac{f(x)/f(t)}
-      &= \frac{f(x)g(t)}{g(t)\sum_{x s.t. T(x) = t} f(x)}
+      &= \frac{f(x,t)}{f(t)}\\
+      &= \frac{f(x)}{f(t)}\\
+      &= \frac{f(x)g(t)}{g(t)\sum_{x s.t. T(x) = t} f(x)}\\
       &= \frac{f(x)}{\sum_{x s.t. T(x) = t} f(x)}
     \end{align*}
     We observe that this function is dependent on x and not t, and can therefore
