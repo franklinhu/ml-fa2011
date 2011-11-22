@@ -14,6 +14,52 @@
 
 \begin{question}{Exponential Family} % 2 
     \part % a
+    Given the form
+    \begin{equation*}
+      p(x) = h(x)exp{\theta^TT(x) - A(\theta)}
+    \end{equation}
+    We can express
+    \begin{enumerate}
+      \item
+        \begin{align*}
+          Normal(\mu,1)
+          &= \frac{1}{\sqrt{2\pi}\sigma}e^{\frac{-(x-\mu)^2}{2\sigma^2}}\\
+          &= \frac{1}{\sqrt{2\pi}}e^{\frac{-(x-\mu)^2}{2}}
+        \end{align*}
+        by choosing
+        \begin{align*}
+          h(x) &= \frac{e^{\frac{-x^2}{2}}}{\sqrt{2\pi}}\\
+          T(x) &= x\\
+          A(\theta) &= \frac{\mu^2}{2}\\
+          \theta &= \mu
+        \end{align*}
+        which renders the form of a normal equation.
+
+      \item
+        \begin{equation*}
+          Bernoulli(p) = p^x(1-p)^{1-x}
+        \end{equation*}
+        by choosing
+        \begin{align*}
+          h(x) &= p^k
+          T(x) &= ln(1-p)
+          \theta &= 1-x
+          A(\theta) = 0
+        \end{align*}
+        which recovers the original form of Bernoulli(\(p\))
+
+      \item
+        \begin{equation*}
+          Categorical(p_1,\hdots,p_k) = \mult^n_{i=1}p_i^(x_i)
+        \end{equation*}
+        by choosing
+        \begin{align*}
+          h(x) = 1
+          \theta^T = \textnormal{1-of-K encoded vector}
+          T(x) = \sum_{i=1}^Kp_i
+          A(\theta) = 0
+        \end{align*}
+    \end{enumerate}
 \end{question} % 2
 
 \begin{question}{EM with discrete variables} % 3
